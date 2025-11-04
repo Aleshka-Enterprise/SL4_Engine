@@ -1,0 +1,51 @@
+{
+  "entities": [
+    {
+      "__class__": "Player",
+      "__id__": "rus1ombzj",
+      "attributes": {
+        "x": 343.0962219238281,
+        "y": 292.8870315551758,
+        "width": 50,
+        "height": 100,
+        "color": [
+          250,
+          0,
+          0
+        ],
+        "speed": 0,
+        "hp": 1,
+        "gravity": 1,
+        "jump_force": -24,
+        "direction": "left",
+        "boost": 5,
+        "show_hp": false,
+        "weapon": null,
+        "energy": 350
+      }
+    }
+  ],
+  "grounds": [
+    {
+      "__class__": "Ground",
+      "__id__": "b4xzjrfrq",
+      "attributes": {
+        "x": 100,
+        "y": 453.5564880371094,
+        "width": 1159.4142150878906,
+        "height": 125.062744140625,
+        "color": [
+          0,
+          155,
+          0
+        ]
+      }
+    }
+  ],
+  "weapons": [],
+  "camera": null,
+  "gameOptions": {
+    "running": true,
+    "clock_tick": 60
+  }
+}

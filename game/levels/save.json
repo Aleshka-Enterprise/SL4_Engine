@@ -1,0 +1,1098 @@
+{
+    "entities": [
+        {
+            "__class__": "Zombie",
+            "__id__": 2334170810656,
+            "attributes": {
+                "x": 6226.706054687499,
+                "y": 1513,
+                "width": 50,
+                "height": 100,
+                "jump_force": -24,
+                "on_the_ground": false,
+                "max_particles": 300,
+                "speed": 3,
+                "direction": "left",
+                "frez": false,
+                "boost": 5,
+                "invulnerable": false,
+                "destroy_after_dead": true,
+                "color": [
+                    0,
+                    0,
+                    0
+                ],
+                "display": true,
+                "is_enemy": true,
+                "weapon": {
+                    "__class__": "PoisonGun",
+                    "__id__": 2334169373136,
+                    "attributes": {
+                        "is_pickable": true,
+                        "is_dropable": false,
+                        "x": 6214.706054687499,
+                        "y": 1528,
+                        "width": 25,
+                        "height": 5,
+                        "on_the_ground": true,
+                        "color": [
+                            0,
+                            0,
+                            0
+                        ],
+                        "display": true,
+                        "offset_x": -15,
+                        "offset_y": 15,
+                        "cooling_down": 10,
+                        "maximum_number_of_bullets": 10,
+                        "shoot_list": [
+                            {
+                                "__class__": "Poison",
+                                "__id__": 2334171140112,
+                                "attributes": {
+                                    "x": 5936.706054687499,
+                                    "y": 1612.25,
+                                    "width": 40,
+                                    "height": 2,
+                                    "speed": 50,
+                                    "direction": "left",
+                                    "frez": false,
+                                    "boost": 5,
+                                    "max_particles": 300,
+                                    "on_the_ground": false,
+                                    "color": [
+                                        0,
+                                        100,
+                                        0
+                                    ],
+                                    "display": true,
+                                    "owner_weapon": {
+                                        "__ref__": 2334169373136
+                                    },
+                                    "damage": 1,
+                                    "initializer": {
+                                        "__ref__": 2334170810656
+                                    },
+                                    "entity_old_color": null,
+                                    "poison_entity_timer": null,
+                                    "particle_timer": {
+                                        "__class__": "Timer",
+                                        "__id__": 2334171140256,
+                                        "attributes": {
+                                            "time": 2,
+                                            "base_time": 2,
+                                            "callbacks": [
+                                                {
+                                                    "__class__": "method",
+                                                    "__id__": 2334170968896,
+                                                    "attributes": {}
+                                                }
+                                            ],
+                                            "loop": true
+                                        }
+                                    }
+                                }
+                            }
+                        ],
+                        "delete_after_death": false,
+                        "weapon_is_ready": false,
+                        "damage": 1,
+                        "experation_time": 1000,
+                        "no_ready_color": [
+                            0,
+                            200,
+                            0
+                        ]
+                    }
+                },
+                "show_hp": false,
+                "attack_timer": {
+                    "__class__": "Timer",
+                    "__id__": 2334170824096,
+                    "attributes": {
+                        "time": 5,
+                        "base_time": 10,
+                        "callbacks": [
+                            {
+                                "__class__": "method",
+                                "__id__": 2334170891328,
+                                "attributes": {}
+                            }
+                        ],
+                        "loop": true
+                    }
+                },
+                "target": {
+                    "__ref__": 2334167537744
+                },
+                "melee_damage": 10,
+                "patrol_distance": 200,
+                "patrol_points": [
+                    5966.706054687499,
+                    6366.706054687499
+                ],
+                "viewing_radius": 500
+            }
+        },
+        {
+            "__class__": "Zombie",
+            "__id__": 2334170811184,
+            "attributes": {
+                "x": 6778.016601562499,
+                "y": 1669,
+                "width": 50,
+                "height": 100,
+                "jump_force": -24,
+                "on_the_ground": true,
+                "max_particles": 300,
+                "speed": 3,
+                "direction": "left",
+                "frez": false,
+                "boost": 5,
+                "invulnerable": false,
+                "destroy_after_dead": true,
+                "color": [
+                    0,
+                    0,
+                    0
+                ],
+                "display": true,
+                "is_enemy": true,
+                "weapon": {
+                    "__class__": "PoisonGun",
+                    "__id__": 2334170810944,
+                    "attributes": {
+                        "is_pickable": true,
+                        "is_dropable": false,
+                        "x": 6766.016601562499,
+                        "y": 1764,
+                        "width": 25,
+                        "height": 5,
+                        "on_the_ground": true,
+                        "color": [
+                            0,
+                            0,
+                            0
+                        ],
+                        "display": true,
+                        "offset_x": -15,
+                        "offset_y": 15,
+                        "cooling_down": 10,
+                        "maximum_number_of_bullets": 10,
+                        "shoot_list": [],
+                        "delete_after_death": false,
+                        "weapon_is_ready": true,
+                        "damage": 1,
+                        "experation_time": 1000,
+                        "no_ready_color": [
+                            0,
+                            200,
+                            0
+                        ]
+                    }
+                },
+                "show_hp": false,
+                "attack_timer": null,
+                "target": {
+                    "__ref__": 2334167537744
+                },
+                "melee_damage": 10,
+                "patrol_distance": 200,
+                "patrol_points": [
+                    6464.016601562499,
+                    6864.016601562499
+                ],
+                "viewing_radius": 500
+            }
+        },
+        {
+            "__class__": "Zombie",
+            "__id__": 2334168629120,
+            "attributes": {
+                "x": 9459.9267578125,
+                "y": 91272.4284362793,
+                "width": 50,
+                "height": 100,
+                "jump_force": -24,
+                "on_the_ground": false,
+                "max_particles": 300,
+                "speed": 3,
+                "direction": "left",
+                "frez": false,
+                "boost": 5,
+                "invulnerable": false,
+                "destroy_after_dead": true,
+                "color": [
+                    0,
+                    0,
+                    0
+                ],
+                "display": true,
+                "is_enemy": true,
+                "weapon": {
+                    "__class__": "PoisonGun",
+                    "__id__": 2334170811328,
+                    "attributes": {
+                        "is_pickable": true,
+                        "is_dropable": false,
+                        "x": 9444.9267578125,
+                        "y": 38318.4284362793,
+                        "width": 25,
+                        "height": 5,
+                        "on_the_ground": false,
+                        "color": [
+                            0,
+                            0,
+                            0
+                        ],
+                        "display": true,
+                        "offset_x": -15,
+                        "offset_y": 15,
+                        "cooling_down": 10,
+                        "maximum_number_of_bullets": 10,
+                        "shoot_list": [],
+                        "delete_after_death": false,
+                        "weapon_is_ready": true,
+                        "damage": 1,
+                        "experation_time": 1000,
+                        "no_ready_color": [
+                            0,
+                            200,
+                            0
+                        ]
+                    }
+                },
+                "show_hp": false,
+                "attack_timer": null,
+                "target": {
+                    "__ref__": 2334167537744
+                },
+                "melee_damage": 10,
+                "patrol_distance": 200,
+                "patrol_points": [
+                    9259.9267578125,
+                    9659.9267578125
+                ],
+                "viewing_radius": 500
+            }
+        },
+        {
+            "__class__": "Zombie",
+            "__id__": 2334170811712,
+            "attributes": {
+                "x": 12234.5380859375,
+                "y": 91594.94396972656,
+                "width": 50,
+                "height": 100,
+                "jump_force": -24,
+                "on_the_ground": false,
+                "max_particles": 300,
+                "speed": 3,
+                "direction": "left",
+                "frez": false,
+                "boost": 5,
+                "invulnerable": false,
+                "destroy_after_dead": true,
+                "color": [
+                    0,
+                    0,
+                    0
+                ],
+                "display": true,
+                "is_enemy": true,
+                "weapon": {
+                    "__class__": "PoisonGun",
+                    "__id__": 2334170811472,
+                    "attributes": {
+                        "is_pickable": true,
+                        "is_dropable": false,
+                        "x": 12234.5380859375,
+                        "y": 57790.64396972641,
+                        "width": 25,
+                        "height": 5,
+                        "on_the_ground": false,
+                        "color": [
+                            0,
+                            0,
+                            0
+                        ],
+                        "display": true,
+                        "offset_x": -15,
+                        "offset_y": 15,
+                        "cooling_down": 10,
+                        "maximum_number_of_bullets": 10,
+                        "shoot_list": [],
+                        "delete_after_death": false,
+                        "weapon_is_ready": true,
+                        "damage": 1,
+                        "experation_time": 1000,
+                        "no_ready_color": [
+                            0,
+                            200,
+                            0
+                        ]
+                    }
+                },
+                "show_hp": false,
+                "attack_timer": null,
+                "target": {
+                    "__ref__": 2334167537744
+                },
+                "melee_damage": 10,
+                "patrol_distance": 200,
+                "patrol_points": [
+                    12034.5380859375,
+                    12434.5380859375
+                ],
+                "viewing_radius": 500
+            }
+        }
+    ],
+    "grounds": [
+        {
+            "__class__": "Ground",
+            "__id__": 2334170811856,
+            "attributes": {
+                "x": 2491.597225189209,
+                "y": 1769.4676513671875,
+                "width": 5138.374881744385,
+                "height": 310.504150390625,
+                "color": [
+                    227,
+                    137,
+                    130
+                ],
+                "display": true,
+                "transparent": false
+            }
+        },
+        {
+            "__class__": "Ground",
+            "__id__": 2334169488112,
+            "attributes": {
+                "x": 3600,
+                "y": 1400,
+                "width": 104.20166015625,
+                "height": 100,
+                "color": [
+                    227,
+                    222,
+                    69
+                ],
+                "display": true,
+                "transparent": false
+            }
+        },
+        {
+            "__class__": "Ground",
+            "__id__": 2334170811904,
+            "attributes": {
+                "x": 3900,
+                "y": 1400,
+                "width": 100,
+                "height": 100,
+                "color": [
+                    203,
+                    19,
+                    6
+                ],
+                "display": true,
+                "transparent": false
+            }
+        },
+        {
+            "__class__": "Ground",
+            "__id__": 2334170811808,
+            "attributes": {
+                "x": 4100.784271240234,
+                "y": 1400,
+                "width": 100,
+                "height": 100,
+                "color": [
+                    203,
+                    19,
+                    6
+                ],
+                "display": true,
+                "transparent": false
+            }
+        },
+        {
+            "__class__": "Ground",
+            "__id__": 2334170811952,
+            "attributes": {
+                "x": 4000,
+                "y": 1400,
+                "width": 104.20166015625,
+                "height": 100,
+                "color": [
+                    227,
+                    222,
+                    69
+                ],
+                "display": true,
+                "transparent": false
+            }
+        },
+        {
+            "__class__": "Ground",
+            "__id__": 2334170812000,
+            "attributes": {
+                "x": 4200,
+                "y": 1400,
+                "width": 104.20166015625,
+                "height": 100,
+                "color": [
+                    227,
+                    222,
+                    69
+                ],
+                "display": true,
+                "transparent": false
+            }
+        },
+        {
+            "__class__": "Ground",
+            "__id__": 2334170812144,
+            "attributes": {
+                "x": 4300,
+                "y": 1400,
+                "width": 100,
+                "height": 100,
+                "color": [
+                    203,
+                    19,
+                    6
+                ],
+                "display": true,
+                "transparent": false
+            }
+        },
+        {
+            "__class__": "Ground",
+            "__id__": 2334170812384,
+            "attributes": {
+                "x": 4101.176361083984,
+                "y": 1002.633056640625,
+                "width": 100,
+                "height": 100,
+                "color": [
+                    203,
+                    19,
+                    6
+                ],
+                "display": true,
+                "transparent": false
+            }
+        },
+        {
+            "__class__": "Ground",
+            "__id__": 2334170812528,
+            "attributes": {
+                "x": 4653.249511718748,
+                "y": 1639.3555704752612,
+                "width": 226.33056640625,
+                "height": 133.24936294555664,
+                "color": [
+                    0,
+                    155,
+                    0
+                ],
+                "display": true,
+                "transparent": false
+            }
+        },
+        {
+            "__class__": "Ground",
+            "__id__": 2334170812672,
+            "attributes": {
+                "x": 5701.820800781248,
+                "y": 1528.2632853190112,
+                "width": 226.33056640625,
+                "height": 240.81235122680664,
+                "color": [
+                    0,
+                    155,
+                    0
+                ],
+                "display": true,
+                "transparent": false
+            }
+        },
+        {
+            "__class__": "Ground",
+            "__id__": 2334170812816,
+            "attributes": {
+                "x": 6989.047851562498,
+                "y": 1541.5407511393237,
+                "width": 226.33056640625,
+                "height": 227.36679458618164,
+                "color": [
+                    0,
+                    155,
+                    0
+                ],
+                "display": true,
+                "transparent": false
+            }
+        },
+        {
+            "__class__": "Ground",
+            "__id__": 2334170812960,
+            "attributes": {
+                "x": 7921.680477142334,
+                "y": 1782.18505859375,
+                "width": 1852.6607704162598,
+                "height": 310.504150390625,
+                "color": [
+                    227,
+                    137,
+                    130
+                ],
+                "display": true,
+                "transparent": false
+            }
+        },
+        {
+            "__class__": "Ground",
+            "__id__": 2334170813104,
+            "attributes": {
+                "x": 8806.890228271484,
+                "y": 1456.246337890625,
+                "width": 328.5712890625,
+                "height": 100,
+                "color": [
+                    203,
+                    19,
+                    6
+                ],
+                "display": true,
+                "transparent": false
+            }
+        },
+        {
+            "__class__": "Ground",
+            "__id__": 2334170813248,
+            "attributes": {
+                "x": 9021.848236083984,
+                "y": 1190.531982421875,
+                "width": 832.7734375,
+                "height": 100,
+                "color": [
+                    203,
+                    19,
+                    6
+                ],
+                "display": true,
+                "transparent": false
+            }
+        },
+        {
+            "__class__": "Ground",
+            "__id__": 2334170813392,
+            "attributes": {
+                "x": 10115.798431396484,
+                "y": 1191.2042236328125,
+                "width": 273.9501953125,
+                "height": 100,
+                "color": [
+                    203,
+                    19,
+                    6
+                ],
+                "display": true,
+                "transparent": false
+            }
+        },
+        {
+            "__class__": "Ground",
+            "__id__": 2334170813536,
+            "attributes": {
+                "x": 10386.3857421875,
+                "y": 1192.2689208984375,
+                "width": 104.20166015625,
+                "height": 100,
+                "color": [
+                    227,
+                    222,
+                    69
+                ],
+                "display": true,
+                "transparent": false
+            }
+        },
+        {
+            "__class__": "Ground",
+            "__id__": 2334170813680,
+            "attributes": {
+                "x": 10342.240047454834,
+                "y": 1796.5828857421875,
+                "width": 7359.66272354126,
+                "height": 310.504150390625,
+                "color": [
+                    227,
+                    137,
+                    130
+                ],
+                "display": true,
+                "transparent": false
+            }
+        },
+        {
+            "__class__": "Ground",
+            "__id__": 2334170813824,
+            "attributes": {
+                "x": 10404.706634521484,
+                "y": 1505.3218994140625,
+                "width": 100.28125,
+                "height": 100,
+                "color": [
+                    203,
+                    19,
+                    6
+                ],
+                "display": true,
+                "transparent": false
+            }
+        },
+        {
+            "__class__": "Ground",
+            "__id__": 2334170813968,
+            "attributes": {
+                "x": 10702.017181396484,
+                "y": 1497.3106689453125,
+                "width": 195.51953125,
+                "height": 100,
+                "color": [
+                    203,
+                    19,
+                    6
+                ],
+                "display": true,
+                "transparent": false
+            }
+        },
+        {
+            "__class__": "Ground",
+            "__id__": 2334170814112,
+            "attributes": {
+                "x": 12003.0244140625,
+                "y": 1503.58544921875,
+                "width": 104.20166015625,
+                "height": 100,
+                "color": [
+                    227,
+                    222,
+                    69
+                ],
+                "display": true,
+                "transparent": false
+            }
+        },
+        {
+            "__class__": "Ground",
+            "__id__": 2334170814256,
+            "attributes": {
+                "x": 12361.9599609375,
+                "y": 1506.77880859375,
+                "width": 104.20166015625,
+                "height": 100,
+                "color": [
+                    227,
+                    222,
+                    69
+                ],
+                "display": true,
+                "transparent": false
+            }
+        },
+        {
+            "__class__": "Ground",
+            "__id__": 2334169482736,
+            "attributes": {
+                "x": 12715.29296875,
+                "y": 1504.369873046875,
+                "width": 104.20166015625,
+                "height": 100,
+                "color": [
+                    227,
+                    222,
+                    69
+                ],
+                "display": true,
+                "transparent": false
+            }
+        },
+        {
+            "__class__": "Ground",
+            "__id__": 2334170814400,
+            "attributes": {
+                "x": 12373.9482421875,
+                "y": 1121.008544921875,
+                "width": 104.20166015625,
+                "height": 100,
+                "color": [
+                    227,
+                    222,
+                    69
+                ],
+                "display": true,
+                "transparent": false
+            }
+        },
+        {
+            "__class__": "Ground",
+            "__id__": 2334170814544,
+            "attributes": {
+                "x": 13399.496673583984,
+                "y": 1497.3106689453125,
+                "width": 100.28125,
+                "height": 100,
+                "color": [
+                    203,
+                    19,
+                    6
+                ],
+                "display": true,
+                "transparent": false
+            }
+        },
+        {
+            "__class__": "Ground",
+            "__id__": 2334170814688,
+            "attributes": {
+                "x": 13705.210540771484,
+                "y": 1155.96630859375,
+                "width": 394.3994140625,
+                "height": 100,
+                "color": [
+                    203,
+                    19,
+                    6
+                ],
+                "display": true,
+                "transparent": false
+            }
+        },
+        {
+            "__class__": "Ground",
+            "__id__": 2334170814832,
+            "attributes": {
+                "x": 15304.649993896484,
+                "y": 1696.582275390625,
+                "width": 100.28125,
+                "height": 100,
+                "color": [
+                    203,
+                    19,
+                    6
+                ],
+                "display": true,
+                "transparent": false
+            }
+        },
+        {
+            "__class__": "Ground",
+            "__id__": 2334170814976,
+            "attributes": {
+                "x": 15400.280853271484,
+                "y": 1610.139892578125,
+                "width": 100.28125,
+                "height": 186.834716796875,
+                "color": [
+                    203,
+                    19,
+                    6
+                ],
+                "display": true,
+                "transparent": false
+            }
+        },
+        {
+            "__class__": "Ground",
+            "__id__": 2334170815216,
+            "attributes": {
+                "x": 15493.109954833984,
+                "y": 1512.49267578125,
+                "width": 100.28125,
+                "height": 284.8739013671875,
+                "color": [
+                    203,
+                    19,
+                    6
+                ],
+                "display": true,
+                "transparent": false
+            }
+        },
+        {
+            "__class__": "Ground",
+            "__id__": 2334170815360,
+            "attributes": {
+                "x": 15580.336517333984,
+                "y": 1417.6468505859375,
+                "width": 122.689453125,
+                "height": 385.7142333984375,
+                "color": [
+                    203,
+                    19,
+                    6
+                ],
+                "display": true,
+                "transparent": false
+            }
+        },
+        {
+            "__class__": "Ground",
+            "__id__": 2333753850192,
+            "attributes": {
+                "x": 15936.471282958984,
+                "y": 1409.635498046875,
+                "width": 122.689453125,
+                "height": 385.7142333984375,
+                "color": [
+                    203,
+                    19,
+                    6
+                ],
+                "display": true,
+                "transparent": false
+            }
+        },
+        {
+            "__class__": "Ground",
+            "__id__": 2334170815504,
+            "attributes": {
+                "x": 16053.726165771484,
+                "y": 1510.083740234375,
+                "width": 100.28125,
+                "height": 284.8739013671875,
+                "color": [
+                    203,
+                    19,
+                    6
+                ],
+                "display": true,
+                "transparent": false
+            }
+        },
+        {
+            "__class__": "Ground",
+            "__id__": 2334170815648,
+            "attributes": {
+                "x": 16148.571868896484,
+                "y": 1607.73095703125,
+                "width": 100.28125,
+                "height": 186.834716796875,
+                "color": [
+                    203,
+                    19,
+                    6
+                ],
+                "display": true,
+                "transparent": false
+            }
+        },
+        {
+            "__class__": "Ground",
+            "__id__": 2334170815792,
+            "attributes": {
+                "x": 16240.615814208984,
+                "y": 1694.17333984375,
+                "width": 100.28125,
+                "height": 100,
+                "color": [
+                    203,
+                    19,
+                    6
+                ],
+                "display": true,
+                "transparent": false
+            }
+        },
+        {
+            "__class__": "Ground",
+            "__id__": 2334170815936,
+            "attributes": {
+                "x": 17569.523040771484,
+                "y": 1418.0389404296875,
+                "width": 122.689453125,
+                "height": 385.7142333984375,
+                "color": [
+                    203,
+                    19,
+                    6
+                ],
+                "display": true,
+                "transparent": false
+            }
+        },
+        {
+            "__class__": "Ground",
+            "__id__": 2334170816080,
+            "attributes": {
+                "x": 17479.496673583984,
+                "y": 1518.487060546875,
+                "width": 100.28125,
+                "height": 284.8739013671875,
+                "color": [
+                    203,
+                    19,
+                    6
+                ],
+                "display": true,
+                "transparent": false
+            }
+        },
+        {
+            "__class__": "Ground",
+            "__id__": 2333753850144,
+            "attributes": {
+                "x": 17381.066009521484,
+                "y": 1610.531982421875,
+                "width": 100.28125,
+                "height": 186.834716796875,
+                "color": [
+                    203,
+                    19,
+                    6
+                ],
+                "display": true,
+                "transparent": false
+            }
+        },
+        {
+            "__class__": "Ground",
+            "__id__": 2334170816320,
+            "attributes": {
+                "x": 17285.433197021484,
+                "y": 1708.178955078125,
+                "width": 100.28125,
+                "height": 100,
+                "color": [
+                    203,
+                    19,
+                    6
+                ],
+                "display": true,
+                "transparent": false
+            }
+        },
+        {
+            "__class__": "Ground",
+            "__id__": 2333757070064,
+            "attributes": {
+                "x": 18000.893367767334,
+                "y": 1802.5772705078125,
+                "width": 1216.8072547912598,
+                "height": 310.504150390625,
+                "color": [
+                    227,
+                    137,
+                    130
+                ],
+                "display": true,
+                "transparent": false
+            }
+        },
+        {
+            "__class__": "Ground",
+            "__id__": 2334170816464,
+            "attributes": {
+                "x": 18004.089447021484,
+                "y": 1429.635498046875,
+                "width": 122.689453125,
+                "height": 385.7142333984375,
+                "color": [
+                    203,
+                    19,
+                    6
+                ],
+                "display": true,
+                "transparent": false
+            }
+        },
+        {
+            "__class__": "Ground",
+            "__id__": 2334170816608,
+            "attributes": {
+                "x": 18115.742767333984,
+                "y": 1530.0836181640625,
+                "width": 100.28125,
+                "height": 284.8739013671875,
+                "color": [
+                    203,
+                    19,
+                    6
+                ],
+                "display": true,
+                "transparent": false
+            }
+        },
+        {
+            "__class__": "Ground",
+            "__id__": 2334170816752,
+            "attributes": {
+                "x": 18210.587493896484,
+                "y": 1624.9298095703125,
+                "width": 100.28125,
+                "height": 186.834716796875,
+                "color": [
+                    203,
+                    19,
+                    6
+                ],
+                "display": true,
+                "transparent": false
+            }
+        },
+        {
+            "__class__": "Ground",
+            "__id__": 2334170816896,
+            "attributes": {
+                "x": 18308.233978271484,
+                "y": 1708.571044921875,
+                "width": 100.28125,
+                "height": 100,
+                "color": [
+                    203,
+                    19,
+                    6
+                ],
+                "display": true,
+                "transparent": false
+            }
+        }
+    ],
+    "camera": {
+        "__class__": "Camera",
+        "__id__": 2334169497232,
+        "attributes": {
+            "x": 0,
+            "y": 0,
+            "width": 0,
+            "height": 0,
+            "screen_width": 1500,
+            "screen_height": 800,
+            "viewport": {
+                "__class__": "Rect",
+                "x": 5116,
+                "y": 1257,
+                "width": 1500,
+                "height": 800
+            },
+            "padding": 1000,
+            "target": null,
+            "deadzone": {
+                "__class__": "Rect",
+                "x": 250,
+                "y": 133,
+                "width": 500,
+                "height": 400
+            }
+        }
+    },
+    "game_options": {
+        "running": false
+    }
+}

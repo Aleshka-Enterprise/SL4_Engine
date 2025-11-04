@@ -1,0 +1,63 @@
+{
+  "entities": [
+    {
+      "__class__": "Player",
+      "__id__": "qby8gakxl",
+      "attributes": {
+        "x": 1064.8536319732666,
+        "y": 405.8577651977539,
+        "width": 50,
+        "height": 100,
+        "color": [
+          250,
+          0,
+          0
+        ],
+        "speed": 0,
+        "hp": 1,
+        "gravity": 1,
+        "jump_force": -24,
+        "direction": "left",
+        "boost": 5,
+        "show_hp": false,
+        "weapon": null,
+        "energy": 350
+      }
+    }
+  ],
+  "grounds": [],
+  "weapons": [
+    {
+      "__class__": "Weapon",
+      "__id__": "ir4ggmxag",
+      "attributes": {
+        "x": 100,
+        "y": 100,
+        "offset_x": 0,
+        "offset_y": 0,
+        "width": 15,
+        "height": 5,
+        "color": [
+          1,
+          1,
+          1
+        ],
+        "entity": null,
+        "cooling_down": 30,
+        "maximum_number_of_bullets": 10,
+        "delete_after_death": false,
+        "gravity": 0.7,
+        "no_ready_color": [
+          1,
+          1,
+          1
+        ]
+      }
+    }
+  ],
+  "camera": null,
+  "gameOptions": {
+    "running": true,
+    "clock_tick": 60
+  }
+}

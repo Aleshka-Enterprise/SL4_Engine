@@ -1,0 +1,336 @@
+{
+    "entities": [
+        {
+            "__class__": "Player",
+            "__id__": 2919279658144,
+            "attributes": {
+                "x": 50,
+                "y": 200,
+                "width": 50,
+                "height": 100,
+                "color": [
+                    250,
+                    0,
+                    0
+                ],
+                "speed": 5,
+                "base_speed": 5,
+                "hp": 350,
+                "direction": "left",
+                "is_enemy": false,
+                "vel_y": 0,
+                "gravity": 1,
+                "jump_force": -24,
+                "boost": 5,
+                "weapon": {
+                    "__class__": "PoisonGun",
+                    "__id__": 2919279658048,
+                    "attributes": {
+                        "offset_x": -15,
+                        "offset_y": 15,
+                        "width": 25,
+                        "height": 5,
+                        "color": [
+                            0,
+                            0,
+                            0
+                        ],
+                        "cooling_down": 10,
+                        "current_cooling_down": 5,
+                        "maximum_number_of_bullets": 10,
+                        "shoot_list": [],
+                        "entity": {
+                            "__ref__": 2919279658144
+                        },
+                        "x": 0,
+                        "y": 0,
+                        "delete_after_death": false,
+                        "vel_y": 0,
+                        "gravity": 0.7
+                    }
+                },
+                "show_hp": false,
+                "energy": 350,
+                "max_energy": 350,
+                "base_height": 100
+            }
+        },
+        {
+            "__class__": "Zombie",
+            "__id__": 2919279658336,
+            "attributes": {
+                "x": 800,
+                "y": 400,
+                "width": 50,
+                "height": 100,
+                "color": [
+                    128,
+                    128,
+                    128
+                ],
+                "speed": 3,
+                "base_speed": 3,
+                "hp": 100,
+                "direction": "left",
+                "is_enemy": true,
+                "vel_y": 0,
+                "gravity": 2,
+                "jump_force": -31,
+                "boost": 5,
+                "weapon": {
+                    "__class__": "Shotgun",
+                    "__id__": 2919279658288,
+                    "attributes": {
+                        "offset_x": -15,
+                        "offset_y": 15,
+                        "width": 25,
+                        "height": 5,
+                        "color": [
+                            150,
+                            75,
+                            0
+                        ],
+                        "cooling_down": 100,
+                        "current_cooling_down": 10,
+                        "maximum_number_of_bullets": 10,
+                        "shoot_list": [],
+                        "entity": {
+                            "__ref__": 2919279658336
+                        },
+                        "x": 0,
+                        "y": 0,
+                        "delete_after_death": false,
+                        "vel_y": 0,
+                        "gravity": 0.7,
+                        "number_of_bullets": 7
+                    }
+                },
+                "show_hp": true,
+                "target": {
+                    "__ref__": 2919279658144
+                },
+                "melee_damage": 10
+            }
+        },
+        {
+            "__class__": "Zombie",
+            "__id__": 2919279658336,
+            "attributes": {
+                "x": 1200,
+                "y": 400,
+                "width": 50,
+                "height": 100,
+                "color": [
+                    200,
+                    128,
+                    128
+                ],
+                "speed": 4,
+                "base_speed": 3,
+                "hp": 100,
+                "direction": "right",
+                "is_enemy": true,
+                "vel_y": 0,
+                "gravity": 2,
+                "jump_force": -31,
+                "boost": 5,
+                "weapon": {
+                    "__class__": "Shotgun",
+                    "__id__": 2919279658289,
+                    "attributes": {
+                        "offset_x": -15,
+                        "offset_y": 15,
+                        "width": 25,
+                        "height": 5,
+                        "color": [
+                            150,
+                            75,
+                            0
+                        ],
+                        "cooling_down": 100,
+                        "current_cooling_down": 10,
+                        "maximum_number_of_bullets": 10,
+                        "shoot_list": [],
+                        "entity": {
+                            "__ref__": 2919279658336
+                        },
+                        "x": 0,
+                        "y": 0,
+                        "delete_after_death": false,
+                        "vel_y": 0,
+                        "gravity": 0.7,
+                        "number_of_bullets": 7
+                    }
+                },
+                "show_hp": true,
+                "target": {
+                    "__ref__": 2919279658144
+                },
+                "melee_damage": 10
+            }
+        },
+        {
+            "__class__": "Zombie",
+            "__id__": 12412423,
+            "attributes": {
+                "x": 1200,
+                "y": 0,
+                "width": 50,
+                "height": 100,
+                "color": [
+                    128,
+                    128,
+                    200
+                ],
+                "speed": 3,
+                "base_speed": 3,
+                "hp": 100,
+                "direction": "right",
+                "is_enemy": true,
+                "vel_y": 0,
+                "gravity": 2,
+                "jump_force": -31,
+                "boost": 5,
+                "weapon": {
+                    "__class__": "Shotgun",
+                    "__id__": 2919273658289,
+                    "attributes": {
+                        "offset_x": -15,
+                        "offset_y": 15,
+                        "width": 25,
+                        "height": 5,
+                        "color": [
+                            150,
+                            75,
+                            0
+                        ],
+                        "cooling_down": 100,
+                        "current_cooling_down": 10,
+                        "maximum_number_of_bullets": 10,
+                        "shoot_list": [],
+                        "entity": {
+                            "__ref__": 2919279658336
+                        },
+                        "x": 0,
+                        "y": 0,
+                        "delete_after_death": false,
+                        "vel_y": 0,
+                        "gravity": 0.7,
+                        "number_of_bullets": 7
+                    }
+                },
+                "show_hp": true,
+                "target": {
+                    "__ref__": 2919279658144
+                },
+                "melee_damage": 10
+            }
+        }
+    ],
+    "grounds": [
+        {
+            "__class__": "Ground",
+            "__id__": 2919245095392,
+            "attributes": {
+                "x": 0,
+                "y": 700,
+                "width": 1500,
+                "height": 100,
+                "color": [
+                    0,
+                    150,
+                    0
+                ]
+            }
+        },
+        {
+            "__class__": "Ground",
+            "__id__": 2919279658384,
+            "attributes": {
+                "x": 30,
+                "y": 600,
+                "width": 200,
+                "height": 10,
+                "color": [
+                    25,
+                    150,
+                    50
+                ]
+            }
+        },
+        {
+            "__class__": "Ground",
+            "__id__": 2919279658480,
+            "attributes": {
+                "x": 330,
+                "y": 460,
+                "width": 200,
+                "height": 1000,
+                "color": [
+                    25,
+                    150,
+                    50
+                ]
+            }
+        },
+        {
+            "__class__": "Ground",
+            "__id__": 2919279658576,
+            "attributes": {
+                "x": 1800,
+                "y": 1000,
+                "width": 500,
+                "height": 100,
+                "color": [
+                    0,
+                    150,
+                    0
+                ]
+            }
+        },
+        {
+            "__class__": "Ground",
+            "__id__": 2919279658672,
+            "attributes": {
+                "x": 500,
+                "y": 130,
+                "width": 1500,
+                "height": 100,
+                "color": [
+                    25,
+                    150,
+                    50
+                ]
+            }
+        }
+    ],
+    "camera": {
+        "__class__": "Camera",
+        "__id__": 2919240744160,
+        "attributes": {
+            "screen_width": 1500,
+            "screen_height": 800,
+            "viewport": {
+                "__class__": "Rect",
+                "x": 0,
+                "y": 0,
+                "width": 1500,
+                "height": 800
+            },
+            "deadzone": {
+                "__class__": "Rect",
+                "x": 250,
+                "y": 133,
+                "width": 375,
+                "height": 400
+            },
+            "target": {
+                "__ref__": 2919279658144
+            }
+        }
+    },
+    "game_options": {
+        "running": true,
+        "clock_tick": 60
+    }
+}
