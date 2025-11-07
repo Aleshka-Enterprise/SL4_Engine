@@ -19,6 +19,7 @@ class InteractiveMixin(BaseMixin):
         )
     
     def update_interactive_zone(self, height: int, width: int) -> None:
+        ''' Изменение зоны взаимодействия '''
         self.__interactive_height = height
         self.__interactive_width = width
 

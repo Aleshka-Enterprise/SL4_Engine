@@ -935,7 +935,6 @@
   "weapons": [],
   "camera": null,
   "gameOptions": {
-    "running": true,
     "clock_tick": 60
   }
 }

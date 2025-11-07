@@ -20,7 +20,6 @@ class SystemManager:
 
     @classmethod
     def update(cls):
-        EventsSystem.check_freez()
-        if not EventsSystem.is_freezen:
+        if not EventsSystem.is_frozen:
             for system in cls.SYSTEMS_LIST:
                 system.update()

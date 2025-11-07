@@ -45,4 +45,6 @@ class JumpMixin(BaseMixin):
     def on_end_jump(self) -> None:
         pass
     
+    def jump(self):
+        self.is_jumping = True
     

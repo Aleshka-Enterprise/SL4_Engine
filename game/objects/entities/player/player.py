@@ -1,24 +1,43 @@
 from typing import Literal
+from game.core.mixins.event_mixin import EventMixin
 from game.core.mixins.jump_mixin import JumpMixin
 from game.objects.entities.entity import Entity
 from game.core.storage import storage
+from game.settings import KEYS
+from game.core.storage import GAME_STATE
+from game.utils.types import Event, EventState
 
 
-class Player(Entity, JumpMixin):
+class Player(Entity, JumpMixin, EventMixin):
     def __init__(self, energy: int = 350, **kwargs):
         super().__init__(**kwargs)
 
         self.energy = energy
         self.max_energy = energy
         self._is_sitting = False
-        self.base_height = kwargs.get('height', 100)
+        self.default_height = kwargs.get('height', 100)
         
+        self.event_listener = [
+            Event(KEYS.ATTACK, EventState.KEY_PRESSED, self.attack),
+            Event(KEYS.LEFT, EventState.KEY_PRESSED, lambda: self.move('left')),
+            Event(KEYS.RIGHT, EventState.KEY_PRESSED, lambda: self.move('right')),
+
+            Event(KEYS.JUMP, EventState.KEY_DOWN, self.jump),
+            Event(KEYS.RUN, EventState.KEY_DOWN, self.speed_boost),
+            Event(KEYS.SIT, EventState.KEY_DOWN, self.sit),
+            Event(KEYS.INTERACT, EventState.KEY_DOWN, self.take_item),
+            Event(KEYS.DROP, EventState.KEY_DOWN, self.drop_weapon),
+
+            Event(KEYS.RUN, EventState.KEY_UP, self.stop_speed_boost),
+            Event(KEYS.SIT, EventState.KEY_UP, self.stand_up),
+        ]
+
         storage.player = self
 
     @JumpMixin.is_jumping.setter
     def is_jumping(self, value):
         if self.energy < 100 and value and not self.is_sitting:
-            self.is_jumping = False
+            self._is_jumping = False
         else:
             if value and not self._is_jumping:
                 self.energy -= 100
@@ -39,9 +58,15 @@ class Player(Entity, JumpMixin):
             self.height = self.height // 2
             self.speed = self.base_speed // 2
         elif not value and self._is_sitting:
-            self.height = self.base_height
+            self.height = self.default_height
             self.speed = self.base_speed
         self._is_sitting = value
+        
+    def sit(self):
+        self.is_sitting = True
+        
+    def stand_up(self):
+        self.is_sitting = False
     
     def update_before_render(self):
         if self.energy < self.max_energy:
@@ -50,7 +75,7 @@ class Player(Entity, JumpMixin):
         
     def on_died(self):
         res = super().on_died()
-        storage.game_options['running'] = False
+        GAME_STATE.IS_RUNNING = False
         return res
     
     def on_take_damage(self):
@@ -72,3 +97,7 @@ class Player(Entity, JumpMixin):
         if self.energy < 10 or self.is_sitting:
             self.is_running = False
         return res
+    
+    def attack(self):
+        if self.weapon:
+            self.weapon.attack()

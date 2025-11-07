@@ -5,10 +5,10 @@ from pygame import Rect
 class BaseMixin:
     def __init__(self, id = None, x: int = 0, y: int = 0, width: int = 0, height: int = 0, *args, **kwargs):
         self._id = id or uuid4()
-        self._x = x
-        self._y = y
-        self._width = width
-        self._height = height
+        self._x = int(x)
+        self._y = int(y)
+        self._width = int(width)
+        self._height = int(height)
         self._rect = Rect(self.x, self.y, self.width, self.height)
         self.__rect_is_dirty = False
 

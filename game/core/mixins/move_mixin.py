@@ -55,11 +55,21 @@ class MoveMixin(BaseMixin):
         ''' Передвигает объект в сторону его движение и возвращает новые координаты '''
         direction = new_direction or self.direction
         x = self.x + self.speed * (-1 if direction == 'left' else 1)
-        self.direction = direction
+
+        if self.direction != direction:
+            self.direction = direction
+
         if self.can_move(x, self.y):
             if self.is_running:
                 self.on_run()
             else:
                 self.on_move()
             self.x = x
+
         return (self.x, self.y)
+    
+    def speed_boost(self):
+        self.is_running = True
+        
+    def stop_speed_boost(self):
+        self.is_running = False

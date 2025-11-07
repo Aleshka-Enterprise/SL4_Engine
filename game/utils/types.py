@@ -1,12 +1,8 @@
-from pygame import sprite, Surface
+from dataclasses import dataclass
+from enum import Enum
+from pyclbr import Function
+from typing import Tuple
 
-
-class RectSprite(sprite.Sprite):
-    def __init__(self, x, y, width, height, color):
-        super().__init__()
-        self.image = Surface((width, height))
-        self.image.fill(color)
-        self.rect = self.image.get_rect(topleft=(x, y))
 
 class ObservableList:
     def __init__(self, on_change=None):
@@ -27,8 +23,7 @@ class ObservableList:
     def extend(self, items):
         self._items.extend(items)
         if self.on_change:
-            # TODO Перевести на разные callback функции внутри самих систем, которые используют этот тип. Убрать костыль.
-            self.on_change('append', items[0])
+            self.on_change('extens', items)
     
     def clear(self):
         self._items.clear()
@@ -47,21 +42,19 @@ class ObservableList:
     def __repr__(self):
         return repr(self._items)
 
+class EventState(Enum):
+    KEY_PRESSED = "key_pressed"    # Клавиша нажата
+    KEY_DOWN = "key_down"          # Клавиша зажата
+    KEY_UP = "key_up"              # Клавиша отпущена
+    QUIT = "quit"                  # Закрытие окна
 
-class LazyType:
-    def __init__(self, module_path, class_name):
-        self.module_path = module_path
-        self.class_name = class_name
-        self._resolved = None
-    
-    def __call__(self, *args, **kwargs):
-        if self._resolved is None:
-            module = __import__(self.module_path, fromlist=[self.class_name])
-            self._resolved = getattr(module, self.class_name)
-        return self._resolved(*args, **kwargs)
-    
-    def __instancecheck__(self, instance):
-        if self._resolved is None:
-            module = __import__(self.module_path, fromlist=[self.class_name])
-            self._resolved = getattr(module, self.class_name)
-        return isinstance(instance, self._resolved)
+@dataclass
+class Event:
+    keys: Tuple[int]
+    event_type: EventState
+    callback: Function
+
+    def __init__(self, keys: Tuple[int], event_type: EventState, callback: Function):
+        self.keys = keys
+        self.event_type = event_type
+        self.callback = callback

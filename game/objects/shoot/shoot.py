@@ -54,7 +54,7 @@ class Shoot(RenderMixin, GravityMixin, ParticleMixin, CollisionMixin, MoveMixin)
     def render_particle(self, target: Literal['entity', 'ground']):
         '''Отрисовка частиц при столкновении'''
         if target == 'entity':
-            self.add_blood_particles(self.x - storage.camera.viewport.x, self.y - storage.camera.viewport.y, intensity=13)
+            self.add_blood_particles(self.x, self.y, intensity=13)
 
     def damage_entity(self, entity) -> None:
         entity.take_damage(self.damage)

@@ -35,18 +35,17 @@ class Entity(RenderMixin, HealthMixin, AudioMixin, MoveMixin, CollisionMixin, Gr
     def render_layer(self) -> str:
         return 'entity'
     
-    def can_move(self, new_x: int, new_y: int, move_to_obstacle = True) -> bool:
+    def can_move(self, new_x: int, new_y: int) -> bool:
         '''Проверяет возможность движения с учётом столкновений'''
-        entity_new_rect = Rect(new_x, new_y, self.width, self.height)
+        entity_new_rect = Rect(new_x, new_y, self.width, self.height - 10)
         colision_object = self.check_collision(entity_new_rect, [self])
 
-        if colision_object and self.rect.bottom - colision_object.rect.top < 10:
-            entity_new_rect.y = colision_object.rect.top - self.height - 2
-
-        colision_object = self.check_collision(entity_new_rect, [self])
-
-        if not colision_object:
-            self.y = entity_new_rect.y
+        if colision_object:
+            x = colision_object.x + colision_object.width if self.direction == 'left' else colision_object.x - self.width
+            colision_object = self.check_collision(Rect(x, self.y, self.width, self.height), [self])
+            if not colision_object:
+                self.x = x
+            return False
 
         return not colision_object
     

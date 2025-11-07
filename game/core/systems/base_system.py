@@ -5,13 +5,14 @@ class BaseSystem:
     objects = []
     
     @classmethod
-    def on_change(cls, action, item):
+    def on_change_objects_list(cls, action, item):
+        ''' Слушатель изменений у списка objects '''
         pass
 
     @classmethod
     def register(cls, item):
         if not isinstance(cls.objects, ObservableList):
-            cls.objects = ObservableList(cls.on_change)
+            cls.objects = ObservableList(cls.on_change_objects_list)
         cls.objects.append(item)
         
     @classmethod
@@ -20,6 +21,8 @@ class BaseSystem:
         
     @classmethod
     def register_list(cls, items):
+        if not isinstance(cls.objects, ObservableList):
+            cls.objects = ObservableList(cls.on_change_objects_list)
         cls.objects.extend(items)
         
     @classmethod

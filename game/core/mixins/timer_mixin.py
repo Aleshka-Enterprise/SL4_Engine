@@ -6,7 +6,8 @@ from game.core.systems.timer_system import TimerSystem
 from game.settings import FPS
 
 
-class TimerMixin(BaseMixin):    
+class TimerMixin(BaseMixin):
+    ''' Миксин отвечабщий за добавлеине и работу с таймерами '''  
     def add_timer(
         self,
         callbacks: List[Function] | Tuple[Function],

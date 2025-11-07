@@ -90,7 +90,6 @@ def save_level(filename: str):
         'entities': [serialize_obj(entity) for entity in storage.entities],
         'grounds': [serialize_obj(ground) for ground in storage.grounds],
         'camera': serialize_obj(storage.camera),
-        'game_options': storage.game_options
     }
     
     with open(filename, 'w', encoding='utf-8') as file:

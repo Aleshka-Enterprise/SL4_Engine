@@ -10,7 +10,7 @@ class Timer:
         self.base_time = time
         self.callbacks = callbacks
         self.loop = loop
-        self.__is_freezen = False
+        self.__is_frozen = False
         self.__is_active = is_active
         
     @property
@@ -18,12 +18,12 @@ class Timer:
         return self.__is_active
     
     @property
-    def is_freezen(self):
-        return self.__is_freezen
+    def is_frozen(self):
+        return self.__is_frozen
     
     def update(self) -> bool:
         ''' Обновление таймера. Возвращает bool - жив ли таймер '''
-        if self.is_freezen:
+        if self.is_frozen:
             return True
 
         self.time -= 1
@@ -43,7 +43,7 @@ class Timer:
         self.__is_active = False
         
     def freez_timer(self):
-        self.__is_freezen = True
+        self.__is_frozen = True
         
     def continue_timer(self):
-        self.__is_freezen = False
+        self.__is_frozen = False

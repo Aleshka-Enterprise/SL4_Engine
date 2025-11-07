@@ -3,6 +3,7 @@ from game.core.systems.collision_system import CollisionSystem
 
 
 class CollisionMixin(BaseMixin):
+    ''' Миксин отвечающий за добавление и обработку коллизии '''
     def __init__(self, used_colision = True, **kwargs):
         super().__init__(**kwargs)
         self.used_colision = used_colision

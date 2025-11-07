@@ -6,6 +6,7 @@ from game.core.storage import storage
 
 
 class ParticleMixin(BaseMixin):
+    ''' Миксин отвечающий за добавление и управление частиц '''
     def __init__(self, max_particles = 300, **kwargs):
         super().__init__(**kwargs)
 

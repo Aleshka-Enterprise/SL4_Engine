@@ -52,7 +52,7 @@
                 "show_hp": false,
                 "energy": 350,
                 "max_energy": 350,
-                "base_height": 100
+                "default_height": 100
             }
         },
         {

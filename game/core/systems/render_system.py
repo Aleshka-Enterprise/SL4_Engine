@@ -17,7 +17,7 @@ class RenderSystem(BaseSystem):
 
     @classmethod
     def init_window(cls) -> Surface:
-        '''Инициализация окна'''
+        '''Инициализация окна pygame'''
         if cls._window:
             return cls._window
 
@@ -66,6 +66,7 @@ class RenderSystem(BaseSystem):
             
     @classmethod
     def debug_render(cls, window: Surface):
+        ''' Отрисовка debug элементов. Скрыт если в настройка DEBUG == False '''
         camera = storage.camera
         draw.rect(window, (0, 0, 0), camera.deadzone, 1)
         
@@ -104,10 +105,10 @@ class RenderSystem(BaseSystem):
         display.update()
         
     @classmethod
-    def on_change(cls, action=None, item=None, *args, **kwargs):
+    def on_change_objects_list(cls, action=None, item=None, *args, **kwargs):
         if not item._ignore_render_check:
             cls.update_render_objects()
-            super().on_change(action, item, *args, **kwargs)
+            super().on_change_objects_list(action, item, *args, **kwargs)
         else:
             if action == 'append':
                 storage.render_objects_list.append(item)

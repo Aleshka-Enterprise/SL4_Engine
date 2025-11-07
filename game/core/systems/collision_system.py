@@ -11,12 +11,12 @@ class CollisionSystem(BaseSystem):
         cls.visible_collision_object_list = [elem for elem in cls.objects if elem in visible_objects and elem.used_colision]
     
     @classmethod
-    def on_change(cls, action, item):
+    def on_change_objects_list(cls, action, item):
         cls.update_visible_objects(storage.render_objects_list)
-        return super().on_change(action, item)
+        return super().on_change_objects_list(action, item)
 
     @classmethod
-    def check_collision(cls, rect, ignore):
+    def check_collision(cls, rect, ignore=[]):
         for collision_object in cls.objects:
             if not collision_object in ignore and rect.colliderect(collision_object.rect):
                 return collision_object
