@@ -7,6 +7,7 @@ from game.system.saveload import save_level, load_level
 import pygame
 import cProfile
 
+
 def run() -> None:
     load_level('game/levels/mario.json')
 
@@ -18,17 +19,18 @@ def run() -> None:
 
     if not storage.camera:
         storage.camera = Camera(screen_width=DISPLAY.WIDTH, screen_height=DISPLAY.HEIGHT)
-    
+
     while GAME_STATE.IS_RUNNING:
         SystemManager.update()
         clock.tick(FPS)
-        
+
         if DEBUG:
             RenderSystem.set_surrent_fps(clock.get_fps())
-        
+
     if storage.player:
         save_level('game/levels/save.json')
-    
+
+
 if __name__ == '__main__':
     if DEBUG:
         cProfile.run('run()', 'game/game_profile.prof')

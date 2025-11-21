@@ -9,20 +9,20 @@ class Poison(Shoot, ParticleMixin, TimerMixin):
         self._experation_time = experation_time
         self.entity_old_color = None
         self.poison_entity_timer = None
-        
+
         self.particle_timer = self.add_timer([self.render_poison_particles], frames=2, loop=True)
-        
+
     def render_poison_particles(self):
         self.add_explosion_particles(self.x, self.y, self.color, 5)
-        
+
     def destroy(self):
         self.particle_timer.delete_timer()
         return super().destroy()
-        
+
     @property
     def experation_time(self):
         return self._experation_time
-    
+
     @Shoot.hit_entity.setter
     def hit_entity(self, value):
         if value:
@@ -48,7 +48,7 @@ class Poison(Shoot, ParticleMixin, TimerMixin):
             )
             self.particle_timer.delete_timer()
         super(Poison, Poison).hit_entity.__set__(self, value)
-    
+
     def update_before_render(self) -> None:
         if self.hit_entity and self.hit_entity.hp > 0:
             self.hit_entity.color = self.entity_old_color

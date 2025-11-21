@@ -14,10 +14,10 @@ class Camera(TimerMixin):
         self.padding = 1000
         self._render_zone = Rect(0, 0, 0, 0)
         self.target = None
-        
+
         self.deadzone = Rect(
-            screen_width // 6,  # Отступ слева (1/6 экрана)
-            screen_height // 6, # Отступ сверху (1/6 экрана)
+            screen_width // 6,   # Отступ слева (1/6 экрана)
+            screen_height // 6,  # Отступ сверху (1/6 экрана)
             screen_width // 3,
             screen_height // 2
         )
@@ -29,11 +29,11 @@ class Camera(TimerMixin):
         )
 
         storage.camera = self
-    
+
     @property
     def render_zone(self):
         return self._render_zone
-        
+
     def update_render_zone(self) -> Rect:
         if not self.render_zone.contains(self.viewport):
             x = self.viewport.x - self.padding
@@ -43,8 +43,7 @@ class Camera(TimerMixin):
             self._render_zone = Rect(x, y, width, height)
             RenderSystem.update_render_objects()
         return self._render_zone
-        
-    
+
     def update(self, target):
         if not target:
             return
@@ -59,7 +58,7 @@ class Camera(TimerMixin):
         if target.y < self.viewport.y + self.deadzone.top:
             self.viewport.y = target.y - self.deadzone.top
         elif target.y + target.height > self.viewport.y + self.deadzone.bottom:
-            self.viewport.y = target.y  + target.height - self.deadzone.bottom
+            self.viewport.y = target.y + target.height - self.deadzone.bottom
 
         # Ограничение камеры границами уровня (если нужно)
         self.viewport.x = max(0, min(self.viewport.x, 100000 - self.screen_width))

@@ -9,12 +9,12 @@ class EventMixin(BaseMixin):
     def __init__(self, event_listener: List[Event] = [], **kwargs):
         self.__event_listener = event_listener
         super().__init__(**kwargs)
-        
+
     @property
     def event_listener(self):
         return self.__event_listener
-    
+
     @event_listener.setter
     def event_listener(self, value):
         self.__event_listener = value
-        EventsSystem.register_list(self.__event_listener())
+        EventsSystem.register_list(self.__event_listener)

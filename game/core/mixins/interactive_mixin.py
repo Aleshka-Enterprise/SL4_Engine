@@ -4,11 +4,11 @@ from game.core.mixins.base_mixin import BaseMixin
 
 
 class InteractiveMixin(BaseMixin):
-    def __init__(self, intractive_width=100, interactive_height=100, **kwargs):
+    def __init__(self, intractive_width: int = 100, interactive_height: int = 100, **kwargs):
         super().__init__(**kwargs)
         self.__interactive_width = intractive_width
         self.__interactive_height = interactive_height
-    
+
     @property
     def __interactive_zone_rect(self):
         return Rect(
@@ -17,7 +17,7 @@ class InteractiveMixin(BaseMixin):
             self.width + self.__interactive_width,
             self.height + self.__interactive_height
         )
-    
+
     def update_interactive_zone(self, height: int, width: int) -> None:
         ''' Изменение зоны взаимодействия '''
         self.__interactive_height = height
@@ -28,6 +28,6 @@ class InteractiveMixin(BaseMixin):
             if (
                 self.__interactive_zone_rect.colliderect(item.rect) and
                 (not type or type == item.item_type) and
-                not item in ignore
+                item not in ignore
             ):
                 return item

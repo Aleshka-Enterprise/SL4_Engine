@@ -30,11 +30,11 @@ class Entity(RenderMixin, HealthMixin, AudioMixin, MoveMixin, CollisionMixin, Gr
             self.weapon.entity = self
 
         storage.entities.append(self)
-            
+
     @property
     def render_layer(self) -> str:
         return 'entity'
-    
+
     def can_move(self, new_x: int, new_y: int) -> bool:
         '''Проверяет возможность движения с учётом столкновений'''
         entity_new_rect = Rect(new_x, new_y, self.width, self.height - 10)
@@ -48,7 +48,7 @@ class Entity(RenderMixin, HealthMixin, AudioMixin, MoveMixin, CollisionMixin, Gr
             return False
 
         return not colision_object
-    
+
     def on_died(self) -> None:
         '''Срабатывает при смерти сущности'''
         res = super().on_died()
@@ -60,7 +60,7 @@ class Entity(RenderMixin, HealthMixin, AudioMixin, MoveMixin, CollisionMixin, Gr
         self.destroy()
 
         return res
-        
+
     def take_item(self) -> None:
         item = super().take_item(ignore=[self.weapon])
         if item:
@@ -69,7 +69,7 @@ class Entity(RenderMixin, HealthMixin, AudioMixin, MoveMixin, CollisionMixin, Gr
                     self.weapon.entity = None
                 self.weapon = item
                 self.weapon.entity = self
-    
+
     def drop_weapon(self):
         if self.weapon:
             self.weapon.entity = None

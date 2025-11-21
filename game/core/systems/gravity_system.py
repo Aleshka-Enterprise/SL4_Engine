@@ -42,7 +42,7 @@ class GravitySystem(BaseSystem):
                     obj._is_jumping = False
             else:
                 obj.on_the_ground = False
-            
+
     @classmethod
     def update(cls):
         cls.apply_gravity()

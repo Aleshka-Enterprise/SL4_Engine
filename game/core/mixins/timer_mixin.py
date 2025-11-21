@@ -7,7 +7,7 @@ from game.settings import FPS
 
 
 class TimerMixin(BaseMixin):
-    ''' Миксин отвечабщий за добавлеине и работу с таймерами '''  
+    ''' Миксин отвечабщий за добавлеине и работу с таймерами '''
     def add_timer(
         self,
         callbacks: List[Function] | Tuple[Function],
@@ -22,7 +22,7 @@ class TimerMixin(BaseMixin):
         time += seconds * FPS
         time += minutes * 60 * FPS
         time += hours * 60 * 60 * FPS
-        
+
         if use_on_start:
             for callback in callbacks:
                 callback()
@@ -30,5 +30,5 @@ class TimerMixin(BaseMixin):
         new_timer = Timer(time, callbacks, loop)
 
         TimerSystem.register(new_timer)
-        
+
         return new_timer

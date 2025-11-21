@@ -7,21 +7,21 @@ class Item(RenderMixin):
         self.is_pickable = is_pickable
         self.is_dropable = is_dropable
         storage.items.append(self)
-        
+
         super().__init__(**kwargs)
 
     @property
     def render_layer(self) -> str:
         return 'items'
-    
+
     @property
     def item_type(self) -> str:
         return 'item'
-    
+
     @property
     def can_pick(self):
         return self.is_pickable
-    
+
     @property
     def can_drop(self):
         return self.is_dropable

@@ -7,7 +7,7 @@ class Zombie(Enemy, JumpMixin):
         res = super().on_died()
         self.play_sound('died')
         return res
-    
+
     def on_move(self):
         res = super().on_move()
         self.play_sound('move')

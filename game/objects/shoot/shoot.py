@@ -9,14 +9,15 @@ from game.objects.entities.entity import Entity
 
 
 class Shoot(RenderMixin, GravityMixin, ParticleMixin, CollisionMixin, MoveMixin):
-    def __init__(self,
-                 direction: Literal['left', 'right'],
-                 owner_weapon,
-                 initializer = None,
-                 damage: int = 0,
-                 speed: int = 30,
-                 **kwargs,
-                ):
+    def __init__(
+        self,
+        direction: Literal['left', 'right'],
+        owner_weapon,
+        initializer=None,
+        damage: int = 0,
+        speed: int = 30,
+        **kwargs
+    ):
         super().__init__(**kwargs)
 
         self.direction = direction
@@ -28,29 +29,29 @@ class Shoot(RenderMixin, GravityMixin, ParticleMixin, CollisionMixin, MoveMixin)
         self.gravity = 0.05
         self.vel_y = -0.1
         self.used_colision = False
-        
+
         storage.shots.append(self)
-        
+
     @property
     def render_layer(self) -> str:
         return 'shoot'
-        
+
     @property
     def hit_entity(self):
         return self._hit_entity
-    
+
     @hit_entity.setter
     def hit_entity(self, value):
         self._hit_entity = value
-        
+
     def destroy(self) -> None:
         if (self in storage.shots):
             storage.shots.remove(self)
             self.destroy()
             self.owner_weapon.shoot_list.remove(self)
-        
+
         return super().destroy()
-            
+
     def render_particle(self, target: Literal['entity', 'ground']):
         '''Отрисовка частиц при столкновении'''
         if target == 'entity':
@@ -60,14 +61,14 @@ class Shoot(RenderMixin, GravityMixin, ParticleMixin, CollisionMixin, MoveMixin)
         entity.take_damage(self.damage)
         self.render_particle('entity')
         self.hit_entity = entity
-        
+
     def on_exit_render_zone(self):
         self.destroy()
         return super().on_exit_render_zone()
-        
+
     def update_before_render(self) -> None:
         super().move()
-        
+
         colision_object = self.check_collision(self.rect, [])
 
         if colision_object:

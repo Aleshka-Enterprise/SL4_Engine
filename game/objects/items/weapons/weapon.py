@@ -11,7 +11,7 @@ class Weapon(Item, AudioMixin, RenderMixin, CollisionMixin, TimerMixin, GravityM
     def __init__(self,
                  offset_x: int,
                  offset_y: int,
-                 entity = None,
+                 entity=None,
                  cooling_down: int = 30,
                  maximum_number_of_bullets: int = 10,
                  delete_after_death: bool = False,
@@ -22,7 +22,7 @@ class Weapon(Item, AudioMixin, RenderMixin, CollisionMixin, TimerMixin, GravityM
         super().__init__(**kwargs)
 
         self._init_audio_mixin()
-        
+
         self.offset_x = offset_x
         self.offset_y = offset_y
         self.cooling_down = cooling_down
@@ -34,25 +34,25 @@ class Weapon(Item, AudioMixin, RenderMixin, CollisionMixin, TimerMixin, GravityM
         self.gravity = gravity
         self.weapon_is_ready = True
         self.damage = damage
-        
+
         self.is_pickable = True
-        
+
     @property
     def item_type(self):
         return 'weapon'
-    
+
     @property
     def entity(self):
         return self._entity
-    
+
     @entity.setter
     def entity(self, value):
         self.used_colision = not bool(value)
         self._entity = value
-    
+
     def chenge_weapon_status(self, value):
         self.weapon_is_ready = value
-        
+
     def can_atack(self) -> bool:
         if self.weapon_is_ready and len(self.shoot_list) < self.maximum_number_of_bullets:
             self.play_sound('shoot')
@@ -63,12 +63,12 @@ class Weapon(Item, AudioMixin, RenderMixin, CollisionMixin, TimerMixin, GravityM
             )
             self.chenge_weapon_status(False)
             return True
-            
+
         return False
-    
+
     def attack(self) -> None:
         pass
-        
+
     def update_before_render(self):
         if self.entity:
             direction = self.entity.direction
@@ -76,7 +76,7 @@ class Weapon(Item, AudioMixin, RenderMixin, CollisionMixin, TimerMixin, GravityM
             self.x = self.entity.x + self.offset_x
             if direction == 'right':
                 self.x += self.entity.width
-            
+
     def destroy(self) -> None:
         if self.entity:
             self.entity = None

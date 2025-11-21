@@ -1,6 +1,6 @@
 from pygame import Surface, display, draw, font
 from game.core.systems.base_system import BaseSystem
-from game.settings import DISPLAY, DEBUG
+from game.settings import DISPLAY, DEBUG, WINDOW_CAPTION
 from game.core.storage import storage
 from game.core.systems.collision_system import CollisionSystem
 
@@ -24,23 +24,23 @@ class RenderSystem(BaseSystem):
         width = DISPLAY.WIDTH
         height = DISPLAY.HEIGHT
         window = display.set_mode((width, height))
-        display.set_caption("Zombie Game")
+        display.set_caption(WINDOW_CAPTION)
         cls._window = window
         return window
 
     @classmethod
     def set_surrent_fps(cls, value):
         cls._current_fps = value
-    
+
     @classmethod
     def _render_rect_batch(cls, commands):
         """Пакетная отрисовка прямоугольников"""
         if not commands:
             return
-    
+
         for color, rect in commands:
             draw.rect(cls._window, color, rect)
-        
+
     @classmethod
     def _render_circle_batch(cls, commands):
         if not commands:
@@ -48,32 +48,31 @@ class RenderSystem(BaseSystem):
 
         for color, x, y, radius in commands:
             draw.circle(cls._window, color, (x, y), radius)
-        
+
     @classmethod
     def render_hotbar(cls) -> None:
         '''Рендерит хотбар игрока'''
         draw.rect(cls._window, (0, 250, 0), (1100, 100, storage.player.energy, 20))
         draw.rect(cls._window, (255, 30, 0), (1100, 50, storage.player.hp, 40))
-        
+
     @classmethod
     def update_render_objects(cls) -> None:
         if storage.camera:
             new_render_objects_list = [obj for obj in cls.objects if obj._ignore_render_check or obj.rect.colliderect(storage.camera.render_zone)]
-            [obj.on_exit_render_zone() for obj in storage.render_objects_list if not obj in new_render_objects_list]
+            [obj.on_exit_render_zone() for obj in storage.render_objects_list if obj not in new_render_objects_list]
             storage.render_objects_list = new_render_objects_list
-            
+
             CollisionSystem.update_visible_objects(storage.render_objects_list)
-            
+
     @classmethod
     def debug_render(cls, window: Surface):
         ''' Отрисовка debug элементов. Скрыт если в настройка DEBUG == False '''
         camera = storage.camera
         draw.rect(window, (0, 0, 0), camera.deadzone, 1)
-        
+
         text_surface = cls._debug_font.render(str(int(cls._current_fps)), False, (155, 0, 0))
-        RenderSystem._window.blit(text_surface , (0, 0))
-    
-    
+        RenderSystem._window.blit(text_surface, (0, 0))
+
     @classmethod
     def render(cls, camera):
         cls._window.fill((25, 150, 250))
@@ -90,20 +89,20 @@ class RenderSystem(BaseSystem):
                 if not groups.get(object_to_render['type']):
                     groups[object_to_render['type']] = []
                 groups[object_to_render['type']].append(object_to_render['data'])
-            
+
             for type in groups:
                 if type == 'rect':
                     cls._render_rect_batch(groups[type])
                 elif type == 'circle':
                     cls._render_circle_batch(groups[type])
-        
+
         cls.render_hotbar()
-    
+
         if DEBUG:
             cls.debug_render(cls._window)
-        
+
         display.update()
-        
+
     @classmethod
     def on_change_objects_list(cls, action=None, item=None, *args, **kwargs):
         if not item._ignore_render_check:
@@ -112,18 +111,17 @@ class RenderSystem(BaseSystem):
         else:
             if action == 'append':
                 storage.render_objects_list.append(item)
-            
-        
+
     @classmethod
     def update_before_render(cls):
         for obj in storage.render_objects_list:
             obj.update_before_render()
-    
+
     @classmethod
     def update_after_render(cls):
         for obj in cls.objects:
             obj.update_after_render()
-    
+
     @classmethod
     def update(cls):
         cls.update_before_render()

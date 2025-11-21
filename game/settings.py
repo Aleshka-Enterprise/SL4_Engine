@@ -17,3 +17,4 @@ class KEYS:
 
 DEBUG = False
 FPS = 60
+WINDOW_CAPTION = 'Zombie Game'

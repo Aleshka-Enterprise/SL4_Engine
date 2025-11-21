@@ -13,7 +13,7 @@ class SystemManager:
         TimerSystem,
         RenderSystem,
     )
-    
+
     @classmethod
     def init(cls):
         RenderSystem.init_window()

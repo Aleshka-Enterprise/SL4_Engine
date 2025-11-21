@@ -3,7 +3,7 @@ from pygame import Rect
 
 
 class BaseMixin:
-    def __init__(self, id = None, x: int = 0, y: int = 0, width: int = 0, height: int = 0, *args, **kwargs):
+    def __init__(self, id: str | int | None = None, x: int = 0, y: int = 0, width: int = 0, height: int = 0, *args, **kwargs):
         self._id = id or uuid4()
         self._x = int(x)
         self._y = int(y)
@@ -20,7 +20,7 @@ class BaseMixin:
     def x(self, value):
         self._x = value
         self.__rect_is_dirty = True
-  
+
     @property
     def y(self):
         return self._y or 0
@@ -29,20 +29,20 @@ class BaseMixin:
     def y(self, value):
         self._y = value
         self.__rect_is_dirty = True
-        
+
     @property
     def width(self):
         return self._width or 0
-    
+
     @width.setter
     def width(self, value):
         self._width = value
         self.__rect_is_dirty = True
-        
+
     @property
     def height(self):
         return self._height or 0
-    
+
     @height.setter
     def height(self, value):
         self._height = value
@@ -57,6 +57,6 @@ class BaseMixin:
             self._rect.height = self.height
             self.__rect_is_dirty = False
         return self._rect
-    
+
     def destroy(self):
         pass

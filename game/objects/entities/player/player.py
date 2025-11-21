@@ -16,7 +16,7 @@ class Player(Entity, JumpMixin, EventMixin):
         self.max_energy = energy
         self._is_sitting = False
         self.default_height = kwargs.get('height', 100)
-        
+
         self.event_listener = [
             Event(KEYS.ATTACK, EventState.KEY_PRESSED, self.attack),
             Event(KEYS.LEFT, EventState.KEY_PRESSED, lambda: self.move('left')),
@@ -42,16 +42,16 @@ class Player(Entity, JumpMixin, EventMixin):
             if value and not self._is_jumping:
                 self.energy -= 100
             super(Player, Player).is_jumping.__set__(self, value)
-            
+
     @Entity.is_running.setter
     def is_running(self, value):
         if not value or self.energy > 50 and not self.is_sitting:
             super(Player, Player).is_running.__set__(self, value)
-            
+
     @property
     def is_sitting(self):
         return self._is_sitting
-    
+
     @is_sitting.setter
     def is_sitting(self, value):
         if value and not self._is_sitting:
@@ -61,43 +61,43 @@ class Player(Entity, JumpMixin, EventMixin):
             self.height = self.default_height
             self.speed = self.base_speed
         self._is_sitting = value
-        
+
     def sit(self):
         self.is_sitting = True
-        
+
     def stand_up(self):
         self.is_sitting = False
-    
+
     def update_before_render(self):
         if self.energy < self.max_energy:
             self.energy = min(self.max_energy, self.energy + 1)
         super().update_before_render()
-        
+
     def on_died(self):
         res = super().on_died()
         GAME_STATE.IS_RUNNING = False
         return res
-    
+
     def on_take_damage(self):
         self.play_sound('damage')
         return super().on_take_damage()
-    
+
     def on_move(self):
         res = super().on_move()
         if not self.is_jumping and not self.is_sitting and not self.is_running:
             self.play_sound('move')
         return res
-    
+
     def on_run(self):
         self.energy -= 3
-            
+
     def move(self, direction: Literal['left', 'right']):
         '''Движение Игрока'''
         res = super().move(direction)
         if self.energy < 10 or self.is_sitting:
             self.is_running = False
         return res
-    
+
     def attack(self):
         if self.weapon:
             self.weapon.attack()
