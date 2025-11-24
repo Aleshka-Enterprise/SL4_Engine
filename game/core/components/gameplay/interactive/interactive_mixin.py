@@ -1,6 +1,6 @@
 from pygame import Rect
+from game.core.components.base.base_mixin import BaseMixin
 from game.core.storage import storage
-from game.core.mixins.base_mixin import BaseMixin
 
 
 class InteractiveMixin(BaseMixin):

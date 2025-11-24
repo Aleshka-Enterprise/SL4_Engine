@@ -1,9 +1,9 @@
-from game.core.mixins.collision_mixin import CollisionMixin
-from game.core.mixins.gravity_mixin import GravityMixin
-from game.core.mixins.render_mixin import RenderMixin
-from game.core.mixins.timer_mixin import TimerMixin
+from game.core.components.phisics.collision import CollisionMixin
+from game.core.components.phisics.gravity import GravityMixin
+from game.core.components.render import RenderMixin
+from game.core.components.utils.timer import TimerMixin
 from game.core.storage import storage
-from game.core.mixins.audio_mixin import AudioMixin
+from game.core.components.audio import AudioMixin
 from game.objects.items.item import Item
 
 

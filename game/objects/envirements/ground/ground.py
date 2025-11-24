@@ -1,4 +1,4 @@
-from game.core.mixins.collision_mixin import CollisionMixin
+from game.core.components.phisics.collision import CollisionMixin
 from game.objects.envirements.envirement import Envirement
 
 

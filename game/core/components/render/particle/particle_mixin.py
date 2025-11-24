@@ -1,6 +1,6 @@
 import math
 import random
-from game.core.mixins.base_mixin import BaseMixin
+from game.core.components.base.base_mixin import BaseMixin
 from game.objects.particles.particle import Particle
 from game.core.storage import storage
 

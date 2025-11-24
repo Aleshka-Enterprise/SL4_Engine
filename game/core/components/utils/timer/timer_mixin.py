@@ -1,8 +1,8 @@
 from pyclbr import Function
+from game.core.components.base.base_mixin import BaseMixin
 from game.utils.systems_objects.timer import Timer
 from typing import List, Tuple
-from game.core.mixins.base_mixin import BaseMixin
-from game.core.systems.timer_system import TimerSystem
+from game.core.components.utils.timer.timer_system import TimerSystem
 from game.settings import FPS
 
 

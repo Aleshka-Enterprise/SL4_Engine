@@ -1,6 +1,6 @@
-from game.core.systems.base_system import BaseSystem
-from game.core.mixins.jump_mixin import JumpMixin
-from game.core.systems.collision_system import CollisionSystem
+
+from game.core.components.base.base_system import BaseSystem
+from game.core.components.phisics.collision import CollisionSystem
 
 
 class GravitySystem(BaseSystem):
@@ -25,7 +25,7 @@ class GravitySystem(BaseSystem):
                             obj.vel_y = collision_object.vel_y
                         else:
                             obj.vel_y = 0
-                        if isinstance(obj, JumpMixin):
+                        if hasattr(obj, 'is_jumping'):
                             obj._is_jumping = False
                     else:
                         penetration = obj.y - collision_object.y
@@ -38,7 +38,7 @@ class GravitySystem(BaseSystem):
                 obj.y = landing_platform.rect.top - obj.height
                 obj.on_the_ground = True
                 obj.vel_y = 0
-                if isinstance(obj, JumpMixin):
+                if hasattr(obj, 'is_jumping'):
                     obj._is_jumping = False
             else:
                 obj.on_the_ground = False

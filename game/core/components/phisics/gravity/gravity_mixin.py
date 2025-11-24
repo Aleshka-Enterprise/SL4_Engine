@@ -1,5 +1,6 @@
-from game.core.mixins.base_mixin import BaseMixin
-from game.core.systems.gravity_system import GravitySystem
+
+from game.core.components.base.base_mixin import BaseMixin
+from game.core.components.phisics.gravity.gravity_system import GravitySystem
 
 
 class GravityMixin(BaseMixin):

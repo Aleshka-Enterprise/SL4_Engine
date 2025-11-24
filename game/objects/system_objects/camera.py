@@ -1,7 +1,7 @@
 from pygame import Rect
 from game.core import storage
-from game.core.mixins.timer_mixin import TimerMixin
-from game.core.systems.render_system import RenderSystem
+from game.core.components.utils.timer import TimerMixin
+from game.core.components.render import RenderSystem
 
 
 class Camera(TimerMixin):

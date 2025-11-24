@@ -1,4 +1,4 @@
-from game.core.mixins.jump_mixin import JumpMixin
+from game.core.components.phisics.jump import JumpMixin
 from game.objects.entities.enemy.enemy import Enemy
 
 

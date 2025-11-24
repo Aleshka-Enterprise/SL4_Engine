@@ -1,4 +1,4 @@
-from game.core.mixins.base_mixin import BaseMixin
+from game.core.components.base.base_mixin import BaseMixin
 
 
 class HealthMixin(BaseMixin):

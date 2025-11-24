@@ -1,5 +1,5 @@
 from typing import Literal, Tuple
-from game.core.mixins.base_mixin import BaseMixin
+from game.core.components.base.base_mixin import BaseMixin
 
 
 class MoveMixin(BaseMixin):

@@ -1,5 +1,6 @@
-from game.core.mixins.base_mixin import BaseMixin
-from game.core.systems.collision_system import CollisionSystem
+
+from game.core.components.base.base_mixin import BaseMixin
+from game.core.components.phisics.collision.collision_system import CollisionSystem
 
 
 class CollisionMixin(BaseMixin):

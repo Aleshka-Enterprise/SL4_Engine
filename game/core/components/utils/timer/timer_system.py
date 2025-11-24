@@ -1,4 +1,4 @@
-from game.core.systems.base_system import BaseSystem
+from game.core.components.base.base_system import BaseSystem
 
 
 class TimerSystem(BaseSystem):

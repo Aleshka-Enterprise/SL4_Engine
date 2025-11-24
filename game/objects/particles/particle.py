@@ -1,8 +1,8 @@
 import random
 from typing import Tuple
 from game.core.storage import storage
-from game.core.mixins.render_mixin import RenderMixin
-from game.core.systems.render_system import RenderSystem
+from game.core.components.render import RenderMixin
+from game.core.components.render import RenderSystem
 
 
 class Particle(RenderMixin):

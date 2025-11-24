@@ -1,8 +1,8 @@
 from pygame import Surface, display, draw, font
-from game.core.systems.base_system import BaseSystem
+from game.core.components.base.base_system import BaseSystem
 from game.settings import DISPLAY, DEBUG, WINDOW_CAPTION
 from game.core.storage import storage
-from game.core.systems.collision_system import CollisionSystem
+from game.core.components.phisics.collision import CollisionSystem
 
 
 class RenderSystem(BaseSystem):

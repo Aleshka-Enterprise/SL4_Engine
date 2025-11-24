@@ -1,4 +1,4 @@
-from game.core.mixins.render_mixin import RenderMixin
+from game.core.components.render import RenderMixin
 from game.core.storage import storage
 
 

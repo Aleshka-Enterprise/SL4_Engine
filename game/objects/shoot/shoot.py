@@ -1,9 +1,9 @@
 from typing import Literal
-from game.core.mixins.collision_mixin import CollisionMixin
-from game.core.mixins.gravity_mixin import GravityMixin
-from game.core.mixins.move_mixin import MoveMixin
-from game.core.mixins.particle_mixin import ParticleMixin
-from game.core.mixins.render_mixin import RenderMixin
+from game.core.components.phisics.collision import CollisionMixin
+from game.core.components.phisics.gravity import GravityMixin
+from game.core.components.phisics.move import MoveMixin
+from game.core.components.render.particle import ParticleMixin
+from game.core.components.render import RenderMixin
 from game.core.storage import storage
 from game.objects.entities.entity import Entity
 

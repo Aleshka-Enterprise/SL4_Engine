@@ -1,7 +1,7 @@
 from typing import Tuple
 import pygame
+from game.core.components.base.base_system import BaseSystem
 from game.core.storage import GAME_STATE
-from game.core.systems.base_system import BaseSystem
 from game.utils.types import Event, EventState
 
 

@@ -1,7 +1,7 @@
 from typing import Tuple
 from pygame import Rect
-from game.core.mixins.base_mixin import BaseMixin
-from game.core.systems.render_system import RenderSystem
+from game.core.components.base.base_mixin import BaseMixin
+from game.core.components.render.render_system import RenderSystem
 
 
 class RenderMixin(BaseMixin):

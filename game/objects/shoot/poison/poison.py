@@ -1,5 +1,5 @@
-from game.core.mixins.particle_mixin import ParticleMixin
-from game.core.mixins.timer_mixin import TimerMixin
+from game.core.components.render.particle import ParticleMixin
+from game.core.components.utils.timer import TimerMixin
 from game.objects.shoot.shoot import Shoot
 
 

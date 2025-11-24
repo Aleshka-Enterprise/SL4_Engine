@@ -1,8 +1,8 @@
-from game.core.systems.collision_system import CollisionSystem
-from game.core.systems.events_system import EventsSystem
-from game.core.systems.gravity_system import GravitySystem
-from game.core.systems.render_system import RenderSystem
-from game.core.systems.timer_system import TimerSystem
+from game.core.components.phisics.collision import CollisionSystem
+from game.core.components.gameplay.event import EventsSystem
+from game.core.components.phisics.gravity import GravitySystem
+from game.core.components.render import RenderSystem
+from game.core.components.utils.timer import TimerSystem
 
 
 class SystemManager:

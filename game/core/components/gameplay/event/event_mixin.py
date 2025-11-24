@@ -1,6 +1,6 @@
 from typing import List
-from game.core.mixins.base_mixin import BaseMixin
-from game.core.systems.events_system import EventsSystem
+from game.core.components.base.base_mixin import BaseMixin
+from game.core.components.gameplay.event.events_system import EventsSystem
 from game.utils.types import Event
 
 
