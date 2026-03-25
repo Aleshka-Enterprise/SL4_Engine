@@ -1,4 +1,4 @@
-from typing import Tuple
+from typing import Literal, Tuple
 from pygame import Rect
 from game.core.components.base.base_mixin import BaseMixin
 from game.core.components.render.render_system import RenderSystem
@@ -11,20 +11,20 @@ class RenderMixin(BaseMixin):
         ignore_check: bool = False,
         auto_register_in_render_system: bool = True,
         display: bool = True,
+        z_index: int = 1,
+        position: Literal["absolut", "window"] = "absolut",
         **kwargs
     ):
         super().__init__(**kwargs)
+
         self.color = color
         self._ignore_render_check = ignore_check
         self.display = display
+        self.z_index = z_index
+        self.position = position
 
         if auto_register_in_render_system:
             RenderSystem.register(self)
-
-    @property
-    def render_layer(self) -> str:
-        ''' Название слоя. Нужно для правильной очереди отрисовки. '''
-        return 'base'
 
     @property
     def ignore_render_check(self):

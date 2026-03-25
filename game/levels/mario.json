@@ -2,939 +2,636 @@
   "entities": [
     {
       "__class__": "Player",
-      "__id__": "96u168qgb",
+      "__id__": 1001,
       "attributes": {
-        "x": 2855.762517929077,
-        "y": 1564.8284606933594,
-        "width": 50,
-        "height": 100,
-        "color": [
-          250,
-          0,
-          0
-        ],
+        "x": 200,
+        "y": 400,
+        "width": 45,
+        "height": 90,
+        "color": [0, 255, 255],
         "speed": 10,
-        "hp": 350,
+        "hp": 400,
+        "max_hp": 400,
         "gravity": 1,
-        "jump_force": -24,
-        "direction": "left",
-        "boost": 5,
-        "show_hp": false,
-        "energy": 350,
+        "jump_force": -26,
+        "direction": "right",
+        "boost": 8,
+        "show_hp": true,
+        "energy": 400,
+        "max_energy": 400,
+        "is_sitting": false,
+        "default_height": 90,
         "weapon": {
-          "__class__": "PoisonGun",
-          "__id__": 2919279658048,
+          "__class__": "Shotgun",
+          "__id__": 2001,
           "attributes": {
-              "offset_x": -15,
-              "offset_y": 15,
-              "width": 25,
-              "height": 5,
-              "color": [
-                  0,
-                  0,
-                  0
-              ],
-              "cooling_down": 10,
-              "current_cooling_down": 5,
-              "maximum_number_of_bullets": 10,
-              "shoot_list": [],
-              "entity": {
-                  "__ref__": 2919279658144
-              },
-              "x": 2855.762517929077,
-              "y": 1564.8284606933594,
-              "delete_after_death": false,
-              "vel_y": 0,
-              "gravity": 0.7,
-              "damage": 100
+            "offset_x": -15,
+            "offset_y": 15,
+            "width": 40,
+            "height": 25,
+            "color": [255, 140, 0],
+            "cooling_down": 18,
+            "maximum_number_of_bullets": 40,
+            "shoot_list": [],
+            "entity": {"__ref__": 1001},
+            "x": 200,
+            "y": 400,
+            "delete_after_death": false,
+            "vel_y": 0,
+            "gravity": 0.7,
+            "damage": 85,
+            "number_of_bullets": 5,
+            "is_pickable": false
           }
         }
       }
     },
     {
       "__class__": "Zombie",
-      "__id__": "lunh006vi",
+      "__id__": 1002,
       "attributes": {
-        "x": 5375.837402343749,
-        "y": 1436.1680603027346,
-        "width": 50,
-        "height": 100,
-        "color": [
-          0,
-          0,
-          0
-        ],
-        "speed": 3,
-        "hp": 300,
+        "x": 700,
+        "y": 550,
+        "width": 35,
+        "height": 70,
+        "color": [200, 100, 100],
+        "speed": 6,
+        "hp": 120,
+        "max_hp": 120,
         "gravity": 1,
-        "jump_force": -24,
+        "jump_force": -22,
         "direction": "left",
+        "boost": 3,
+        "show_hp": true,
+        "melee_damage": 8,
+        "patrol_distance": 100,
+        "viewing_radius": 300,
+        "target": {"__ref__": 1001},
+        "weapon": null
+      }
+    },
+    {
+      "__class__": "Zombie",
+      "__id__": 1003,
+      "attributes": {
+        "x": 1200,
+        "y": 550,
+        "width": 35,
+        "height": 70,
+        "color": [200, 100, 100],
+        "speed": 6,
+        "hp": 120,
+        "max_hp": 120,
+        "gravity": 1,
+        "jump_force": -22,
+        "direction": "left",
+        "boost": 3,
+        "show_hp": true,
+        "melee_damage": 8,
+        "patrol_distance": 100,
+        "viewing_radius": 300,
+        "target": {"__ref__": 1001},
+        "weapon": null
+      }
+    },
+    {
+      "__class__": "Zombie",
+      "__id__": 1004,
+      "attributes": {
+        "x": 1800,
+        "y": 450,
+        "width": 60,
+        "height": 120,
+        "color": [150, 50, 200],
+        "speed": 2,
+        "hp": 450,
+        "max_hp": 450,
+        "gravity": 1,
+        "jump_force": -18,
+        "direction": "left",
+        "boost": 2,
+        "show_hp": true,
+        "melee_damage": 25,
+        "patrol_distance": 80,
+        "viewing_radius": 350,
+        "target": {"__ref__": 1001},
+        "weapon": null
+      }
+    },
+    {
+      "__class__": "Zombie",
+      "__id__": 1005,
+      "attributes": {
+        "x": 2400,
+        "y": 400,
+        "width": 40,
+        "height": 80,
+        "color": [0, 200, 100],
+        "speed": 8,
+        "hp": 180,
+        "max_hp": 180,
+        "gravity": 1,
+        "jump_force": -28,
+        "direction": "right",
         "boost": 5,
-        "show_hp": false,
+        "show_hp": true,
+        "melee_damage": 12,
+        "patrol_distance": 200,
+        "viewing_radius": 450,
+        "target": {"__ref__": 1001},
         "weapon": {
           "__class__": "PoisonGun",
-          "__id__": 291927965804848,
+          "__id__": 2002,
           "attributes": {
             "offset_x": -15,
             "offset_y": 15,
-            "width": 25,
-            "height": 5,
-            "color": [
-                0,
-                0,
-                0
-            ],
+            "width": 20,
+            "height": 40,
+            "color": [0, 255, 100],
             "cooling_down": 10,
-            "current_cooling_down": 5,
-            "maximum_number_of_bullets": 10,
+            "maximum_number_of_bullets": 12,
             "shoot_list": [],
-            "entity": {
-                "__ref__": 2919279658144
-            },
-            "x": 5375.837402343749,
-            "y": 1436.1680603027346,
+            "entity": {"__ref__": 1005},
+            "x": 2400,
+            "y": 400,
             "delete_after_death": false,
             "vel_y": 0,
-            "gravity": 0.7
+            "gravity": 0.7,
+            "damage": 55,
+            "experation_time": 700,
+            "is_pickable": false
           }
         }
       }
     },
     {
       "__class__": "Zombie",
-      "__id__": "u8bcoxq68",
+      "__id__": 1006,
       "attributes": {
-        "x": 6166.706054687499,
-        "y": 1454.487274169922,
+        "x": 3100,
+        "y": 600,
         "width": 50,
         "height": 100,
-        "color": [
-          0,
-          0,
-          0
-        ],
-        "speed": 3,
-        "hp": 300,
+        "color": [200, 50, 50],
+        "speed": 4,
+        "hp": 280,
+        "max_hp": 280,
         "gravity": 1,
-        "jump_force": -24,
+        "jump_force": -22,
         "direction": "left",
-        "boost": 5,
-        "show_hp": false,
-        "energy": 350,
+        "boost": 4,
+        "show_hp": true,
+        "melee_damage": 18,
+        "patrol_distance": 120,
+        "viewing_radius": 400,
+        "target": {"__ref__": 1001},
         "weapon": {
-          "__class__": "PoisonGun",
-          "__id__": 29192796580484,
+          "__class__": "Shotgun",
+          "__id__": 2003,
           "attributes": {
             "offset_x": -15,
             "offset_y": 15,
-            "width": 25,
-            "height": 5,
-            "color": [
-                0,
-                0,
-                0
-            ],
-            "cooling_down": 10,
-            "current_cooling_down": 5,
-            "maximum_number_of_bullets": 10,
+            "width": 40,
+            "height": 25,
+            "color": [255, 100, 0],
+            "cooling_down": 20,
+            "maximum_number_of_bullets": 15,
             "shoot_list": [],
-            "entity": {
-                "__ref__": 2919279658144
-            },
-            "x": 6166.706054687499,
-            "y": 1454.487274169922,
+            "entity": {"__ref__": 1006},
+            "x": 3100,
+            "y": 600,
             "delete_after_death": false,
             "vel_y": 0,
-            "gravity": 0.7
+            "gravity": 0.7,
+            "damage": 75,
+            "number_of_bullets": 3,
+            "is_pickable": false
           }
         }
       }
     },
     {
       "__class__": "Zombie",
-      "__id__": "xqpkijmdw",
+      "__id__": 1007,
       "attributes": {
-        "x": 6664.016601562499,
-        "y": 1416.7842712402346,
-        "width": 50,
-        "height": 100,
-        "color": [
-          0,
-          0,
-          0
-        ],
-        "speed": 3,
-        "hp": 300,
+        "x": 4000,
+        "y": 500,
+        "width": 45,
+        "height": 90,
+        "color": [100, 200, 200],
+        "speed": 7,
+        "hp": 220,
+        "max_hp": 220,
         "gravity": 1,
-        "jump_force": -24,
-        "direction": "left",
-        "boost": 5,
-        "show_hp": false,
-        "energy": 350,
+        "jump_force": -26,
+        "direction": "right",
+        "boost": 6,
+        "show_hp": true,
+        "melee_damage": 15,
+        "patrol_distance": 180,
+        "viewing_radius": 500,
+        "target": {"__ref__": 1001},
         "weapon": {
           "__class__": "PoisonGun",
-          "__id__": 29192796580483,
+          "__id__": 2004,
           "attributes": {
             "offset_x": -15,
             "offset_y": 15,
-            "width": 25,
-            "height": 5,
-            "color": [
-                0,
-                0,
-                0
-            ],
-            "cooling_down": 10,
-            "current_cooling_down": 5,
-            "maximum_number_of_bullets": 10,
+            "width": 20,
+            "height": 40,
+            "color": [0, 200, 100],
+            "cooling_down": 8,
+            "maximum_number_of_bullets": 18,
             "shoot_list": [],
-            "entity": {
-                "__ref__": 2919279658144
-            },
-            "x": 6664.016601562499,
-            "y": 1416.7842712402346,
+            "entity": {"__ref__": 1007},
+            "x": 4000,
+            "y": 500,
             "delete_after_death": false,
             "vel_y": 0,
-            "gravity": 0.7
+            "gravity": 0.7,
+            "damage": 60,
+            "experation_time": 850,
+            "is_pickable": false
           }
         }
       }
     },
     {
       "__class__": "Zombie",
-      "__id__": "vsl2xuhwb",
+      "__id__": 1008,
       "attributes": {
-        "x": 9459.9267578125,
-        "y": 1047.428436279297,
-        "width": 50,
-        "height": 100,
-        "color": [
-          0,
-          0,
-          0
-        ],
-        "speed": 3,
-        "hp": 300,
+        "x": 4900,
+        "y": 350,
+        "width": 75,
+        "height": 150,
+        "color": [180, 50, 180],
+        "speed": 1.5,
+        "hp": 650,
+        "max_hp": 650,
         "gravity": 1,
-        "jump_force": -24,
+        "jump_force": -15,
         "direction": "left",
-        "boost": 5,
-        "show_hp": false,
-        "energy": 350,
+        "boost": 1,
+        "show_hp": true,
+        "melee_damage": 35,
+        "patrol_distance": 60,
+        "viewing_radius": 400,
+        "target": {"__ref__": 1001},
         "weapon": {
-          "__class__": "PoisonGun",
-          "__id__": 29192796580482,
+          "__class__": "Shotgun",
+          "__id__": 2005,
           "attributes": {
             "offset_x": -15,
             "offset_y": 15,
-            "width": 25,
-            "height": 5,
-            "color": [
-                0,
-                0,
-                0
-            ],
-            "cooling_down": 10,
-            "current_cooling_down": 5,
-            "maximum_number_of_bullets": 10,
+            "width": 45,
+            "height": 30,
+            "color": [255, 80, 0],
+            "cooling_down": 25,
+            "maximum_number_of_bullets": 25,
             "shoot_list": [],
-            "entity": {
-                "__ref__": 2919279658144
-            },
-            "x": 6664.016601562499,
-            "y": 1416.7842712402346,
+            "entity": {"__ref__": 1008},
+            "x": 4900,
+            "y": 350,
             "delete_after_death": false,
             "vel_y": 0,
-            "gravity": 0.7
+            "gravity": 0.7,
+            "damage": 100,
+            "number_of_bullets": 4,
+            "is_pickable": false
           }
         }
       }
     },
     {
       "__class__": "Zombie",
-      "__id__": "pejyizg4z",
+      "__id__": 1009,
       "attributes": {
-        "x": 12234.5380859375,
-        "y": 1369.9439697265627,
-        "width": 50,
-        "height": 100,
-        "color": [
-          0,
-          0,
-          0
-        ],
-        "speed": 3,
-        "hp": 300,
+        "x": 5800,
+        "y": 250,
+        "width": 40,
+        "height": 80,
+        "color": [255, 200, 50],
+        "speed": 9,
+        "hp": 150,
+        "max_hp": 150,
         "gravity": 1,
-        "jump_force": -24,
-        "direction": "left",
-        "boost": 5,
-        "show_hp": false,
-        "weapon": {
-          "__class__": "PoisonGun",
-          "__id__": 29192796580481,
-          "attributes": {
-            "offset_x": -15,
-            "offset_y": 15,
-            "width": 25,
-            "height": 5,
-            "color": [
-                0,
-                0,
-                0
-            ],
-            "cooling_down": 10,
-            "current_cooling_down": 5,
-            "maximum_number_of_bullets": 10,
-            "shoot_list": [],
-            "entity": {
-                "__ref__": 2919279658144
-            },
-            "x": 12234.5380859375,
-            "y": 1369.9439697265627,
-            "delete_after_death": false,
-            "vel_y": 0,
-            "gravity": 0.7
-          }
-        }
+        "jump_force": -30,
+        "direction": "right",
+        "boost": 8,
+        "show_hp": true,
+        "melee_damage": 10,
+        "patrol_distance": 250,
+        "viewing_radius": 550,
+        "target": {"__ref__": 1001},
+        "weapon": null
       }
     }
   ],
   "grounds": [
     {
       "__class__": "Ground",
-      "__id__": "7ra2pikk2",
+      "__id__": 3000,
       "attributes": {
-        "x": 2491.597225189209,
-        "y": 1769.4676513671875,
-        "width": 5138.374881744385,
-        "height": 310.504150390625,
-        "color": [
-          227,
-          137,
-          130
-        ]
+        "x": 0,
+        "y": 800,
+        "width": 6500,
+        "height": 80,
+        "color": [30, 30, 45],
+        "transparent": false,
+        "z_index": 1
       }
     },
     {
       "__class__": "Ground",
-      "__id__": "kr053h448",
+      "__id__": 3001,
       "attributes": {
-        "x": 3600,
-        "y": 1400,
-        "width": 104.20166015625,
-        "height": 100,
-        "color": [
-          227,
-          222,
-          69
-        ]
+        "x": 0,
+        "y": 600,
+        "width": 500,
+        "height": 40,
+        "color": [80, 80, 120],
+        "transparent": false,
+        "z_index": 1
       }
     },
     {
       "__class__": "Ground",
-      "__id__": "cumkkpe5g",
+      "__id__": 3002,
       "attributes": {
-        "x": 3900,
-        "y": 1400,
-        "width": 100,
-        "height": 100,
-        "color": [
-          203,
-          19,
-          6
-        ]
+        "x": 550,
+        "y": 550,
+        "width": 500,
+        "height": 40,
+        "color": [100, 80, 140],
+        "transparent": false,
+        "z_index": 1
       }
     },
     {
       "__class__": "Ground",
-      "__id__": "7ma0jn7mm",
+      "__id__": 3003,
       "attributes": {
-        "x": 4100.784271240234,
-        "y": 1400,
-        "width": 100,
-        "height": 100,
-        "color": [
-          203,
-          19,
-          6
-        ]
+        "x": 1100,
+        "y": 550,
+        "width": 500,
+        "height": 40,
+        "color": [100, 80, 140],
+        "transparent": false,
+        "z_index": 1
       }
     },
     {
       "__class__": "Ground",
-      "__id__": "z5gmrl2t3",
+      "__id__": 3004,
       "attributes": {
-        "x": 4000,
-        "y": 1400,
-        "width": 104.20166015625,
-        "height": 100,
-        "color": [
-          227,
-          222,
-          69
-        ]
+        "x": 1650,
+        "y": 450,
+        "width": 400,
+        "height": 40,
+        "color": [140, 60, 180],
+        "transparent": false,
+        "z_index": 1
       }
     },
     {
       "__class__": "Ground",
-      "__id__": "u2ftm1pv4",
+      "__id__": 3005,
       "attributes": {
-        "x": 4200,
-        "y": 1400,
-        "width": 104.20166015625,
-        "height": 100,
-        "color": [
-          227,
-          222,
-          69
-        ]
+        "x": 2100,
+        "y": 400,
+        "width": 500,
+        "height": 40,
+        "color": [60, 160, 100],
+        "transparent": false,
+        "z_index": 1
       }
     },
     {
       "__class__": "Ground",
-      "__id__": "ta876yexs",
+      "__id__": 3006,
       "attributes": {
-        "x": 4300,
-        "y": 1400,
-        "width": 100,
-        "height": 100,
-        "color": [
-          203,
-          19,
-          6
-        ]
+        "x": 2700,
+        "y": 600,
+        "width": 500,
+        "height": 40,
+        "color": [160, 70, 70],
+        "transparent": false,
+        "z_index": 1
       }
     },
     {
       "__class__": "Ground",
-      "__id__": "sdaoszjz4",
+      "__id__": 3007,
       "attributes": {
-        "x": 4101.176361083984,
-        "y": 1002.633056640625,
-        "width": 100,
-        "height": 100,
-        "color": [
-          203,
-          19,
-          6
-        ]
+        "x": 3300,
+        "y": 500,
+        "width": 450,
+        "height": 40,
+        "color": [100, 160, 160],
+        "transparent": false,
+        "z_index": 1
       }
     },
     {
       "__class__": "Ground",
-      "__id__": "8izgzwewu",
+      "__id__": 3008,
       "attributes": {
-        "x": 4653.249511718748,
-        "y": 1639.3555704752612,
-        "width": 226.33056640625,
-        "height": 133.24936294555664,
-        "color": [
-          0,
-          155,
-          0
-        ]
+        "x": 3850,
+        "y": 400,
+        "width": 500,
+        "height": 40,
+        "color": [80, 200, 120],
+        "transparent": false,
+        "z_index": 1
       }
     },
     {
       "__class__": "Ground",
-      "__id__": "8micz12e7",
+      "__id__": 3009,
       "attributes": {
-        "x": 5701.820800781248,
-        "y": 1528.2632853190112,
-        "width": 226.33056640625,
-        "height": 240.81235122680664,
-        "color": [
-          0,
-          155,
-          0
-        ]
+        "x": 4450,
+        "y": 350,
+        "width": 400,
+        "height": 40,
+        "color": [200, 100, 200],
+        "transparent": false,
+        "z_index": 1
       }
     },
     {
       "__class__": "Ground",
-      "__id__": "7pg5gj81c",
+      "__id__": 3010,
       "attributes": {
-        "x": 6989.047851562498,
-        "y": 1541.5407511393237,
-        "width": 226.33056640625,
-        "height": 227.36679458618164,
-        "color": [
-          0,
-          155,
-          0
-        ]
+        "x": 4950,
+        "y": 300,
+        "width": 450,
+        "height": 40,
+        "color": [180, 80, 80],
+        "transparent": false,
+        "z_index": 1
       }
     },
     {
       "__class__": "Ground",
-      "__id__": "9t3rmtxg5",
+      "__id__": 3011,
       "attributes": {
-        "x": 7921.680477142334,
-        "y": 1782.18505859375,
-        "width": 1852.6607704162598,
-        "height": 310.504150390625,
-        "color": [
-          227,
-          137,
-          130
-        ]
+        "x": 5500,
+        "y": 250,
+        "width": 450,
+        "height": 40,
+        "color": [255, 180, 50],
+        "transparent": false,
+        "z_index": 1
       }
     },
     {
       "__class__": "Ground",
-      "__id__": "qejadf2h4",
+      "__id__": 3012,
       "attributes": {
-        "x": 8806.890228271484,
-        "y": 1456.246337890625,
-        "width": 328.5712890625,
-        "height": 100,
-        "color": [
-          203,
-          19,
-          6
-        ]
-      }
-    },
-    {
-      "__class__": "Ground",
-      "__id__": "dnyziup5w",
-      "attributes": {
-        "x": 9021.848236083984,
-        "y": 1190.531982421875,
-        "width": 832.7734375,
-        "height": 100,
-        "color": [
-          203,
-          19,
-          6
-        ]
-      }
-    },
-    {
-      "__class__": "Ground",
-      "__id__": "tqr9kbrqp",
-      "attributes": {
-        "x": 10115.798431396484,
-        "y": 1191.2042236328125,
-        "width": 273.9501953125,
-        "height": 100,
-        "color": [
-          203,
-          19,
-          6
-        ]
-      }
-    },
-    {
-      "__class__": "Ground",
-      "__id__": "qjku8soiq",
-      "attributes": {
-        "x": 10386.3857421875,
-        "y": 1192.2689208984375,
-        "width": 104.20166015625,
-        "height": 100,
-        "color": [
-          227,
-          222,
-          69
-        ]
-      }
-    },
-    {
-      "__class__": "Ground",
-      "__id__": "hejyw47ev",
-      "attributes": {
-        "x": 10342.240047454834,
-        "y": 1796.5828857421875,
-        "width": 7359.66272354126,
-        "height": 310.504150390625,
-        "color": [
-          227,
-          137,
-          130
-        ]
-      }
-    },
-    {
-      "__class__": "Ground",
-      "__id__": "d18rd3ftf",
-      "attributes": {
-        "x": 10404.706634521484,
-        "y": 1505.3218994140625,
-        "width": 100.28125,
-        "height": 100,
-        "color": [
-          203,
-          19,
-          6
-        ]
-      }
-    },
-    {
-      "__class__": "Ground",
-      "__id__": "ggng9yt8w",
-      "attributes": {
-        "x": 10702.017181396484,
-        "y": 1497.3106689453125,
-        "width": 195.51953125,
-        "height": 100,
-        "color": [
-          203,
-          19,
-          6
-        ]
-      }
-    },
-    {
-      "__class__": "Ground",
-      "__id__": "5s59jc0rr",
-      "attributes": {
-        "x": 12003.0244140625,
-        "y": 1503.58544921875,
-        "width": 104.20166015625,
-        "height": 100,
-        "color": [
-          227,
-          222,
-          69
-        ]
-      }
-    },
-    {
-      "__class__": "Ground",
-      "__id__": "ktn6y59rc",
-      "attributes": {
-        "x": 12361.9599609375,
-        "y": 1506.77880859375,
-        "width": 104.20166015625,
-        "height": 100,
-        "color": [
-          227,
-          222,
-          69
-        ]
-      }
-    },
-    {
-      "__class__": "Ground",
-      "__id__": "vuvtidzq4",
-      "attributes": {
-        "x": 12715.29296875,
-        "y": 1504.369873046875,
-        "width": 104.20166015625,
-        "height": 100,
-        "color": [
-          227,
-          222,
-          69
-        ]
-      }
-    },
-    {
-      "__class__": "Ground",
-      "__id__": "6lhj4fzam",
-      "attributes": {
-        "x": 12373.9482421875,
-        "y": 1121.008544921875,
-        "width": 104.20166015625,
-        "height": 100,
-        "color": [
-          227,
-          222,
-          69
-        ]
-      }
-    },
-    {
-      "__class__": "Ground",
-      "__id__": "ahecnkybr",
-      "attributes": {
-        "x": 13399.496673583984,
-        "y": 1497.3106689453125,
-        "width": 100.28125,
-        "height": 100,
-        "color": [
-          203,
-          19,
-          6
-        ]
-      }
-    },
-    {
-      "__class__": "Ground",
-      "__id__": "si7q9otqb",
-      "attributes": {
-        "x": 13705.210540771484,
-        "y": 1155.96630859375,
-        "width": 394.3994140625,
-        "height": 100,
-        "color": [
-          203,
-          19,
-          6
-        ]
-      }
-    },
-    {
-      "__class__": "Ground",
-      "__id__": "73qvbziwv",
-      "attributes": {
-        "x": 15304.649993896484,
-        "y": 1696.582275390625,
-        "width": 100.28125,
-        "height": 100,
-        "color": [
-          203,
-          19,
-          6
-        ]
-      }
-    },
-    {
-      "__class__": "Ground",
-      "__id__": "tl319hx5b",
-      "attributes": {
-        "x": 15400.280853271484,
-        "y": 1610.139892578125,
-        "width": 100.28125,
-        "height": 186.834716796875,
-        "color": [
-          203,
-          19,
-          6
-        ]
-      }
-    },
-    {
-      "__class__": "Ground",
-      "__id__": "plff69xwv",
-      "attributes": {
-        "x": 15493.109954833984,
-        "y": 1512.49267578125,
-        "width": 100.28125,
-        "height": 284.8739013671875,
-        "color": [
-          203,
-          19,
-          6
-        ]
-      }
-    },
-    {
-      "__class__": "Ground",
-      "__id__": "ko818u2ep",
-      "attributes": {
-        "x": 15580.336517333984,
-        "y": 1417.6468505859375,
-        "width": 122.689453125,
-        "height": 385.7142333984375,
-        "color": [
-          203,
-          19,
-          6
-        ]
-      }
-    },
-    {
-      "__class__": "Ground",
-      "__id__": "vg0jsba61",
-      "attributes": {
-        "x": 15936.471282958984,
-        "y": 1409.635498046875,
-        "width": 122.689453125,
-        "height": 385.7142333984375,
-        "color": [
-          203,
-          19,
-          6
-        ]
-      }
-    },
-    {
-      "__class__": "Ground",
-      "__id__": "7zu8ddj31",
-      "attributes": {
-        "x": 16053.726165771484,
-        "y": 1510.083740234375,
-        "width": 100.28125,
-        "height": 284.8739013671875,
-        "color": [
-          203,
-          19,
-          6
-        ]
-      }
-    },
-    {
-      "__class__": "Ground",
-      "__id__": "ybm3s8brm",
-      "attributes": {
-        "x": 16148.571868896484,
-        "y": 1607.73095703125,
-        "width": 100.28125,
-        "height": 186.834716796875,
-        "color": [
-          203,
-          19,
-          6
-        ]
-      }
-    },
-    {
-      "__class__": "Ground",
-      "__id__": "p38qqr97s",
-      "attributes": {
-        "x": 16240.615814208984,
-        "y": 1694.17333984375,
-        "width": 100.28125,
-        "height": 100,
-        "color": [
-          203,
-          19,
-          6
-        ]
-      }
-    },
-    {
-      "__class__": "Ground",
-      "__id__": "qjlgc71k9",
-      "attributes": {
-        "x": 17569.523040771484,
-        "y": 1418.0389404296875,
-        "width": 122.689453125,
-        "height": 385.7142333984375,
-        "color": [
-          203,
-          19,
-          6
-        ]
-      }
-    },
-    {
-      "__class__": "Ground",
-      "__id__": "h5gqmu4br",
-      "attributes": {
-        "x": 17479.496673583984,
-        "y": 1518.487060546875,
-        "width": 100.28125,
-        "height": 284.8739013671875,
-        "color": [
-          203,
-          19,
-          6
-        ]
-      }
-    },
-    {
-      "__class__": "Ground",
-      "__id__": "wmzr6l1c9",
-      "attributes": {
-        "x": 17381.066009521484,
-        "y": 1610.531982421875,
-        "width": 100.28125,
-        "height": 186.834716796875,
-        "color": [
-          203,
-          19,
-          6
-        ]
-      }
-    },
-    {
-      "__class__": "Ground",
-      "__id__": "n8dg2alzh",
-      "attributes": {
-        "x": 17285.433197021484,
-        "y": 1708.178955078125,
-        "width": 100.28125,
-        "height": 100,
-        "color": [
-          203,
-          19,
-          6
-        ]
-      }
-    },
-    {
-      "__class__": "Ground",
-      "__id__": "a5ceq7i7l",
-      "attributes": {
-        "x": 18000.893367767334,
-        "y": 1802.5772705078125,
-        "width": 1216.8072547912598,
-        "height": 310.504150390625,
-        "color": [
-          227,
-          137,
-          130
-        ]
-      }
-    },
-    {
-      "__class__": "Ground",
-      "__id__": "qcmy10wv5",
-      "attributes": {
-        "x": 18004.089447021484,
-        "y": 1429.635498046875,
-        "width": 122.689453125,
-        "height": 385.7142333984375,
-        "color": [
-          203,
-          19,
-          6
-        ]
-      }
-    },
-    {
-      "__class__": "Ground",
-      "__id__": "ro2k4hnds",
-      "attributes": {
-        "x": 18115.742767333984,
-        "y": 1530.0836181640625,
-        "width": 100.28125,
-        "height": 284.8739013671875,
-        "color": [
-          203,
-          19,
-          6
-        ]
-      }
-    },
-    {
-      "__class__": "Ground",
-      "__id__": "57h1nm97k",
-      "attributes": {
-        "x": 18210.587493896484,
-        "y": 1624.9298095703125,
-        "width": 100.28125,
-        "height": 186.834716796875,
-        "color": [
-          203,
-          19,
-          6
-        ]
-      }
-    },
-    {
-      "__class__": "Ground",
-      "__id__": "nrjjtr7we",
-      "attributes": {
-        "x": 18308.233978271484,
-        "y": 1708.571044921875,
-        "width": 100.28125,
-        "height": 100,
-        "color": [
-          203,
-          19,
-          6
-        ]
+        "x": 6050,
+        "y": 350,
+        "width": 400,
+        "height": 40,
+        "color": [80, 200, 200],
+        "transparent": false,
+        "z_index": 1
       }
     }
   ],
-  "weapons": [],
-  "camera": null,
-  "gameOptions": {
-    "clock_tick": 60
+  "items": [
+    {
+      "__class__": "Shotgun",
+      "__id__": 4001,
+      "attributes": {
+        "x": 300,
+        "y": 550,
+        "width": 40,
+        "height": 25,
+        "color": [255, 140, 0],
+        "offset_x": 0,
+        "offset_y": 0,
+        "cooling_down": 15,
+        "maximum_number_of_bullets": 30,
+        "shoot_list": [],
+        "entity": null,
+        "delete_after_death": true,
+        "vel_y": 0,
+        "gravity": 0.7,
+        "damage": 70,
+        "number_of_bullets": 4,
+        "is_pickable": true,
+        "z_index": 10
+      }
+    },
+    {
+      "__class__": "PoisonGun",
+      "__id__": 4002,
+      "attributes": {
+        "x": 1950,
+        "y": 350,
+        "width": 20,
+        "height": 40,
+        "color": [0, 200, 100],
+        "offset_x": 0,
+        "offset_y": 0,
+        "cooling_down": 9,
+        "maximum_number_of_bullets": 20,
+        "shoot_list": [],
+        "entity": null,
+        "delete_after_death": true,
+        "vel_y": 0,
+        "gravity": 0.7,
+        "damage": 55,
+        "experation_time": 750,
+        "is_pickable": true,
+        "z_index": 10
+      }
+    },
+    {
+      "__class__": "Shotgun",
+      "__id__": 4003,
+      "attributes": {
+        "x": 3600,
+        "y": 450,
+        "width": 40,
+        "height": 25,
+        "color": [255, 100, 0],
+        "offset_x": 0,
+        "offset_y": 0,
+        "cooling_down": 18,
+        "maximum_number_of_bullets": 35,
+        "shoot_list": [],
+        "entity": null,
+        "delete_after_death": true,
+        "vel_y": 0,
+        "gravity": 0.7,
+        "damage": 85,
+        "number_of_bullets": 5,
+        "is_pickable": true,
+        "z_index": 10
+      }
+    },
+    {
+      "__class__": "PoisonGun",
+      "__id__": 4004,
+      "attributes": {
+        "x": 4700,
+        "y": 300,
+        "width": 20,
+        "height": 40,
+        "color": [0, 220, 120],
+        "offset_x": 0,
+        "offset_y": 0,
+        "cooling_down": 10,
+        "maximum_number_of_bullets": 25,
+        "shoot_list": [],
+        "entity": null,
+        "delete_after_death": true,
+        "vel_y": 0,
+        "gravity": 0.7,
+        "damage": 70,
+        "experation_time": 900,
+        "is_pickable": true,
+        "z_index": 10
+      }
+    },
+    {
+      "__class__": "Shotgun",
+      "__id__": 4005,
+      "attributes": {
+        "x": 6200,
+        "y": 300,
+        "width": 45,
+        "height": 30,
+        "color": [255, 215, 0],
+        "offset_x": 0,
+        "offset_y": 0,
+        "cooling_down": 22,
+        "maximum_number_of_bullets": 50,
+        "shoot_list": [],
+        "entity": null,
+        "delete_after_death": true,
+        "vel_y": 0,
+        "gravity": 0.7,
+        "damage": 110,
+        "number_of_bullets": 6,
+        "is_pickable": true,
+        "z_index": 10
+      }
+    }
+  ],
+  "camera": {
+    "__class__": "Camera",
+    "__id__": 5001,
+    "attributes": {
+      "screen_width": 1920,
+      "screen_height": 1080,
+      "x": 0,
+      "y": 0,
+      "width": 1920,
+      "height": 1080,
+      "padding": 600,
+      "target": {"__ref__": 1001}
+    }
   }
 }

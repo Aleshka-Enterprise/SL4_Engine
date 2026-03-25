@@ -1,0 +1,1234 @@
+{
+  "version": "1.0",
+  "classes": {
+    "Entity": {
+      "description": "Базовый класс сущностей",
+      "parent": [
+        "RenderMixin",
+        "HealthMixin",
+        "AudioMixin",
+        "MoveMixin",
+        "CollisionMixin",
+        "GravityMixin",
+        "InteractiveMixin"
+      ],
+      "init_parameters": {
+        "weapon": {
+          "type": "<class 'game.objects.items.weapons.weapon.Weapon'>",
+          "required": false,
+          "default": null
+        },
+        "show_hp": {
+          "type": "<class 'bool'>",
+          "required": false,
+          "default": false
+        },
+        "fraction": {
+          "type": "<class 'str'>",
+          "required": false,
+          "default": null
+        },
+        "kwargs": {
+          "type": "Any",
+          "required": true,
+          "default": null
+        }
+      },
+      "attributes": {
+        "id": {
+          "type": "UUID",
+          "example": "44894a08-239c-4bad-91f0-960c6b4020a7",
+          "is_object": false
+        },
+        "x": {
+          "type": "int",
+          "example": 0,
+          "is_object": false
+        },
+        "y": {
+          "type": "int",
+          "example": 0,
+          "is_object": false
+        },
+        "width": {
+          "type": "int",
+          "example": 0,
+          "is_object": false
+        },
+        "height": {
+          "type": "int",
+          "example": 0,
+          "is_object": false
+        },
+        "rect": {
+          "type": "Rect",
+          "example": "<rect(0, 0, 0, 0)>",
+          "is_object": false
+        },
+        "BaseMixin__rect_is_dirty": {
+          "type": "bool",
+          "example": false,
+          "is_object": false
+        },
+        "InteractiveMixin__interactive_width": {
+          "type": "int",
+          "example": 100,
+          "is_object": false
+        },
+        "InteractiveMixin__interactive_height": {
+          "type": "int",
+          "example": 100,
+          "is_object": false
+        },
+        "vel_y": {
+          "type": "int",
+          "example": 24,
+          "is_object": false
+        },
+        "gravity": {
+          "type": "int",
+          "example": 24,
+          "is_object": false
+        },
+        "on_the_ground": {
+          "type": "bool",
+          "example": false,
+          "is_object": false
+        },
+        "used_colision": {
+          "type": "bool",
+          "example": true,
+          "is_object": false
+        },
+        "speed": {
+          "type": "int",
+          "example": 0,
+          "is_object": false
+        },
+        "direction": {
+          "type": "str",
+          "example": "left",
+          "is_object": false
+        },
+        "frez": {
+          "type": "bool",
+          "example": false,
+          "is_object": false
+        },
+        "boost": {
+          "type": "int",
+          "example": 5,
+          "is_object": false
+        },
+        "base_speed": {
+          "type": "int",
+          "example": 0,
+          "is_object": false
+        },
+        "is_running": {
+          "type": "bool",
+          "example": false,
+          "is_object": false
+        },
+        "hp": {
+          "type": "int",
+          "example": 1,
+          "is_object": false
+        },
+        "max_hp": {
+          "type": "int",
+          "example": 1,
+          "is_object": false
+        },
+        "invulnerable": {
+          "type": "bool",
+          "example": false,
+          "is_object": false
+        },
+        "destroy_after_dead": {
+          "type": "bool",
+          "example": true,
+          "is_object": false
+        },
+        "color": {
+          "type": "tuple",
+          "example": "(0, 0, 0)",
+          "is_object": false
+        },
+        "ignore_render_check": {
+          "type": "bool",
+          "example": false,
+          "is_object": false
+        },
+        "display": {
+          "type": "bool",
+          "example": true,
+          "is_object": false
+        },
+        "z_index": {
+          "type": "int",
+          "example": 4,
+          "is_object": false
+        },
+        "position": {
+          "type": "str",
+          "example": "absolut",
+          "is_object": false
+        },
+        "audio_volume": {
+          "type": "float",
+          "example": 1.0,
+          "is_object": false
+        },
+        "currently_playing": {
+          "type": "dict",
+          "example": "{}",
+          "is_object": false
+        },
+        "variation_settings": {
+          "type": "dict",
+          "example": "{'enabled': True, 'volume_range': (0.8, 1.2), 'variation_chance': 1.0}",
+          "is_object": false
+        },
+        "prevent_overlap_settings": {
+          "type": "dict",
+          "example": "{'move': True, 'shoot': False, 'reload': True, 'jump': True, 'hurt': False}",
+          "is_object": false
+        },
+        "sound_groups": {
+          "type": "dict",
+          "example": "{}",
+          "is_object": false
+        },
+        "is_enemy": {
+          "type": "bool",
+          "example": false,
+          "is_object": false
+        },
+        "weapon": {
+          "type": "NoneType",
+          "example": "None",
+          "is_object": false
+        },
+        "show_hp": {
+          "type": "bool",
+          "example": false,
+          "is_object": false
+        },
+        "fraction": {
+          "type": "NoneType",
+          "example": "None",
+          "is_object": false
+        }
+      },
+      "required_attributes": [
+        "kwargs"
+      ],
+      "optional_attributes": [
+        "weapon",
+        "show_hp",
+        "fraction"
+      ]
+    },
+    "Player": {
+      "description": "Class Player",
+      "parent": [
+        "Entity",
+        "JumpMixin",
+        "EventMixin"
+      ],
+      "init_parameters": {
+        "energy": {
+          "type": "<class 'int'>",
+          "required": false,
+          "default": 350
+        },
+        "kwargs": {
+          "type": "Any",
+          "required": true,
+          "default": null
+        }
+      },
+      "attributes": {
+        "EventMixin__event_listener": {
+          "type": "list",
+          "example": [
+            "Event(keys=(122,), event_type=<EventState.KEY_PRESSED: 'key_pressed'>, callback=<bound method Player.attack of <game.objects.entities.player.player.Player object at 0x0000015917AC8140>>)",
+            "Event(keys=(1073741904, 97), event_type=<EventState.KEY_PRESSED: 'key_pressed'>, callback=<function Player.__init__.<locals>.<lambda> at 0x0000015917C3D440>)",
+            "Event(keys=(1073741903, 100), event_type=<EventState.KEY_PRESSED: 'key_pressed'>, callback=<function Player.__init__.<locals>.<lambda> at 0x0000015917C3D4E0>)",
+            "Event(keys=(32, 119, 1073741906), event_type=<EventState.KEY_DOWN: 'key_down'>, callback=<bound method JumpMixin.jump of <game.objects.entities.player.player.Player object at 0x0000015917AC8140>>)",
+            "Event(keys=(1073742049,), event_type=<EventState.KEY_DOWN: 'key_down'>, callback=<bound method MoveMixin.speed_boost of <game.objects.entities.player.player.Player object at 0x0000015917AC8140>>)",
+            "Event(keys=(115, 1073741905), event_type=<EventState.KEY_DOWN: 'key_down'>, callback=<bound method Player.sit of <game.objects.entities.player.player.Player object at 0x0000015917AC8140>>)",
+            "Event(keys=(101,), event_type=<EventState.KEY_DOWN: 'key_down'>, callback=<bound method Entity.take_item of <game.objects.entities.player.player.Player object at 0x0000015917AC8140>>)",
+            "Event(keys=(113,), event_type=<EventState.KEY_DOWN: 'key_down'>, callback=<bound method Entity.drop_weapon of <game.objects.entities.player.player.Player object at 0x0000015917AC8140>>)",
+            "Event(keys=(1073742049,), event_type=<EventState.KEY_UP: 'key_up'>, callback=<bound method MoveMixin.stop_speed_boost of <game.objects.entities.player.player.Player object at 0x0000015917AC8140>>)",
+            "Event(keys=(115, 1073741905), event_type=<EventState.KEY_UP: 'key_up'>, callback=<bound method Player.stand_up of <game.objects.entities.player.player.Player object at 0x0000015917AC8140>>)"
+          ],
+          "is_object": false
+        },
+        "id": {
+          "type": "UUID",
+          "example": "91fd33f9-38c2-4884-ba42-edd5540af78e",
+          "is_object": false
+        },
+        "x": {
+          "type": "int",
+          "example": 0,
+          "is_object": false
+        },
+        "y": {
+          "type": "int",
+          "example": 0,
+          "is_object": false
+        },
+        "width": {
+          "type": "int",
+          "example": 0,
+          "is_object": false
+        },
+        "height": {
+          "type": "int",
+          "example": 0,
+          "is_object": false
+        },
+        "rect": {
+          "type": "Rect",
+          "example": "<rect(0, 0, 0, 0)>",
+          "is_object": false
+        },
+        "BaseMixin__rect_is_dirty": {
+          "type": "bool",
+          "example": false,
+          "is_object": false
+        },
+        "is_jumping": {
+          "type": "bool",
+          "example": false,
+          "is_object": false
+        },
+        "vel_y": {
+          "type": "int",
+          "example": 24,
+          "is_object": false
+        },
+        "gravity": {
+          "type": "int",
+          "example": 24,
+          "is_object": false
+        },
+        "jump_force": {
+          "type": "int",
+          "example": -24,
+          "is_object": false
+        },
+        "on_the_ground": {
+          "type": "bool",
+          "example": false,
+          "is_object": false
+        },
+        "InteractiveMixin__interactive_width": {
+          "type": "int",
+          "example": 100,
+          "is_object": false
+        },
+        "InteractiveMixin__interactive_height": {
+          "type": "int",
+          "example": 100,
+          "is_object": false
+        },
+        "used_colision": {
+          "type": "bool",
+          "example": true,
+          "is_object": false
+        },
+        "speed": {
+          "type": "int",
+          "example": 0,
+          "is_object": false
+        },
+        "direction": {
+          "type": "str",
+          "example": "left",
+          "is_object": false
+        },
+        "frez": {
+          "type": "bool",
+          "example": false,
+          "is_object": false
+        },
+        "boost": {
+          "type": "int",
+          "example": 5,
+          "is_object": false
+        },
+        "base_speed": {
+          "type": "int",
+          "example": 0,
+          "is_object": false
+        },
+        "is_running": {
+          "type": "bool",
+          "example": false,
+          "is_object": false
+        },
+        "hp": {
+          "type": "int",
+          "example": 1,
+          "is_object": false
+        },
+        "max_hp": {
+          "type": "int",
+          "example": 1,
+          "is_object": false
+        },
+        "invulnerable": {
+          "type": "bool",
+          "example": false,
+          "is_object": false
+        },
+        "destroy_after_dead": {
+          "type": "bool",
+          "example": true,
+          "is_object": false
+        },
+        "color": {
+          "type": "tuple",
+          "example": "(0, 0, 0)",
+          "is_object": false
+        },
+        "ignore_render_check": {
+          "type": "bool",
+          "example": false,
+          "is_object": false
+        },
+        "display": {
+          "type": "bool",
+          "example": true,
+          "is_object": false
+        },
+        "z_index": {
+          "type": "int",
+          "example": 4,
+          "is_object": false
+        },
+        "position": {
+          "type": "str",
+          "example": "absolut",
+          "is_object": false
+        },
+        "audio_volume": {
+          "type": "float",
+          "example": 1.0,
+          "is_object": false
+        },
+        "currently_playing": {
+          "type": "dict",
+          "example": "{}",
+          "is_object": false
+        },
+        "variation_settings": {
+          "type": "dict",
+          "example": "{'enabled': True, 'volume_range': (0.8, 1.2), 'variation_chance': 1.0}",
+          "is_object": false
+        },
+        "prevent_overlap_settings": {
+          "type": "dict",
+          "example": "{'move': True, 'shoot': False, 'reload': True, 'jump': True, 'hurt': False}",
+          "is_object": false
+        },
+        "sound_groups": {
+          "type": "dict",
+          "example": "{'damage': <game.core.components.audio.audio_mixin.SoundGroup object at 0x0000015917C3AA20>, 'move': <game.core.components.audio.audio_mixin.SoundGroup object at 0x0000015917C39310>}",
+          "is_object": false
+        },
+        "is_enemy": {
+          "type": "bool",
+          "example": false,
+          "is_object": false
+        },
+        "weapon": {
+          "type": "NoneType",
+          "example": "None",
+          "is_object": false
+        },
+        "show_hp": {
+          "type": "bool",
+          "example": false,
+          "is_object": false
+        },
+        "fraction": {
+          "type": "NoneType",
+          "example": "None",
+          "is_object": false
+        },
+        "energy": {
+          "type": "int",
+          "example": 350,
+          "is_object": false
+        },
+        "max_energy": {
+          "type": "int",
+          "example": 350,
+          "is_object": false
+        },
+        "is_sitting": {
+          "type": "bool",
+          "example": false,
+          "is_object": false
+        },
+        "default_height": {
+          "type": "int",
+          "example": 100,
+          "is_object": false
+        }
+      },
+      "required_attributes": [
+        "kwargs"
+      ],
+      "optional_attributes": [
+        "energy"
+      ]
+    },
+    "Zombie": {
+      "description": "Class Zombie",
+      "parent": [
+        "Enemy",
+        "JumpMixin"
+      ],
+      "init_parameters": {
+        "kwargs": {
+          "type": "Any",
+          "required": true,
+          "default": null
+        }
+      },
+      "attributes": {
+        "id": {
+          "type": "UUID",
+          "example": "af6fe15b-b6b3-4e10-8ea1-a2ef41916366",
+          "is_object": false
+        },
+        "x": {
+          "type": "int",
+          "example": 0,
+          "is_object": false
+        },
+        "y": {
+          "type": "int",
+          "example": 0,
+          "is_object": false
+        },
+        "width": {
+          "type": "int",
+          "example": 0,
+          "is_object": false
+        },
+        "height": {
+          "type": "int",
+          "example": 0,
+          "is_object": false
+        },
+        "rect": {
+          "type": "Rect",
+          "example": "<rect(0, 0, 0, 0)>",
+          "is_object": false
+        },
+        "BaseMixin__rect_is_dirty": {
+          "type": "bool",
+          "example": false,
+          "is_object": false
+        },
+        "is_jumping": {
+          "type": "bool",
+          "example": false,
+          "is_object": false
+        },
+        "vel_y": {
+          "type": "int",
+          "example": 24,
+          "is_object": false
+        },
+        "gravity": {
+          "type": "int",
+          "example": 24,
+          "is_object": false
+        },
+        "jump_force": {
+          "type": "int",
+          "example": -24,
+          "is_object": false
+        },
+        "on_the_ground": {
+          "type": "bool",
+          "example": false,
+          "is_object": false
+        },
+        "max_particles": {
+          "type": "int",
+          "example": 300,
+          "is_object": false
+        },
+        "InteractiveMixin__interactive_width": {
+          "type": "int",
+          "example": 100,
+          "is_object": false
+        },
+        "InteractiveMixin__interactive_height": {
+          "type": "int",
+          "example": 100,
+          "is_object": false
+        },
+        "used_colision": {
+          "type": "bool",
+          "example": true,
+          "is_object": false
+        },
+        "speed": {
+          "type": "int",
+          "example": 0,
+          "is_object": false
+        },
+        "direction": {
+          "type": "str",
+          "example": "left",
+          "is_object": false
+        },
+        "frez": {
+          "type": "bool",
+          "example": false,
+          "is_object": false
+        },
+        "boost": {
+          "type": "int",
+          "example": 5,
+          "is_object": false
+        },
+        "base_speed": {
+          "type": "int",
+          "example": 0,
+          "is_object": false
+        },
+        "is_running": {
+          "type": "bool",
+          "example": false,
+          "is_object": false
+        },
+        "hp": {
+          "type": "int",
+          "example": 1,
+          "is_object": false
+        },
+        "max_hp": {
+          "type": "int",
+          "example": 1,
+          "is_object": false
+        },
+        "invulnerable": {
+          "type": "bool",
+          "example": false,
+          "is_object": false
+        },
+        "destroy_after_dead": {
+          "type": "bool",
+          "example": true,
+          "is_object": false
+        },
+        "color": {
+          "type": "tuple",
+          "example": "(0, 0, 0)",
+          "is_object": false
+        },
+        "ignore_render_check": {
+          "type": "bool",
+          "example": false,
+          "is_object": false
+        },
+        "display": {
+          "type": "bool",
+          "example": true,
+          "is_object": false
+        },
+        "z_index": {
+          "type": "int",
+          "example": 4,
+          "is_object": false
+        },
+        "position": {
+          "type": "str",
+          "example": "absolut",
+          "is_object": false
+        },
+        "audio_volume": {
+          "type": "float",
+          "example": 1.0,
+          "is_object": false
+        },
+        "currently_playing": {
+          "type": "dict",
+          "example": "{}",
+          "is_object": false
+        },
+        "variation_settings": {
+          "type": "dict",
+          "example": "{'enabled': True, 'volume_range': (0.8, 1.2), 'variation_chance': 1.0}",
+          "is_object": false
+        },
+        "prevent_overlap_settings": {
+          "type": "dict",
+          "example": "{'move': True, 'shoot': False, 'reload': True, 'jump': True, 'hurt': False}",
+          "is_object": false
+        },
+        "sound_groups": {
+          "type": "dict",
+          "example": "{'died': <game.core.components.audio.audio_mixin.SoundGroup object at 0x0000015917C3B740>, 'move': <game.core.components.audio.audio_mixin.SoundGroup object at 0x0000015917C3B7A0>}",
+          "is_object": false
+        },
+        "is_enemy": {
+          "type": "bool",
+          "example": true,
+          "is_object": false
+        },
+        "weapon": {
+          "type": "NoneType",
+          "example": "None",
+          "is_object": false
+        },
+        "show_hp": {
+          "type": "bool",
+          "example": false,
+          "is_object": false
+        },
+        "fraction": {
+          "type": "str",
+          "example": "zombie",
+          "is_object": false
+        },
+        "attack_timer": {
+          "type": "NoneType",
+          "example": "None",
+          "is_object": false
+        },
+        "target": {
+          "type": "Player",
+          "example": "<game.objects.entities.player.player.Player object at 0x0000015917AC8140>",
+          "is_object": true
+        },
+        "melee_damage": {
+          "type": "int",
+          "example": 10,
+          "is_object": false
+        },
+        "target_is_detecte": {
+          "type": "bool",
+          "example": false,
+          "is_object": false
+        },
+        "patrol_distance": {
+          "type": "int",
+          "example": 200,
+          "is_object": false
+        },
+        "patrol_points": {
+          "type": "list",
+          "example": [
+            -200,
+            200
+          ],
+          "is_object": false
+        },
+        "viewing_radius": {
+          "type": "int",
+          "example": 500,
+          "is_object": false
+        }
+      },
+      "required_attributes": [
+        "kwargs"
+      ],
+      "optional_attributes": []
+    },
+    "Ground": {
+      "description": "Простой класс земли",
+      "parent": [
+        "Envirement",
+        "CollisionMixin"
+      ],
+      "init_parameters": {
+        "transparent": {
+          "type": "<class 'bool'>",
+          "required": false,
+          "default": false
+        },
+        "kwargs": {
+          "type": "Any",
+          "required": true,
+          "default": null
+        }
+      },
+      "attributes": {
+        "id": {
+          "type": "UUID",
+          "example": "39a75f50-3410-472e-a071-4719ecd1e38c",
+          "is_object": false
+        },
+        "x": {
+          "type": "int",
+          "example": 0,
+          "is_object": false
+        },
+        "y": {
+          "type": "int",
+          "example": 0,
+          "is_object": false
+        },
+        "width": {
+          "type": "int",
+          "example": 0,
+          "is_object": false
+        },
+        "height": {
+          "type": "int",
+          "example": 0,
+          "is_object": false
+        },
+        "rect": {
+          "type": "Rect",
+          "example": "<rect(0, 0, 0, 0)>",
+          "is_object": false
+        },
+        "BaseMixin__rect_is_dirty": {
+          "type": "bool",
+          "example": false,
+          "is_object": false
+        },
+        "used_colision": {
+          "type": "bool",
+          "example": true,
+          "is_object": false
+        },
+        "color": {
+          "type": "tuple",
+          "example": "(0, 0, 0)",
+          "is_object": false
+        },
+        "ignore_render_check": {
+          "type": "bool",
+          "example": false,
+          "is_object": false
+        },
+        "display": {
+          "type": "bool",
+          "example": true,
+          "is_object": false
+        },
+        "z_index": {
+          "type": "int",
+          "example": 2,
+          "is_object": false
+        },
+        "position": {
+          "type": "str",
+          "example": "absolut",
+          "is_object": false
+        },
+        "transparent": {
+          "type": "bool",
+          "example": false,
+          "is_object": false
+        }
+      },
+      "required_attributes": [
+        "kwargs"
+      ],
+      "optional_attributes": [
+        "transparent"
+      ]
+    },
+    "Weapon": {
+      "description": "Class Weapon",
+      "parent": [
+        "Item",
+        "AudioMixin",
+        "RenderMixin",
+        "CollisionMixin",
+        "TimerMixin",
+        "GravityMixin"
+      ],
+      "init_parameters": {
+        "offset_x": {
+          "type": "<class 'int'>",
+          "required": true,
+          "default": null
+        },
+        "offset_y": {
+          "type": "<class 'int'>",
+          "required": true,
+          "default": null
+        },
+        "entity": {
+          "type": "Any",
+          "required": false,
+          "default": null
+        },
+        "cooling_down": {
+          "type": "<class 'int'>",
+          "required": false,
+          "default": 30
+        },
+        "maximum_number_of_bullets": {
+          "type": "<class 'int'>",
+          "required": false,
+          "default": 10
+        },
+        "delete_after_death": {
+          "type": "<class 'bool'>",
+          "required": false,
+          "default": false
+        },
+        "gravity": {
+          "type": "<class 'float'>",
+          "required": false,
+          "default": 0.7
+        },
+        "damage": {
+          "type": "<class 'float'>",
+          "required": false,
+          "default": 1
+        },
+        "kwargs": {
+          "type": "Any",
+          "required": true,
+          "default": null
+        }
+      },
+      "attributes": {
+        "id": {
+          "type": "UUID",
+          "example": "40dc5155-c10b-4b73-938a-8de68e50381e",
+          "is_object": false
+        },
+        "x": {
+          "type": "int",
+          "example": 0,
+          "is_object": false
+        },
+        "y": {
+          "type": "int",
+          "example": 0,
+          "is_object": false
+        },
+        "width": {
+          "type": "int",
+          "example": 0,
+          "is_object": false
+        },
+        "height": {
+          "type": "int",
+          "example": 0,
+          "is_object": false
+        },
+        "rect": {
+          "type": "Rect",
+          "example": "<rect(0, 0, 0, 0)>",
+          "is_object": false
+        },
+        "BaseMixin__rect_is_dirty": {
+          "type": "bool",
+          "example": false,
+          "is_object": false
+        },
+        "vel_y": {
+          "type": "int",
+          "example": 0,
+          "is_object": false
+        },
+        "gravity": {
+          "type": "float",
+          "example": 0.7,
+          "is_object": false
+        },
+        "on_the_ground": {
+          "type": "bool",
+          "example": false,
+          "is_object": false
+        },
+        "used_colision": {
+          "type": "bool",
+          "example": true,
+          "is_object": false
+        },
+        "color": {
+          "type": "tuple",
+          "example": "(0, 0, 0)",
+          "is_object": false
+        },
+        "ignore_render_check": {
+          "type": "bool",
+          "example": false,
+          "is_object": false
+        },
+        "display": {
+          "type": "bool",
+          "example": true,
+          "is_object": false
+        },
+        "z_index": {
+          "type": "int",
+          "example": 10,
+          "is_object": false
+        },
+        "position": {
+          "type": "str",
+          "example": "absolut",
+          "is_object": false
+        },
+        "is_pickable": {
+          "type": "bool",
+          "example": true,
+          "is_object": false
+        },
+        "is_dropable": {
+          "type": "bool",
+          "example": false,
+          "is_object": false
+        },
+        "audio_volume": {
+          "type": "float",
+          "example": 1.0,
+          "is_object": false
+        },
+        "currently_playing": {
+          "type": "dict",
+          "example": "{}",
+          "is_object": false
+        },
+        "variation_settings": {
+          "type": "dict",
+          "example": "{'enabled': True, 'volume_range': (0.8, 1.2), 'variation_chance': 1.0}",
+          "is_object": false
+        },
+        "prevent_overlap_settings": {
+          "type": "dict",
+          "example": "{'move': True, 'shoot': False, 'reload': True, 'jump': True, 'hurt': False}",
+          "is_object": false
+        },
+        "sound_groups": {
+          "type": "dict",
+          "example": "{}",
+          "is_object": false
+        },
+        "entity": {
+          "type": "NoneType",
+          "example": "None",
+          "is_object": false
+        },
+        "offset_x": {
+          "type": "int",
+          "example": 0,
+          "is_object": false
+        },
+        "offset_y": {
+          "type": "int",
+          "example": 0,
+          "is_object": false
+        },
+        "cooling_down": {
+          "type": "int",
+          "example": 30,
+          "is_object": false
+        },
+        "maximum_number_of_bullets": {
+          "type": "int",
+          "example": 10,
+          "is_object": false
+        },
+        "shoot_list": {
+          "type": "list",
+          "example": [],
+          "is_object": false
+        },
+        "delete_after_death": {
+          "type": "bool",
+          "example": false,
+          "is_object": false
+        },
+        "weapon_is_ready": {
+          "type": "bool",
+          "example": true,
+          "is_object": false
+        },
+        "damage": {
+          "type": "int",
+          "example": 1,
+          "is_object": false
+        }
+      },
+      "required_attributes": [
+        "offset_x",
+        "offset_y",
+        "kwargs"
+      ],
+      "optional_attributes": [
+        "entity",
+        "cooling_down",
+        "maximum_number_of_bullets",
+        "delete_after_death",
+        "gravity",
+        "damage"
+      ]
+    },
+    "Shotgun": {
+      "description": "Class Shotgun",
+      "parent": [
+        "Weapon"
+      ],
+      "init_parameters": {
+        "number_of_bullets": {
+          "type": "Any",
+          "required": false,
+          "default": 3
+        },
+        "kwargs": {
+          "type": "Any",
+          "required": true,
+          "default": null
+        }
+      },
+      "attributes": {},
+      "required_attributes": [
+        "kwargs"
+      ],
+      "optional_attributes": [
+        "number_of_bullets"
+      ],
+      "error": "Weapon.__init__() missing 2 required positional arguments: 'offset_x' and 'offset_y'"
+    },
+    "Camera": {
+      "description": "Class Camera",
+      "parent": [
+        "TimerMixin"
+      ],
+      "init_parameters": {
+        "screen_width": {
+          "type": "<class 'int'>",
+          "required": true,
+          "default": null
+        },
+        "screen_height": {
+          "type": "<class 'int'>",
+          "required": true,
+          "default": null
+        },
+        "kwargs": {
+          "type": "Any",
+          "required": true,
+          "default": null
+        }
+      },
+      "attributes": {
+        "id": {
+          "type": "UUID",
+          "example": "288064d7-205c-45c6-8fe8-885e31dec033",
+          "is_object": false
+        },
+        "x": {
+          "type": "int",
+          "example": 0,
+          "is_object": false
+        },
+        "y": {
+          "type": "int",
+          "example": 0,
+          "is_object": false
+        },
+        "width": {
+          "type": "int",
+          "example": 0,
+          "is_object": false
+        },
+        "height": {
+          "type": "int",
+          "example": 0,
+          "is_object": false
+        },
+        "rect": {
+          "type": "Rect",
+          "example": "<rect(0, 0, 0, 0)>",
+          "is_object": false
+        },
+        "BaseMixin__rect_is_dirty": {
+          "type": "bool",
+          "example": false,
+          "is_object": false
+        },
+        "screen_width": {
+          "type": "int",
+          "example": 50,
+          "is_object": false
+        },
+        "screen_height": {
+          "type": "int",
+          "example": 50,
+          "is_object": false
+        },
+        "viewport": {
+          "type": "Rect",
+          "example": "<rect(0, 0, 50, 50)>",
+          "is_object": false
+        },
+        "padding": {
+          "type": "int",
+          "example": 1000,
+          "is_object": false
+        },
+        "render_zone": {
+          "type": "Rect",
+          "example": "<rect(0, 0, 0, 0)>",
+          "is_object": false
+        },
+        "target": {
+          "type": "NoneType",
+          "example": "None",
+          "is_object": false
+        },
+        "deadzone": {
+          "type": "Rect",
+          "example": "<rect(8, 8, 16, 25)>",
+          "is_object": false
+        }
+      },
+      "required_attributes": [
+        "screen_width",
+        "screen_height",
+        "kwargs"
+      ],
+      "optional_attributes": []
+    },
+    "PoisonGun": {
+      "description": "Class PoisonGun",
+      "parent": [
+        "Weapon"
+      ],
+      "init_parameters": {
+        "experation_time": {
+          "type": "Any",
+          "required": false,
+          "default": 1000
+        },
+        "kwargs": {
+          "type": "Any",
+          "required": true,
+          "default": null
+        }
+      },
+      "attributes": {},
+      "required_attributes": [
+        "kwargs"
+      ],
+      "optional_attributes": [
+        "experation_time"
+      ],
+      "error": "Weapon.__init__() missing 2 required positional arguments: 'offset_x' and 'offset_y'"
+    }
+  }
+}

@@ -5,9 +5,7 @@ from game.core.storage import storage
 class Envirement(RenderMixin):
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
+        
+        self.z_index = 2
 
         storage.grounds.append(self)
-
-    @property
-    def render_layer(self) -> str:
-        return 'envirement'

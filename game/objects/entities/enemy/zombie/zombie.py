@@ -3,6 +3,11 @@ from game.objects.entities.enemy.enemy import Enemy
 
 
 class Zombie(Enemy, JumpMixin):
+    def __init__(self, **kwargs):
+        super().__init__(**kwargs)
+
+        self.fraction = "zombie"
+        
     def on_died(self):
         res = super().on_died()
         self.play_sound('died')

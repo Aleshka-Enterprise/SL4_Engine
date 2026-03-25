@@ -22,8 +22,8 @@ class CollisionMixin(BaseMixin):
 
         self._used_colision = value
 
-    def check_collision(self, rect, ignore):
-        return CollisionSystem.check_collision(rect, ignore)
+    def check_collision(self, rect, ignore_list = []):
+        return CollisionSystem.check_collision(rect, ignore_list)
 
     def destroy(self):
         super().destroy()

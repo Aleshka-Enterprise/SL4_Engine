@@ -1,5 +1,6 @@
+import inspect
 import json
-from typing import Dict, Type, Set, Any
+from typing import Dict, Type, Set, Any, get_type_hints
 from pygame import Rect
 from game.objects.entities.entity import Entity
 from game.objects.entities.player.player import Player
@@ -181,3 +182,80 @@ def load_level(filename: str):
     storage.shots.clear()
 
     create_objects_from_json(level_data)
+
+
+def generate_ai_documentation(registry):
+    """Генерирует документацию для ИИ в понятном формате"""
+    docs = {
+        'version': '1.0',
+        'classes': {}
+    }
+    
+    for class_name, cls in registry.items():
+        class_doc = {
+            'description': cls.__doc__ or f'Class {class_name}',
+            'parent': [base.__name__ for base in cls.__bases__ if base != object],
+            'init_parameters': {},
+            'attributes': {},
+            'required_attributes': [],
+            'optional_attributes': []
+        }
+        
+        # Получаем параметры __init__
+        init_sig = inspect.signature(cls.__init__)
+        for param_name, param in init_sig.parameters.items():
+            if param_name == 'self':
+                continue
+                
+            param_info = {
+                'type': get_type_hints(cls.__init__).get(param_name, 'Any'),
+                'required': param.default == inspect.Parameter.empty,
+                'default': None if param.default == inspect.Parameter.empty else param.default
+            }
+            
+            if param_info['required']:
+                class_doc['required_attributes'].append(param_name)
+            else:
+                class_doc['optional_attributes'].append(param_name)
+                
+            class_doc['init_parameters'][param_name] = param_info
+        
+        # Пытаемся создать экземпляр и посмотреть атрибуты
+        try:
+            # Создаем с минимальными параметрами
+            minimal_params = {}
+            for param_name, param_info in class_doc['init_parameters'].items():
+                if param_info['required']:
+                    # Для обязательных параметров пробуем угадать значение
+                    if 'x' in param_name or 'y' in param_name:
+                        minimal_params[param_name] = 0
+                    elif 'width' in param_name or 'height' in param_name:
+                        minimal_params[param_name] = 50
+                    elif 'color' in param_name:
+                        minimal_params[param_name] = [0, 0, 0]
+                    else:
+                        minimal_params[param_name] = None
+            
+            if minimal_params:
+                obj = cls(**minimal_params)
+            else:
+                obj = cls()
+            
+            # Собираем все атрибуты
+            for attr_name, attr_value in obj.__dict__.items():
+                clean_name = attr_name.lstrip('_')
+                class_doc['attributes'][clean_name] = {
+                    'type': type(attr_value).__name__,
+                    'example': attr_value if isinstance(attr_value, (int, float, str, bool, list)) else str(attr_value),
+                    'is_object': hasattr(attr_value, '__dict__')
+                }
+        except Exception as e:
+            class_doc['error'] = str(e)
+        
+        docs['classes'][class_name] = class_doc
+    
+    return docs
+
+ai_docs = generate_ai_documentation(CLASS_REGISTRY)
+with open('level_docs.json', 'w', encoding='utf-8') as f:
+    json.dump(ai_docs, f, ensure_ascii=False, indent=2, default=str)

@@ -24,10 +24,6 @@ class Particle(RenderMixin):
         storage.particles.append(self)
 
     @property
-    def render_layer(self) -> str:
-        return 'particles'
-
-    @property
     def lifetime(self):
         return self._lifetime
 

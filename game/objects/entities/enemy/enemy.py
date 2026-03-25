@@ -6,7 +6,14 @@ import random
 
 
 class Enemy(Entity, ParticleMixin, TimerMixin):
-    def __init__(self, target: Entity = None, melee_damage: int = 10, patrol_distance=200, viewing_radius=500, **kwargs):
+    def __init__(
+        self,
+        target: Entity = None,
+        melee_damage: int = 10,
+        patrol_distance: int = 200,
+        viewing_radius: int = 500,
+        **kwargs
+    ):
         super().__init__(**kwargs)
         self.attack_timer = None
         self.is_enemy = True
@@ -74,7 +81,7 @@ class Enemy(Entity, ParticleMixin, TimerMixin):
             self.patrol()
         if self.target_is_detecte:
             self.move('left' if self.x > self.target.x else 'right')
-            if self.target.y < self.y and hasattr(self, 'is_jumping') and hasattr(self.target, 'is_jumping'):
+            if self.target.y < self.y and hasattr(self, 'is_jumping'):
                 self.is_jumping = random.random() > 0.95
 
         return super().update_before_render()

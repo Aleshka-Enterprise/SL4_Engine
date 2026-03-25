@@ -16,6 +16,7 @@ class Entity(RenderMixin, HealthMixin, AudioMixin, MoveMixin, CollisionMixin, Gr
         self,
         weapon: Weapon = None,
         show_hp: bool = False,
+        fraction: str = None,
         **kwargs
     ):
         super().__init__(**kwargs)
@@ -25,15 +26,14 @@ class Entity(RenderMixin, HealthMixin, AudioMixin, MoveMixin, CollisionMixin, Gr
         self.is_enemy = False
         self.weapon = weapon
         self.show_hp = show_hp
+        self.fraction = fraction
 
         if self.weapon:
             self.weapon.entity = self
+        
+        self.z_index = 4
 
         storage.entities.append(self)
-
-    @property
-    def render_layer(self) -> str:
-        return 'entity'
 
     def can_move(self, new_x: int, new_y: int) -> bool:
         '''Проверяет возможность движения с учётом столкновений'''

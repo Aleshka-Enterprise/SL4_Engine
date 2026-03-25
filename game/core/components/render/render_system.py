@@ -8,9 +8,6 @@ from game.core.components.phisics.collision import CollisionSystem
 class RenderSystem(BaseSystem):
     font.init()
 
-    RENDER_LAYERS = ('envirement', 'particles', 'entity', 'items', 'shoot')
-    ''' Порядок отрисовки слоёв '''
-
     _window: Surface | None = None
     _debug_font = font.SysFont('Comic Sans MS', 30)
     _current_fps = 0
@@ -72,29 +69,30 @@ class RenderSystem(BaseSystem):
 
         text_surface = cls._debug_font.render(str(int(cls._current_fps)), False, (155, 0, 0))
         RenderSystem._window.blit(text_surface, (0, 0))
+        
+    @classmethod
+    def render_background(cls):
+        cls._window.fill((25, 150, 250))
 
     @classmethod
     def render(cls, camera):
-        cls._window.fill((25, 150, 250))
+        cls.render_background()
 
-        for layer in cls.RENDER_LAYERS:
-            groups = {}
-            layer_objects = (obj for obj in storage.render_objects_list if obj.render_layer == layer)
-            if not layer_objects:
+        groups = {}
+        layer_objects = sorted(storage.render_objects_list, key=lambda item: item.z_index)
+        for element in layer_objects:
+            if not element.display:
                 continue
-            for element in layer_objects:
-                if not element.display:
-                    continue
-                object_to_render = element.prepare_to_render(camera)
-                if not groups.get(object_to_render['type']):
-                    groups[object_to_render['type']] = []
-                groups[object_to_render['type']].append(object_to_render['data'])
+            object_to_render = element.prepare_to_render(camera)
+            if not groups.get(object_to_render['type']):
+                groups[object_to_render['type']] = []
+            groups[object_to_render['type']].append(object_to_render['data'])
 
-            for type in groups:
-                if type == 'rect':
-                    cls._render_rect_batch(groups[type])
-                elif type == 'circle':
-                    cls._render_circle_batch(groups[type])
+        for type in groups:
+            if type == 'rect':
+                cls._render_rect_batch(groups[type])
+            elif type == 'circle':
+                cls._render_circle_batch(groups[type])
 
         cls.render_hotbar()
 

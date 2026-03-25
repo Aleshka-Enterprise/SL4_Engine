@@ -23,8 +23,12 @@ class HealthMixin(BaseMixin):
     @hp.setter
     def hp(self, value):
         self._hp = min(value, self.max_hp)
-        if self.hp < 1 and not self.invulnerable:
-            self.died()
+
+        if self.hp < 1:
+            if self.invulnerable:
+                self._hp = 1
+            else:
+                self.died()
 
     @property
     def max_hp(self) -> int:

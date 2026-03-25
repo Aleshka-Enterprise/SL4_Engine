@@ -29,12 +29,10 @@ class Shoot(RenderMixin, GravityMixin, ParticleMixin, CollisionMixin, MoveMixin)
         self.gravity = 0.05
         self.vel_y = -0.1
         self.used_colision = False
+        
+        self.z_index = 7
 
         storage.shots.append(self)
-
-    @property
-    def render_layer(self) -> str:
-        return 'shoot'
 
     @property
     def hit_entity(self):
@@ -72,7 +70,7 @@ class Shoot(RenderMixin, GravityMixin, ParticleMixin, CollisionMixin, MoveMixin)
         colision_object = self.check_collision(self.rect, [])
 
         if colision_object:
-            if isinstance(colision_object, Entity) and self.initializer != colision_object:
+            if isinstance(colision_object, Entity) and self.initializer != colision_object and self.initializer and self.initializer.fraction != colision_object.fraction:
                 self.damage_entity(colision_object)
             self.destroy()
             return

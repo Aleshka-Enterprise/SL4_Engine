@@ -22,13 +22,14 @@ class Weapon(Item, AudioMixin, RenderMixin, CollisionMixin, TimerMixin, GravityM
         super().__init__(**kwargs)
 
         self._init_audio_mixin()
+        
+        self._entity = entity
 
         self.offset_x = offset_x
         self.offset_y = offset_y
         self.cooling_down = cooling_down
         self.maximum_number_of_bullets = maximum_number_of_bullets
         self.shoot_list = []
-        self.entity = entity
         self.delete_after_death = delete_after_death
         self.vel_y = 0
         self.gravity = gravity
