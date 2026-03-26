@@ -13,17 +13,15 @@ class BaseSystem:
     def register(cls, item):
         if not isinstance(cls.objects, ObservableList):
             cls.objects = ObservableList(cls.on_change_objects_list)
-        cls.objects.append(item)
+            
+        if (isinstance(item, list)):
+            cls.objects.extend(item)
+        else:
+            cls.objects.append(item)
 
     @classmethod
     def destroy(cls, item):
         cls.objects.remove(item)
-
-    @classmethod
-    def register_list(cls, items):
-        if not isinstance(cls.objects, ObservableList):
-            cls.objects = ObservableList(cls.on_change_objects_list)
-        cls.objects.extend(items)
 
     @classmethod
     def update(cls):

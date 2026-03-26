@@ -1,4 +1,4 @@
-from pygame import Surface, display, draw, font
+from pygame import Surface, display, draw, font, RESIZABLE
 from game.core.components.base.base_system import BaseSystem
 from game.settings import DISPLAY, DEBUG, WINDOW_CAPTION
 from game.core.storage import storage
@@ -20,7 +20,7 @@ class RenderSystem(BaseSystem):
 
         width = DISPLAY.WIDTH
         height = DISPLAY.HEIGHT
-        window = display.set_mode((width, height))
+        window = display.set_mode((width, height), RESIZABLE)
         display.set_caption(WINDOW_CAPTION)
         cls._window = window
         return window

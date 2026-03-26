@@ -52,14 +52,17 @@ class Entity(RenderMixin, HealthMixin, AudioMixin, MoveMixin, CollisionMixin, Gr
     def on_died(self) -> None:
         '''Срабатывает при смерти сущности'''
         res = super().on_died()
-        if self in storage.entities:
-            storage.entities.remove(self)
-            self.destroy()
         if self.weapon:
             self.weapon.destroy()
         self.destroy()
 
         return res
+    
+    def destroy(self):
+        if self in storage.entities:
+            storage.entities.remove(self)
+
+        return super().destroy()
 
     def take_item(self) -> None:
         item = super().take_item(ignore=[self.weapon])

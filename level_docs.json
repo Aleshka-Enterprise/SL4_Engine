@@ -37,7 +37,7 @@
       "attributes": {
         "id": {
           "type": "UUID",
-          "example": "44894a08-239c-4bad-91f0-960c6b4020a7",
+          "example": "d3e7508c-200a-4869-bb23-e6f72c69d6ca",
           "is_object": false
         },
         "x": {
@@ -253,22 +253,22 @@
         "EventMixin__event_listener": {
           "type": "list",
           "example": [
-            "Event(keys=(122,), event_type=<EventState.KEY_PRESSED: 'key_pressed'>, callback=<bound method Player.attack of <game.objects.entities.player.player.Player object at 0x0000015917AC8140>>)",
-            "Event(keys=(1073741904, 97), event_type=<EventState.KEY_PRESSED: 'key_pressed'>, callback=<function Player.__init__.<locals>.<lambda> at 0x0000015917C3D440>)",
-            "Event(keys=(1073741903, 100), event_type=<EventState.KEY_PRESSED: 'key_pressed'>, callback=<function Player.__init__.<locals>.<lambda> at 0x0000015917C3D4E0>)",
-            "Event(keys=(32, 119, 1073741906), event_type=<EventState.KEY_DOWN: 'key_down'>, callback=<bound method JumpMixin.jump of <game.objects.entities.player.player.Player object at 0x0000015917AC8140>>)",
-            "Event(keys=(1073742049,), event_type=<EventState.KEY_DOWN: 'key_down'>, callback=<bound method MoveMixin.speed_boost of <game.objects.entities.player.player.Player object at 0x0000015917AC8140>>)",
-            "Event(keys=(115, 1073741905), event_type=<EventState.KEY_DOWN: 'key_down'>, callback=<bound method Player.sit of <game.objects.entities.player.player.Player object at 0x0000015917AC8140>>)",
-            "Event(keys=(101,), event_type=<EventState.KEY_DOWN: 'key_down'>, callback=<bound method Entity.take_item of <game.objects.entities.player.player.Player object at 0x0000015917AC8140>>)",
-            "Event(keys=(113,), event_type=<EventState.KEY_DOWN: 'key_down'>, callback=<bound method Entity.drop_weapon of <game.objects.entities.player.player.Player object at 0x0000015917AC8140>>)",
-            "Event(keys=(1073742049,), event_type=<EventState.KEY_UP: 'key_up'>, callback=<bound method MoveMixin.stop_speed_boost of <game.objects.entities.player.player.Player object at 0x0000015917AC8140>>)",
-            "Event(keys=(115, 1073741905), event_type=<EventState.KEY_UP: 'key_up'>, callback=<bound method Player.stand_up of <game.objects.entities.player.player.Player object at 0x0000015917AC8140>>)"
+            "Event(keys=(122,), event_type=<EventState.KEY_PRESSED: 'key_pressed'>, callback=<bound method Player.attack of <game.objects.entities.player.player.Player object at 0x000002B35B6A3C80>>)",
+            "Event(keys=(1073741904, 97), event_type=<EventState.KEY_PRESSED: 'key_pressed'>, callback=<function Player.__init__.<locals>.<lambda> at 0x000002B35B6D14E0>)",
+            "Event(keys=(1073741903, 100), event_type=<EventState.KEY_PRESSED: 'key_pressed'>, callback=<function Player.__init__.<locals>.<lambda> at 0x000002B35B6D1580>)",
+            "Event(keys=(32, 119, 1073741906), event_type=<EventState.KEY_DOWN: 'key_down'>, callback=<bound method JumpMixin.jump of <game.objects.entities.player.player.Player object at 0x000002B35B6A3C80>>)",
+            "Event(keys=(1073742049,), event_type=<EventState.KEY_DOWN: 'key_down'>, callback=<bound method MoveMixin.speed_boost of <game.objects.entities.player.player.Player object at 0x000002B35B6A3C80>>)",
+            "Event(keys=(115, 1073741905), event_type=<EventState.KEY_DOWN: 'key_down'>, callback=<bound method Player.sit of <game.objects.entities.player.player.Player object at 0x000002B35B6A3C80>>)",
+            "Event(keys=(101,), event_type=<EventState.KEY_DOWN: 'key_down'>, callback=<bound method Entity.take_item of <game.objects.entities.player.player.Player object at 0x000002B35B6A3C80>>)",
+            "Event(keys=(113,), event_type=<EventState.KEY_DOWN: 'key_down'>, callback=<bound method Entity.drop_weapon of <game.objects.entities.player.player.Player object at 0x000002B35B6A3C80>>)",
+            "Event(keys=(1073742049,), event_type=<EventState.KEY_UP: 'key_up'>, callback=<bound method MoveMixin.stop_speed_boost of <game.objects.entities.player.player.Player object at 0x000002B35B6A3C80>>)",
+            "Event(keys=(115, 1073741905), event_type=<EventState.KEY_UP: 'key_up'>, callback=<bound method Player.stand_up of <game.objects.entities.player.player.Player object at 0x000002B35B6A3C80>>)"
           ],
           "is_object": false
         },
         "id": {
           "type": "UUID",
-          "example": "91fd33f9-38c2-4884-ba42-edd5540af78e",
+          "example": "34733430-5e90-4cdb-a5ae-109e3b20420a",
           "is_object": false
         },
         "x": {
@@ -438,7 +438,7 @@
         },
         "sound_groups": {
           "type": "dict",
-          "example": "{'damage': <game.core.components.audio.audio_mixin.SoundGroup object at 0x0000015917C3AA20>, 'move': <game.core.components.audio.audio_mixin.SoundGroup object at 0x0000015917C39310>}",
+          "example": "{'damage': <game.core.components.audio.audio_mixin.SoundGroup object at 0x000002B35B6CAD50>, 'move': <game.core.components.audio.audio_mixin.SoundGroup object at 0x000002B35B6CADB0>}",
           "is_object": false
         },
         "is_enemy": {
@@ -505,7 +505,7 @@
       "attributes": {
         "id": {
           "type": "UUID",
-          "example": "af6fe15b-b6b3-4e10-8ea1-a2ef41916366",
+          "example": "f7ecf210-d6a2-4770-acef-c75d004bb50c",
           "is_object": false
         },
         "x": {
@@ -680,7 +680,7 @@
         },
         "sound_groups": {
           "type": "dict",
-          "example": "{'died': <game.core.components.audio.audio_mixin.SoundGroup object at 0x0000015917C3B740>, 'move': <game.core.components.audio.audio_mixin.SoundGroup object at 0x0000015917C3B7A0>}",
+          "example": "{'died': <game.core.components.audio.audio_mixin.SoundGroup object at 0x000002B35B6CBAA0>, 'move': <game.core.components.audio.audio_mixin.SoundGroup object at 0x000002B35B6CBB00>}",
           "is_object": false
         },
         "is_enemy": {
@@ -710,7 +710,7 @@
         },
         "target": {
           "type": "Player",
-          "example": "<game.objects.entities.player.player.Player object at 0x0000015917AC8140>",
+          "example": "<game.objects.entities.player.player.Player object at 0x000002B35B6A3C80>",
           "is_object": true
         },
         "melee_damage": {
@@ -768,7 +768,7 @@
       "attributes": {
         "id": {
           "type": "UUID",
-          "example": "39a75f50-3410-472e-a071-4719ecd1e38c",
+          "example": "30424407-fbbf-42b1-a30e-9835e2a77573",
           "is_object": false
         },
         "x": {
@@ -904,7 +904,7 @@
       "attributes": {
         "id": {
           "type": "UUID",
-          "example": "40dc5155-c10b-4b73-938a-8de68e50381e",
+          "example": "c44f54fc-1e81-470b-9455-e5e6f2eb0d7b",
           "is_object": false
         },
         "x": {
@@ -1128,7 +1128,7 @@
       "attributes": {
         "id": {
           "type": "UUID",
-          "example": "288064d7-205c-45c6-8fe8-885e31dec033",
+          "example": "77a8a122-ecbf-4801-967e-52b6275440b6",
           "is_object": false
         },
         "x": {

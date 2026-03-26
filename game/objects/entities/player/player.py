@@ -33,15 +33,15 @@ class Player(Entity, JumpMixin, EventMixin):
         ]
 
         storage.player = self
-
-    @JumpMixin.is_jumping.setter
-    def is_jumping(self, value):
-        if self.energy < 100 and value and not self.is_sitting:
-            self._is_jumping = False
-        else:
-            if value and not self._is_jumping:
-                self.energy -= 100
-            super(Player, Player).is_jumping.__set__(self, value)
+        
+    def can_jump(self):
+        if self.energy < 100 and not self.is_sitting:
+            return False
+        return super().can_jump()
+    
+    def on_start_jump(self):
+        self.energy -= 100
+        return super().on_start_jump()
 
     @Entity.is_running.setter
     def is_running(self, value):

@@ -17,4 +17,4 @@ class EventMixin(BaseMixin):
     @event_listener.setter
     def event_listener(self, value):
         self.__event_listener = value
-        EventsSystem.register_list(self.__event_listener)
+        EventsSystem.register(self.__event_listener)

@@ -55,7 +55,7 @@ class Enemy(Entity, ParticleMixin, TimerMixin):
     def can_move(self, new_x, new_y):
         res = super().can_move(new_x, new_y)
         if not res and hasattr(self, 'is_jumping'):
-            self.is_jumping = True
+            self.jump()
         return res
 
     def can_see_target(self):
@@ -82,6 +82,6 @@ class Enemy(Entity, ParticleMixin, TimerMixin):
         if self.target_is_detecte:
             self.move('left' if self.x > self.target.x else 'right')
             if self.target.y < self.y and hasattr(self, 'is_jumping'):
-                self.is_jumping = random.random() > 0.95
+                self.jump()
 
         return super().update_before_render()
