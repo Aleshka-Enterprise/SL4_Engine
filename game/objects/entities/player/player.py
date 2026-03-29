@@ -1,6 +1,7 @@
 from typing import Literal
 from game.core.components.gameplay.event import EventMixin
 from game.core.components.phisics.jump import JumpMixin
+from game.core.components.phisics.move.move_mixin import MoveMixin
 from game.objects.entities.entity import Entity
 from game.core.storage import storage
 from game.settings import KEYS
@@ -8,7 +9,7 @@ from game.core.storage import GAME_STATE
 from game.utils.types import Event, EventState
 
 
-class Player(Entity, JumpMixin, EventMixin):
+class Player(Entity, JumpMixin, EventMixin, MoveMixin):
     def __init__(self, energy: int = 350, **kwargs):
         super().__init__(**kwargs)
 
@@ -43,7 +44,7 @@ class Player(Entity, JumpMixin, EventMixin):
         self.energy -= 100
         return super().on_start_jump()
 
-    @Entity.is_running.setter
+    @MoveMixin.is_running.setter
     def is_running(self, value):
         if not value or self.energy > 50 and not self.is_sitting:
             super(Player, Player).is_running.__set__(self, value)

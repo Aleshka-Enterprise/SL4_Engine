@@ -13,6 +13,7 @@ class RenderMixin(BaseMixin):
         display: bool = True,
         z_index: int = 1,
         position: Literal["absolut", "window"] = "absolut",
+        destroy_on_render_exit: bool = False,
         **kwargs
     ):
         super().__init__(**kwargs)
@@ -22,6 +23,7 @@ class RenderMixin(BaseMixin):
         self.display = display
         self.z_index = z_index
         self.position = position
+        self.destroy_on_render_exit = destroy_on_render_exit
 
         if auto_register_in_render_system:
             RenderSystem.register(self)

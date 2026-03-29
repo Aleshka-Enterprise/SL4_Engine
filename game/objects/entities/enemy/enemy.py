@@ -1,3 +1,4 @@
+from game.core.components.phisics.move.move_mixin import MoveMixin
 from game.core.components.render.particle import ParticleMixin
 from game.core.components.utils.timer import TimerMixin
 from game.objects.entities.entity import Entity
@@ -5,7 +6,7 @@ from game.core.storage import storage
 import random
 
 
-class Enemy(Entity, ParticleMixin, TimerMixin):
+class Enemy(Entity, ParticleMixin, TimerMixin, MoveMixin):
     def __init__(
         self,
         target: Entity = None,

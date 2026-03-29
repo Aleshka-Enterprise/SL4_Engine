@@ -49,14 +49,20 @@ class RenderSystem(BaseSystem):
     @classmethod
     def render_hotbar(cls) -> None:
         '''Рендерит хотбар игрока'''
-        draw.rect(cls._window, (0, 250, 0), (1100, 100, storage.player.energy, 20))
-        draw.rect(cls._window, (255, 30, 0), (1100, 50, storage.player.hp, 40))
+        # draw.rect(cls._window, (0, 250, 0), (1100, 100, storage.player.energy, 20))
+        # draw.rect(cls._window, (255, 30, 0), (1100, 50, storage.player.hp, 40))
 
     @classmethod
     def update_render_objects(cls) -> None:
         if storage.camera:
             new_render_objects_list = [obj for obj in cls.objects if obj._ignore_render_check or obj.rect.colliderect(storage.camera.render_zone)]
-            [obj.on_exit_render_zone() for obj in storage.render_objects_list if obj not in new_render_objects_list]
+            
+            for obj in storage.render_objects_list:
+                if ( obj not in new_render_objects_list):
+                    obj.on_exit_render_zone()
+                    if obj.destroy_on_render_exit:
+                        obj.destroy()
+
             storage.render_objects_list = new_render_objects_list
 
             CollisionSystem.update_visible_objects(storage.render_objects_list)

@@ -10,7 +10,7 @@ from game.objects.items.weapons.weapon import Weapon
 from pygame import Rect
 
 
-class Entity(RenderMixin, HealthMixin, AudioMixin, MoveMixin, CollisionMixin, GravityMixin, InteractiveMixin):
+class Entity(RenderMixin, HealthMixin, AudioMixin, CollisionMixin, GravityMixin, InteractiveMixin):
     '''Базовый класс сущностей'''
     def __init__(
         self,

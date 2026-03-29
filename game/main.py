@@ -1,15 +1,17 @@
 from game.core.components.render import RenderSystem
 from game.core.components.system_manager import SystemManager
 from game.objects.system_objects.camera import Camera
+from game.scenes.flappy_bird import FlappyBird
 from game.settings import DEBUG, DISPLAY, FPS
 from game.core.storage import GAME_STATE, storage
-from game.system.saveload import save_level, load_level
+from game.system.saveload import load_level
 import pygame
 import cProfile
 
 
 def run() -> None:
-    load_level('game/levels/mario.json')
+    FlappyBird.run()
+    # load_level('game/levels/mario.json')
 
     pygame.init()
     pygame.mixer.init(frequency=44100, size=-16, channels=2, buffer=512)
@@ -26,9 +28,6 @@ def run() -> None:
 
         if DEBUG:
             RenderSystem.set_surrent_fps(clock.get_fps())
-
-    if storage.player:
-        save_level('game/levels/save.json')
 
 
 if __name__ == '__main__':

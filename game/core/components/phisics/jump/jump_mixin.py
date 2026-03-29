@@ -25,12 +25,13 @@ class JumpMixin(BaseMixin):
     def is_jumping(self, value):
         if not self.can_jump() and value:
             return
+        
+        if value:
+            self.vel_y = self.jump_force
+            self.on_start_jump()
 
-        if self._is_jumping != value:
-            if value:
-                self.on_start_jump()
-            else:
-                self.on_end_jump()
+        if self._is_jumping != value and not value:
+            self.on_end_jump()
 
         if not self._is_jumping:
             self._is_jumping = value
