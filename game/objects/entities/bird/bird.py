@@ -1,4 +1,5 @@
 from game.core.components.gameplay.event import EventMixin
+from game.core.components.phisics.collision.collision_types import CollisionResponseTypes
 from game.core.components.phisics.jump import JumpMixin
 from game.objects.entities.entity import Entity
 from game.core.storage import storage
@@ -17,6 +18,7 @@ class Bird(Entity, JumpMixin, EventMixin):
         self.gravity = 0.3
         self.base_color = self.color
         self._is_alive = True
+        self.collision_response = CollisionResponseTypes.IGNORE
 
         self.event_listener = [
             Event(KEYS.JUMP, EventState.KEY_DOWN, self.jump),
@@ -45,7 +47,10 @@ class Bird(Entity, JumpMixin, EventMixin):
     def can_move(self, new_x, new_y):
         return False
     
+    def on_collision(self, obj) -> None:
+        self.is_alive = False
+        
     def update_before_render(self):
-        if (self.check_collision(self.rect, ignore_list=[self.rect])) or self.on_the_ground:
+        if self.is_alive and self.on_the_ground:
             self.is_alive = False
         return super().update_before_render()

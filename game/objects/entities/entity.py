@@ -1,11 +1,10 @@
 from game.core.components.audio import AudioMixin
 from game.core.components.phisics.collision import CollisionMixin
+from game.core.components.phisics.collision.collision_types import CollisionResponseTypes
 from game.core.components.phisics.gravity import GravityMixin
 from game.core.components.gameplay.health import HealthMixin
 from game.core.components.gameplay.interactive import InteractiveMixin
-from game.core.components.phisics.move import MoveMixin
 from game.core.components.render import RenderMixin
-from game.core.storage import storage
 from game.objects.items.weapons.weapon import Weapon
 from pygame import Rect
 
@@ -15,7 +14,6 @@ class Entity(RenderMixin, HealthMixin, AudioMixin, CollisionMixin, GravityMixin,
     def __init__(
         self,
         weapon: Weapon = None,
-        show_hp: bool = False,
         fraction: str = None,
         **kwargs
     ):
@@ -25,15 +23,13 @@ class Entity(RenderMixin, HealthMixin, AudioMixin, CollisionMixin, GravityMixin,
 
         self.is_enemy = False
         self.weapon = weapon
-        self.show_hp = show_hp
         self.fraction = fraction
+        self.collision_response = CollisionResponseTypes.PUSH
 
         if self.weapon:
             self.weapon.entity = self
         
         self.z_index = 4
-
-        storage.entities.append(self)
 
     def can_move(self, new_x: int, new_y: int) -> bool:
         '''Проверяет возможность движения с учётом столкновений'''
@@ -57,12 +53,6 @@ class Entity(RenderMixin, HealthMixin, AudioMixin, CollisionMixin, GravityMixin,
         self.destroy()
 
         return res
-    
-    def destroy(self):
-        if self in storage.entities:
-            storage.entities.remove(self)
-
-        return super().destroy()
 
     def take_item(self) -> None:
         item = super().take_item(ignore=[self.weapon])

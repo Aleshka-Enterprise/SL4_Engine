@@ -1,13 +1,21 @@
 
 from game.core.components.base.base_mixin import BaseMixin
 from game.core.components.phisics.collision.collision_system import CollisionSystem
+from game.core.components.phisics.collision.collision_types import CollisionResponseTypes
 
 
 class CollisionMixin(BaseMixin):
     ''' Миксин отвечающий за добавление и обработку коллизии '''
-    def __init__(self, used_colision: bool = True, **kwargs):
+    def __init__(
+        self,
+        used_colision: bool = True,
+        collision_response: CollisionResponseTypes = CollisionResponseTypes.IGNORE,
+        **kwargs
+    ):
         super().__init__(**kwargs)
+
         self.used_colision = used_colision
+        self.collision_response = collision_response
 
     @property
     def used_colision(self):
@@ -28,3 +36,6 @@ class CollisionMixin(BaseMixin):
     def destroy(self):
         super().destroy()
         CollisionSystem.destroy(self)
+        
+    def on_collision(self, obj) -> None:
+        pass

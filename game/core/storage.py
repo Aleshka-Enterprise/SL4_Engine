@@ -4,9 +4,6 @@ class GameStorage:
         self.camera = None
         self.grounds = []
         self.items = []
-        self.entities = []
-        self.shots = []
-        self.particles = []
 
         self.render_objects_list = []
         self.collision_object_list = []

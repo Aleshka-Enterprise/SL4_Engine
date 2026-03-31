@@ -2,6 +2,7 @@ import inspect
 import json
 from typing import Dict, Type, Set, Any, get_type_hints
 from pygame import Rect
+from game import settings
 from game.objects.entities.entity import Entity
 from game.objects.entities.player.player import Player
 from game.objects.system_objects.camera import Camera
@@ -88,18 +89,6 @@ def serialize_obj(obj, _seen: Set[int] = None) -> dict:
     return result
 
 
-def save_level(filename: str):
-    """Сохраняет уровень в файл"""
-    level_data = {
-        'entities': [serialize_obj(entity) for entity in storage.entities],
-        'grounds': [serialize_obj(ground) for ground in storage.grounds],
-        'camera': serialize_obj(storage.camera),
-    }
-
-    with open(filename, 'w', encoding='utf-8') as file:
-        json.dump(level_data, file, ensure_ascii=False, indent=4)
-
-
 def create_objects_from_json(json_data: Dict[str, Any]) -> None:
     """
     Создает объекты из JSON данных с учетом вложенности и регистрации классов.
@@ -176,10 +165,8 @@ def load_level(filename: str):
         level_data = json.load(file)
 
     # Очищаем текущее состояние
-    storage.entities.clear()
     storage.grounds.clear()
     storage.items.clear()
-    storage.shots.clear()
 
     create_objects_from_json(level_data)
 
@@ -256,6 +243,8 @@ def generate_ai_documentation(registry):
     
     return docs
 
-ai_docs = generate_ai_documentation(CLASS_REGISTRY)
-with open('level_docs.json', 'w', encoding='utf-8') as f:
-    json.dump(ai_docs, f, ensure_ascii=False, indent=2, default=str)
+
+if settings.DEBUG:
+    docs = generate_ai_documentation(CLASS_REGISTRY)
+    with open('level_docs.json', 'w', encoding='utf-8') as f:
+        json.dump(docs, f, ensure_ascii=False, indent=2, default=str)

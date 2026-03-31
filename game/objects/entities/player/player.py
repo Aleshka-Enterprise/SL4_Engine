@@ -16,7 +16,7 @@ class Player(Entity, JumpMixin, EventMixin, MoveMixin):
         self.energy = energy
         self.max_energy = energy
         self._is_sitting = False
-        self.default_height = kwargs.get('height', 100)
+        self.default_height = self.height
 
         self.event_listener = [
             Event(KEYS.ATTACK, EventState.KEY_PRESSED, self.attack),
@@ -91,6 +91,7 @@ class Player(Entity, JumpMixin, EventMixin, MoveMixin):
 
     def on_run(self):
         self.energy -= 3
+        return super().on_run()
 
     def move(self, direction: Literal['left', 'right']):
         '''Движение Игрока'''

@@ -1,6 +1,5 @@
 import random
 from typing import Tuple
-from game.core.storage import storage
 from game.core.components.render import RenderMixin
 from game.core.components.render import RenderSystem
 
@@ -17,11 +16,7 @@ class Particle(RenderMixin):
         self.dt = 0.03
         self._ignore_render_check = True
         self.particle_destroy_listener = particle_destroy_listener
-
-        if self.is_active:
-            RenderSystem.register(self)
-
-        storage.particles.append(self)
+        self.auto_register = self.is_active
 
     @property
     def lifetime(self):

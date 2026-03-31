@@ -7,7 +7,7 @@ class GameStorage {
   entities: Entity[] = [];
   grounds: Ground[] = [];
   items = [];
-  shots = [];
+  shoots = [];
   selectedObject = null;
   camera = null;
   windowCoordinates: { x: number; y: number } = { x: 0, y: 0 };
@@ -26,7 +26,7 @@ class GameStorage {
     this.entities = [];
     this.grounds = [];
     this.items = [];
-    this.shots = [];
+    this.shoots = [];
     this.camera = null;
     this.windowCoordinates = { x: 0, y: 0 };
   }

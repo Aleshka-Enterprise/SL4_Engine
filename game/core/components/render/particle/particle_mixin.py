@@ -2,25 +2,27 @@ import math
 import random
 from game.core.components.base.base_mixin import BaseMixin
 from game.objects.particles.particle import Particle
-from game.core.storage import storage
 
 
 class ParticleMixin(BaseMixin):
     ''' Миксин отвечающий за добавление и управление частиц '''
+
+    particles = []
+
     def __init__(self, max_particles: int = 300, **kwargs):
         super().__init__(**kwargs)
 
         self.max_particles = max_particles
 
     def __get_inactive_particles(self):
-        return [particle for particle in storage.particles if not particle.is_active]
+        return [particle for particle in __class__.particles if not particle.is_active]
 
     def add_explosion_particles(self, x: float = None, y: float = None, color=(255, 100, 50), count=20):
         particle_x = x or self.x
         particle_y = y or self.y
 
         for _ in range(count):
-            if len(storage.particles) > self.max_particles:
+            if len(__class__.particles) > self.max_particles:
                 break
 
             angle = random.uniform(0, 6.28)
@@ -37,6 +39,8 @@ class ParticleMixin(BaseMixin):
                 velocity=(vx, vy),
                 lifetime=random.uniform(0.5, 1.5),
             )
+            
+            __class__.particles.append(new_particle)
 
             count -= 1
 
@@ -60,7 +64,7 @@ class ParticleMixin(BaseMixin):
         particle_y = y or self.y  
 
         for _ in range(intensity):
-            if len(storage.particles) > self.max_particles:
+            if len(__class__.particles) > self.max_particles:
                 break
 
             new_particle = Particle(
@@ -72,6 +76,8 @@ class ParticleMixin(BaseMixin):
                 velocity=(random.uniform(-100, 100), random.uniform(-100, 0)),
                 lifetime=random.uniform(1.0, 3.0),
             )
+            
+            __class__.particles.append(new_particle)
 
             intensity -= 1
 
@@ -83,5 +89,5 @@ class ParticleMixin(BaseMixin):
             particle.color = (random.randint(120, 200), 0, 0)
             particle.velocity = (random.uniform(-100, 100), random.uniform(-100, 0))
             particle.lifetime = random.uniform(1.0, 3.0)
-            particle.auto_register_in_render_system = False
+            particle.auto_register = False
             particle.is_active = True

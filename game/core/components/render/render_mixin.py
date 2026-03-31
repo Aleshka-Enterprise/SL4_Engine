@@ -9,7 +9,6 @@ class RenderMixin(BaseMixin):
         self,
         color: Tuple[int, int, int] = (0, 0, 0),
         ignore_check: bool = False,
-        auto_register_in_render_system: bool = True,
         display: bool = True,
         z_index: int = 1,
         position: Literal["absolut", "window"] = "absolut",
@@ -25,7 +24,7 @@ class RenderMixin(BaseMixin):
         self.position = position
         self.destroy_on_render_exit = destroy_on_render_exit
 
-        if auto_register_in_render_system:
+        if self.auto_register:
             RenderSystem.register(self)
 
     @property

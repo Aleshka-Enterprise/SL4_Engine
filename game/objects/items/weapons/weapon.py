@@ -1,13 +1,13 @@
 from game.core.components.phisics.collision import CollisionMixin
+from game.core.components.phisics.collision.collision_types import CollisionResponseTypes
 from game.core.components.phisics.gravity import GravityMixin
-from game.core.components.render import RenderMixin
 from game.core.components.utils.timer import TimerMixin
 from game.core.storage import storage
 from game.core.components.audio import AudioMixin
 from game.objects.items.item import Item
 
 
-class Weapon(Item, AudioMixin, RenderMixin, CollisionMixin, TimerMixin, GravityMixin):
+class Weapon(Item, AudioMixin, CollisionMixin, TimerMixin, GravityMixin):
     def __init__(self,
                  offset_x: int,
                  offset_y: int,
@@ -35,6 +35,7 @@ class Weapon(Item, AudioMixin, RenderMixin, CollisionMixin, TimerMixin, GravityM
         self.gravity = gravity
         self.weapon_is_ready = True
         self.damage = damage
+        self.collision_response = CollisionResponseTypes.PUSH
 
         self.is_pickable = True
 

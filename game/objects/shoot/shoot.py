@@ -4,7 +4,6 @@ from game.core.components.phisics.gravity import GravityMixin
 from game.core.components.phisics.move import MoveMixin
 from game.core.components.render.particle import ParticleMixin
 from game.core.components.render import RenderMixin
-from game.core.storage import storage
 from game.objects.entities.entity import Entity
 
 
@@ -12,7 +11,7 @@ class Shoot(RenderMixin, GravityMixin, ParticleMixin, CollisionMixin, MoveMixin)
     def __init__(
         self,
         direction: Literal['left', 'right'],
-        owner_weapon,
+        owner_weapon=None,
         initializer=None,
         damage: int = 0,
         speed: int = 30,
@@ -28,11 +27,10 @@ class Shoot(RenderMixin, GravityMixin, ParticleMixin, CollisionMixin, MoveMixin)
         self._hit_entity = None
         self.gravity = 0.05
         self.vel_y = -0.1
-        self.used_colision = False
+        self.used_colision = True
+        self.destroy_on_render_exit = True
         
         self.z_index = 7
-
-        storage.shots.append(self)
 
     @property
     def hit_entity(self):
@@ -43,9 +41,7 @@ class Shoot(RenderMixin, GravityMixin, ParticleMixin, CollisionMixin, MoveMixin)
         self._hit_entity = value
 
     def destroy(self) -> None:
-        if (self in storage.shots):
-            storage.shots.remove(self)
-            self.destroy()
+        if self.owner_weapon and isinstance(self.owner_weapon.shoot_list, list) and self in self.owner_weapon.shoot_list:
             self.owner_weapon.shoot_list.remove(self)
 
         return super().destroy()
@@ -59,18 +55,18 @@ class Shoot(RenderMixin, GravityMixin, ParticleMixin, CollisionMixin, MoveMixin)
         entity.take_damage(self.damage)
         self.render_particle('entity')
         self.hit_entity = entity
+        
+    def on_collision(self, obj):
+        if obj and obj != self.initializer:
+            if isinstance(obj, Entity) and self.initializer != obj and self.initializer and self.initializer.fraction != obj.fraction:
+                self.damage_entity(obj)
 
-    def on_exit_render_zone(self):
-        self.destroy()
-        return super().on_exit_render_zone()
+            self.destroy()
+        
+        return super().on_collision(obj)
 
     def update_before_render(self) -> None:
-        super().move()
-
-        colision_object = self.check_collision(self.rect, [])
-
-        if colision_object:
-            if isinstance(colision_object, Entity) and self.initializer != colision_object and self.initializer and self.initializer.fraction != colision_object.fraction:
-                self.damage_entity(colision_object)
-            self.destroy()
-            return
+        self.move()
+        
+        return super().update_before_render()
+        

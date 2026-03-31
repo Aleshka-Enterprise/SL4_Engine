@@ -15,7 +15,6 @@ interface EntityParams {
   jump_force?: number;
   direction?: 'left' | 'right';
   boost?: number;
-  show_hp?: boolean;
   weapon?: null;
 }
 
@@ -36,7 +35,6 @@ class Entity {
   jump_force = -24;
   direction: 'left' | 'right' = 'left';
   boost = 5;
-  show_hp = false;
   weapon = null;
   __id__ = Math.random().toString(36).substr(2, 9);
 
@@ -55,7 +53,6 @@ class Entity {
       jump_force: observable,
       direction: observable,
       boost: observable,
-      show_hp: observable,
       weapon: observable,
       update: action,
     });
@@ -79,7 +76,6 @@ class Entity {
       jump_force: this.jump_force,
       direction: this.direction,
       boost: this.boost,
-      show_hp: this.show_hp,
       weapon: this.weapon,
     };
   }
@@ -105,7 +101,6 @@ class Entity {
       },
       direction: { description: 'Направление объекта', type: 'CHOOSE', options: ['left', 'right'] },
       boost: { description: 'Ускорение при беге', type: 'NUMBER' },
-      show_hp: { description: 'Показывать ли здоровье', type: 'BOOLEAN' },
       weapon: { description: 'Оружие', type: 'BIND', options: storage.items },
     };
   }
