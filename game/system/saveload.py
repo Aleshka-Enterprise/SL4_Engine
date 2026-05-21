@@ -3,14 +3,14 @@ import json
 from typing import Dict, Type, Set, Any, get_type_hints
 from pygame import Rect
 from game import settings
-from game.objects.entities.entity import Entity
-from game.objects.entities.player.player import Player
-from game.objects.system_objects.camera import Camera
-from game.objects.entities.enemy.zombie.zombie import Zombie
-from game.objects.envirements.ground.ground import Ground
-from game.objects.items.weapons.weapon import Weapon
-from game.objects.items.weapons.shotgun.shotgun import Shotgun
-from game.objects.items.weapons.poison_gun.poison_gun import PoisonGun
+from game.models.entities.entity import Entity
+from game.models.entities.player.player import Player
+from game.models.system_objects.camera import Camera
+from game.models.entities.enemy.zombie.zombie import Zombie
+from game.models.envirements.ground.ground import Ground
+from game.models.items.weapons.weapon import Weapon
+from game.models.items.weapons.shotgun.shotgun import Shotgun
+from game.models.items.weapons.poison_gun.poison_gun import PoisonGun
 from game.core.storage import storage
 
 CLASS_REGISTRY: Dict[str, Type] = {

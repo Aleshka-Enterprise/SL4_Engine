@@ -1,7 +1,7 @@
 import math
 import random
 from game.core.components.base.base_mixin import BaseMixin
-from game.objects.particles.particle import Particle
+from game.models.particles.particle import Particle
 
 
 class ParticleMixin(BaseMixin):

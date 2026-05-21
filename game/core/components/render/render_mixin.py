@@ -5,6 +5,7 @@ from game.core.components.render.render_system import RenderSystem
 
 
 class RenderMixin(BaseMixin):
+    ''' Простой рендер фигуры на экран '''
     def __init__(
         self,
         color: Tuple[int, int, int] = (0, 0, 0),

@@ -1,6 +1,6 @@
 from game.core.components.render import RenderSystem
 from game.core.components.system_manager import SystemManager
-from game.objects.system_objects.camera import Camera
+from game.models.system_objects.camera import Camera
 from game.scenes.flappy_bird import FlappyBird
 from game.settings import DEBUG, DISPLAY, FPS
 from game.core.storage import GAME_STATE, storage
@@ -10,12 +10,11 @@ import cProfile
 
 
 def run() -> None:
-    FlappyBird.run()
-    # load_level('game/levels/mario.json')
-
     pygame.init()
     pygame.mixer.init(frequency=44100, size=-16, channels=2, buffer=512)
     SystemManager.init()
+
+    FlappyBird.run()
 
     clock = pygame.time.Clock()
 

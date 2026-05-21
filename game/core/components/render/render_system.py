@@ -1,4 +1,4 @@
-from pygame import Surface, display, draw, font, RESIZABLE
+import pygame
 from game.core.components.base.base_system import BaseSystem
 from game.settings import DISPLAY, DEBUG, WINDOW_CAPTION
 from game.core.storage import storage
@@ -6,22 +6,22 @@ from game.core.components.phisics.collision import CollisionSystem
 
 
 class RenderSystem(BaseSystem):
-    font.init()
+    pygame.font.init()
 
-    _window: Surface | None = None
-    _debug_font = font.SysFont('Comic Sans MS', 30)
+    _window: pygame.Surface | None = None
+    _debug_font = pygame.font.SysFont('Comic Sans MS', 30)
     _current_fps = 0
 
     @classmethod
-    def init_window(cls) -> Surface:
+    def init_window(cls) -> pygame.Surface:
         '''Инициализация окна pygame'''
         if cls._window:
             return cls._window
 
         width = DISPLAY.WIDTH
         height = DISPLAY.HEIGHT
-        window = display.set_mode((width, height), RESIZABLE)
-        display.set_caption(WINDOW_CAPTION)
+        window = pygame.display.set_mode((width, height), pygame.RESIZABLE)
+        pygame.display.set_caption(WINDOW_CAPTION)
         cls._window = window
         return window
 
@@ -36,7 +36,7 @@ class RenderSystem(BaseSystem):
             return
 
         for color, rect in commands:
-            draw.rect(cls._window, color, rect)
+            pygame.draw.rect(cls._window, color, rect)
 
     @classmethod
     def _render_circle_batch(cls, commands):
@@ -44,7 +44,7 @@ class RenderSystem(BaseSystem):
             return
 
         for color, x, y, radius in commands:
-            draw.circle(cls._window, color, (x, y), radius)
+            pygame.draw.circle(cls._window, color, (x, y), radius)
 
     @classmethod
     def render_hotbar(cls) -> None:
@@ -68,10 +68,10 @@ class RenderSystem(BaseSystem):
             CollisionSystem.update_visible_objects(storage.render_objects_list)
 
     @classmethod
-    def debug_render(cls, window: Surface):
+    def debug_render(cls, window: pygame.Surface):
         ''' Отрисовка debug элементов. Скрыт если в настройка DEBUG == False '''
         camera = storage.camera
-        draw.rect(window, (0, 0, 0), camera.deadzone, 1)
+        pygame.draw.rect(window, (0, 0, 0), camera.deadzone, 1)
 
         text_surface = cls._debug_font.render(str(int(cls._current_fps)), False, (155, 0, 0))
         RenderSystem._window.blit(text_surface, (0, 0))
@@ -79,6 +79,13 @@ class RenderSystem(BaseSystem):
     @classmethod
     def render_background(cls):
         cls._window.fill((25, 150, 250))
+
+    @classmethod
+    def _render_image_batch(cls, commands):
+        for surface, rect in commands:
+            if surface.get_size() != rect.size:
+                surface = pygame.transform.scale(surface, rect.size)
+            cls._window.blit(surface, rect.topleft)
 
     @classmethod
     def render(cls, camera):
@@ -99,13 +106,15 @@ class RenderSystem(BaseSystem):
                 cls._render_rect_batch(groups[type])
             elif type == 'circle':
                 cls._render_circle_batch(groups[type])
+            elif type == 'image':
+                cls._render_image_batch(groups[type])
 
         cls.render_hotbar()
 
         if DEBUG:
             cls.debug_render(cls._window)
 
-        display.update()
+        pygame.display.update()
 
     @classmethod
     def on_change_objects_list(cls, action=None, item=None, *args, **kwargs):
