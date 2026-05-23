@@ -16,8 +16,8 @@ class Camera(TimerMixin):
         self.target = None
 
         self.deadzone = Rect(
-            screen_width // 6,   # Отступ слева (1/6 экрана)
-            screen_height // 6,  # Отступ сверху (1/6 экрана)
+            screen_width // 6,
+            screen_height // 6,
             screen_width // 3,
             screen_height // 2
         )

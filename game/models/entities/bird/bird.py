@@ -12,19 +12,16 @@ class Bird(Entity, JumpMixin, EventMixin):
         super().__init__(**kwargs)
         self._init_audio_mixin()
 
-        self._is_sitting = False
-        self.default_height = kwargs.get('height', 100)
         self.jump_force = -8
         self.gravity = 0.3
-        self.base_color = self.color
         self._is_alive = True
         self.collision_response = CollisionResponseTypes.IGNORE
+
+        self.play_animation('jump', mode='freez')
 
         self.event_listener = [
             Event(KEYS.JUMP, EventState.KEY_DOWN, self.jump),
         ]
-
-        storage.player = self
         
     @property
     def is_alive(self):
@@ -33,12 +30,11 @@ class Bird(Entity, JumpMixin, EventMixin):
     @is_alive.setter
     def is_alive(self, value):
         if not value and value != self._is_alive:
-            self.color = (200, 0, 0)
             self.play_sound('died')
+            self.play_animation('destroed', mode='freez')
         self._is_alive = value
 
     def jump(self):
-        self.play_animation('jump', fps=10, mode='loop')
         return super().jump()
         
     def can_jump(self):

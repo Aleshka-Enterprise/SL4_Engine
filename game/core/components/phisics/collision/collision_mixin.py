@@ -1,4 +1,3 @@
-
 from game.core.components.base.base_mixin import BaseMixin
 from game.core.components.phisics.collision.collision_system import CollisionSystem
 from game.core.components.phisics.collision.collision_types import CollisionResponseTypes
@@ -23,14 +22,16 @@ class CollisionMixin(BaseMixin):
 
     @used_colision.setter
     def used_colision(self, value):
-        if value:
+        if value and self not in CollisionSystem.objects:
             CollisionSystem.register(self)
-        else:
+        elif self in CollisionSystem.objects:
             CollisionSystem.destroy(self)
 
         self._used_colision = value
 
-    def check_collision(self, rect, ignore_list = []):
+    def check_collision(self, rect, ignore_list=None):
+        if ignore_list is None:
+            ignore_list = []
         return CollisionSystem.check_collision(rect, ignore_list)
 
     def destroy(self):

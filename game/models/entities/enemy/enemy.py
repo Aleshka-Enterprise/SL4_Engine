@@ -3,7 +3,6 @@ from game.core.components.render.particle import ParticleMixin
 from game.core.components.utils.timer import TimerMixin
 from game.models.entities.entity import Entity
 from game.core.storage import storage
-import random
 
 
 class Enemy(Entity, ParticleMixin, TimerMixin, MoveMixin):

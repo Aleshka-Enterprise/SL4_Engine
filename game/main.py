@@ -4,7 +4,6 @@ from game.models.system_objects.camera import Camera
 from game.scenes.flappy_bird import FlappyBird
 from game.settings import DEBUG, DISPLAY, FPS
 from game.core.storage import GAME_STATE, storage
-from game.system.saveload import load_level
 import pygame
 import cProfile
 
@@ -14,7 +13,7 @@ def run() -> None:
     pygame.mixer.init(frequency=44100, size=-16, channels=2, buffer=512)
     SystemManager.init()
 
-    FlappyBird.run()
+    FlappyBird().run()
 
     clock = pygame.time.Clock()
 

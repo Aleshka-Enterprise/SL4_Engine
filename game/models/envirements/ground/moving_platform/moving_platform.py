@@ -6,10 +6,11 @@ from game.models.envirements.ground.ground import Ground
 
 class MovingPlatform(Ground, MoveMixin):
     '''Простой класс земли'''
-    def __init__(self, transparent: bool = False, **kwargs):
+    def __init__(self, transparent: bool = False, player=None, **kwargs):
         super().__init__(**kwargs)
         self.transparent = transparent
-        self.play_animation('default', mode='random', fps=5)
+        self.play_animation('default', mode='freez')
+        self.player = player
 
         if self._frames:
             self.current_frame_index = random.randint(0, len(self._frames) - 1)
@@ -19,5 +20,6 @@ class MovingPlatform(Ground, MoveMixin):
         return self.rect.top
     
     def update_before_render(self):
-        self.move(self.direction)
+        if self.player and self.player.is_alive:
+            self.move(self.direction)
         return super().update_before_render()

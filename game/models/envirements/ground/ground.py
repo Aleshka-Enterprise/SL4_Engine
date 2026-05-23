@@ -8,14 +8,9 @@ class Ground(Envirement, CollisionMixin):
         super().__init__(**kwargs)
         self.transparent = transparent
 
-    def static_animation(self) -> None:
-        # self.play_animation('default', fps=10, mode='random')
-        None
-
     @property
     def top(self):
         return self.rect.top
     
     def update_before_render(self):
-        self.static_animation()
         return super().update_before_render()

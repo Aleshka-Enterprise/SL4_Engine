@@ -17,8 +17,11 @@ class CollisionSystem(BaseSystem):
         return super().on_change_objects_list(action, item)
 
     @classmethod
-    def check_collision(cls, rect, ignore_list=[]):
-        for collision_object in cls.objects:
+    def check_collision(cls, rect, ignore_list=None):
+        if ignore_list is None:
+            ignore_list = []
+
+        for collision_object in cls.visible_collision_object_list:
             if collision_object not in ignore_list and rect.colliderect(collision_object.rect):
                 return collision_object
             
