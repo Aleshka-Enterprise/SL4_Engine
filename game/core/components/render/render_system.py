@@ -3,6 +3,7 @@ from game.core.components.base.base_system import BaseSystem
 from game.settings import DISPLAY, DEBUG, WINDOW_CAPTION
 from game.core.storage import storage
 from game.core.components.phisics.collision import CollisionSystem
+from game.core.components.gameplay.event import EventsSystem
 
 
 class RenderSystem(BaseSystem):
@@ -11,6 +12,7 @@ class RenderSystem(BaseSystem):
     _window: pygame.Surface | None = None
     _debug_font = pygame.font.SysFont('Comic Sans MS', 30)
     _current_fps = 0
+    is_freezable = False
 
     @classmethod
     def init_window(cls) -> pygame.Surface:
@@ -26,11 +28,11 @@ class RenderSystem(BaseSystem):
         return window
 
     @classmethod
-    def set_surrent_fps(cls, value):
+    def set_surrent_fps(cls, value) -> None:
         cls._current_fps = value
 
     @classmethod
-    def _render_rect_batch(cls, commands):
+    def _render_rect_batch(cls, commands) -> None:
         """Пакетная отрисовка прямоугольников"""
         if not commands:
             return
@@ -45,12 +47,6 @@ class RenderSystem(BaseSystem):
 
         for color, x, y, radius in commands:
             pygame.draw.circle(cls._window, color, (x, y), radius)
-
-    @classmethod
-    def render_hotbar(cls) -> None:
-        '''Рендерит хотбар игрока'''
-        # draw.rect(cls._window, (0, 250, 0), (1100, 100, storage.player.energy, 20))
-        # draw.rect(cls._window, (255, 30, 0), (1100, 50, storage.player.hp, 40))
 
     @classmethod
     def update_render_objects(cls) -> None:
@@ -68,7 +64,7 @@ class RenderSystem(BaseSystem):
             CollisionSystem.update_visible_objects(storage.render_objects_list)
 
     @classmethod
-    def debug_render(cls, window: pygame.Surface):
+    def debug_render(cls, window: pygame.Surface) -> None:
         ''' Отрисовка debug элементов. Скрыт если в настройка DEBUG == False '''
         camera = storage.camera
         pygame.draw.rect(window, (0, 0, 0), camera.deadzone, 1)
@@ -81,14 +77,14 @@ class RenderSystem(BaseSystem):
         cls._window.fill((25, 150, 250))
 
     @classmethod
-    def _render_image_batch(cls, commands):
+    def _render_image_batch(cls, commands) -> None:
         for surface, rect in commands:
             if surface.get_size() != rect.size:
                 surface = pygame.transform.scale(surface, rect.size)
             cls._window.blit(surface, rect.topleft)
 
     @classmethod
-    def render(cls, camera):
+    def render(cls, camera) -> None:
         cls.render_background()
 
         groups = {}
@@ -109,16 +105,14 @@ class RenderSystem(BaseSystem):
             elif type == 'image':
                 cls._render_image_batch(groups[type])
 
-        cls.render_hotbar()
-
         if DEBUG:
             cls.debug_render(cls._window)
 
         pygame.display.update()
 
     @classmethod
-    def on_change_objects_list(cls, action=None, item=None, *args, **kwargs):
-        if not item._ignore_render_check:
+    def on_change_objects_list(cls, action=None, item=None, *args, **kwargs) -> None:
+        if item and not item._ignore_render_check:
             cls.update_render_objects()
             super().on_change_objects_list(action, item, *args, **kwargs)
         else:
@@ -131,19 +125,22 @@ class RenderSystem(BaseSystem):
             obj.update_before_render()
 
     @classmethod
-    def update_after_render(cls):
+    def update_after_render(cls) -> None:
         for obj in cls.objects:
             obj.update_after_render()
 
     @classmethod
-    def update(cls):
-        cls.update_before_render()
-        storage.camera.update(storage.camera.target or storage.player)
-        cls.render(storage.camera)
-        cls.update_after_render()
+    def update(cls) -> None:
+        if not EventsSystem.is_frozen:
+            cls.update_before_render()
+            storage.camera.update(storage.camera.target or storage.player)
+            cls.render(storage.camera)
+            cls.update_after_render()
+        else:
+            cls.render(storage.camera)
 
     @classmethod
-    def destroy(cls, item):
+    def destroy(cls, item) -> None:
         res = super().destroy(item)
         if item in storage.render_objects_list:
             storage.render_objects_list.remove(item)

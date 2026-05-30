@@ -14,12 +14,20 @@ class SystemManager:
         RenderSystem,
     )
 
+    NON_FREEZING_SYSTEMS_LIST = [system for system in SYSTEMS_LIST if not system.is_freezable]
+
     @classmethod
-    def init(cls):
+    def init(cls) -> None:
         RenderSystem.init_window()
 
     @classmethod
-    def update(cls):
-        if not EventsSystem.is_frozen:
-            for system in cls.SYSTEMS_LIST:
-                system.update()
+    def update(cls) -> None:
+        list = cls.NON_FREEZING_SYSTEMS_LIST if EventsSystem.is_frozen else cls.SYSTEMS_LIST
+        for system in list:
+            system.update()
+            
+
+    @classmethod
+    def destroy_all(cls) -> None:
+        for system in cls.SYSTEMS_LIST:
+            system.destroy_all()

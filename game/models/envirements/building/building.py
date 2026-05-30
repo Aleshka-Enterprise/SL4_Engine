@@ -1,10 +1,11 @@
 import random
 
+from game.core.components.phisics.collision.collision_mixin import CollisionMixin
 from game.core.components.phisics.move.move_mixin import MoveMixin
-from game.models.envirements.ground.ground import Ground
+from game.models.envirements.envirement import Envirement
 
 
-class MovingPlatform(Ground, MoveMixin):
+class Building(Envirement, MoveMixin, CollisionMixin):
     '''Простой класс земли'''
     def __init__(self, transparent: bool = False, player=None, **kwargs):
         super().__init__(**kwargs)

@@ -2,12 +2,11 @@ from game.core.components.gameplay.event import EventMixin
 from game.core.components.phisics.collision.collision_types import CollisionResponseTypes
 from game.core.components.phisics.jump import JumpMixin
 from game.models.entities.entity import Entity
-from game.core.storage import storage
 from game.settings import KEYS
 from game.utils.types import Event, EventState
 
 
-class Bird(Entity, JumpMixin, EventMixin):
+class Plane(Entity, JumpMixin, EventMixin):
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
         self._init_audio_mixin()

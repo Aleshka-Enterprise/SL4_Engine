@@ -6,6 +6,7 @@ from game.utils.types import Event, EventState
 
 
 class EventsSystem(BaseSystem):
+    is_freezable = False
     is_frozen = False
     _key_pressed_events: Tuple[Event] = []
     _key_down_events: Tuple[Event] = []
