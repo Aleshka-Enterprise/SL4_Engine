@@ -7,13 +7,14 @@ from game.utils.types import Event, EventState
 
 
 class Plane(Entity, JumpMixin, EventMixin):
-    def __init__(self, **kwargs):
+    def __init__(self, on_dead: function, **kwargs):
         super().__init__(**kwargs)
         self._init_audio_mixin()
 
         self.jump_force = -8
         self.gravity = 0.3
         self._is_alive = True
+        self.on_dead = on_dead
         self.collision_response = CollisionResponseTypes.IGNORE
 
         self.play_animation('jump', mode='freez')
@@ -31,6 +32,7 @@ class Plane(Entity, JumpMixin, EventMixin):
         if not value and value != self._is_alive:
             self.play_sound('died')
             self.play_animation('destroed', mode='freez')
+            self.on_dead()
         self._is_alive = value
 
     def jump(self):

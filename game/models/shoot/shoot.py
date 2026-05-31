@@ -15,6 +15,7 @@ class Shoot(RenderMixin, GravityMixin, ParticleMixin, CollisionMixin, MoveMixin)
         initializer=None,
         damage: int = 0,
         speed: int = 30,
+        z_index: int = 7,
         **kwargs
     ):
         super().__init__(**kwargs)
@@ -30,7 +31,7 @@ class Shoot(RenderMixin, GravityMixin, ParticleMixin, CollisionMixin, MoveMixin)
         self.used_colision = True
         self.destroy_on_render_exit = True
         
-        self.z_index = 7
+        self.z_index = z_index
 
     @property
     def hit_entity(self):

@@ -1,13 +1,13 @@
 import os
 import random
-from typing import Dict, List, Optional
+from typing import Dict, List, Optional, Tuple
 import pygame
 from pygame import Rect
 from game.core.components.render.render_mixin import RenderMixin
 
 
 class AnimationMixin(RenderMixin):
-    # Кэш кадров, общий для всех экземпляров (ключ — путь к папке состояния)
+    # Кэш оригинальных кадров (без масштабирования), общий для всех экземпляров
     _loaded_frames: Dict[str, List[pygame.Surface]] = {}
 
     def __init__(
@@ -17,16 +17,8 @@ class AnimationMixin(RenderMixin):
         current_animation: Optional[str] = None,
         **kwargs
     ):
-        """
-        :param sprites_root: путь к папке sprites/ относительно файла модели.
-        :param animations: словарь с настройками состояний, например:
-                           {'idle': {'fps': 6, 'mode': 'loop'}}
-        :param current_animation: имя начального состояния (если нужно сразу запустить)
-        Остальные параметры (x, y, color, z_index...) передаются в RenderMixin.
-        """
         super().__init__(**kwargs)
 
-        # Определяем корень спрайтов
         if sprites_root is None:
             try:
                 module_file = self.__class__.__module__.replace('.', '/') + '.py'
@@ -42,10 +34,13 @@ class AnimationMixin(RenderMixin):
         self._frames: List[pygame.Surface] = []
         self._animation_timer: float = 0.0
         self._fps: int = 6
-        self._mode: str = 'loop'   # loop, once, random, freeze
+        self._mode: str = 'loop'
         self._playing: bool = False
 
-        # Если передано начальное состояние – сразу запускаем
+        # Кэш масштабированных кадров для этого экземпляра
+        # Ключ: (state, frame_index, width, height) -> pygame.Surface
+        self._scaled_cache: Dict[Tuple[str, int, int, int], pygame.Surface] = {}
+
         if current_animation:
             self.play_animation(current_animation)
 
@@ -114,22 +109,58 @@ class AnimationMixin(RenderMixin):
             elif self._mode == 'freeze':
                 break
 
+    def _get_scaled_frame(self, state: str, frame_index: int, width: int, height: int) -> pygame.Surface:
+        """Возвращает масштабированный кадр, используя кэш"""
+        key = (state, frame_index, width, height)
+        if key not in self._scaled_cache:
+            original = self._loaded_frames.get(os.path.join(self.sprites_root, state), [])[frame_index]
+            scaled = pygame.transform.scale(original, (width, height))
+            self._scaled_cache[key] = scaled
+        return self._scaled_cache[key]
+
+    def invalidate_scaled_cache(self):
+        """Вызывать при изменении ширины/высоты объекта"""
+        self._scaled_cache.clear()
+        if self.current_state and self._frames:
+            self._scaled_cache = {}
+
     def prepare_to_render(self, camera):
         """Если есть активный кадр – отдаём изображение, иначе – прямоугольник из RenderMixin."""
-        if self.current_state and self.get_current_frame():
+        if self.current_state and self._frames:
             screen_pos = camera.apply((self.x, self.y))
-            frame = self.get_current_frame()
-            # масштабируем под текущий размер объекта, если нужно
-            if frame.get_size() != (self.width, self.height):
-                frame = pygame.transform.scale(frame, (self.width, self.height))
+            # Берём масштабированный кадр из кэша (или создаём)
+            scaled_frame = self._get_scaled_frame(
+                self.current_state,
+                self.current_frame_index,
+                self.width,
+                self.height
+            )
             return {
                 'type': 'image',
-                'data': (frame, Rect(*screen_pos, self.width, self.height))
+                'data': (scaled_frame, Rect(*screen_pos, self.width, self.height))
             }
-
         return super().prepare_to_render(camera)
 
     def update_before_render(self, dt: float = 0.0):
-        """Вызывается каждый кадр, чтобы обновить кадр анимации."""
         if dt > 0:
             self.update_animation(dt)
+
+    @property
+    def width(self):
+        return self._width
+
+    @width.setter
+    def width(self, value):
+        if self._width != value:
+            self._width = value
+            self.invalidate_scaled_cache()
+
+    @property
+    def height(self):
+        return self._height
+
+    @height.setter
+    def height(self, value):
+        if self._height != value:
+            self._height = value
+            self.invalidate_scaled_cache()

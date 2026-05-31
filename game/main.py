@@ -30,12 +30,10 @@ def run() -> None:
 
 if __name__ == '__main__':
     if DEBUG:
-        cProfile.run('run()', 'game/game_profile.prof')
         profiler = cProfile.Profile()
         profiler.enable()
-
-    run()
-
-    if DEBUG:
+        run()
         profiler.disable()
         profiler.dump_stats('game/game_profile.prof')
+    else:
+        run()

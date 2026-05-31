@@ -12,6 +12,9 @@ class RenderSystem(BaseSystem):
     _window: pygame.Surface | None = None
     _debug_font = pygame.font.SysFont('Comic Sans MS', 30)
     _current_fps = 0
+    _sorted_cache = []           # кэш отсортированных объектов
+    _cache_valid = False         # флаг "кэш актуален"
+
     is_freezable = False
 
     @classmethod
@@ -26,27 +29,24 @@ class RenderSystem(BaseSystem):
         pygame.display.set_caption(WINDOW_CAPTION)
         cls._window = window
         return window
+    
+    @classmethod
+    def invalidate_cache(cls):
+        cls._cache_valid = False
+
+    @classmethod
+    def _get_sorted_objects(cls):
+        if not cls._cache_valid:
+            cls._sorted_cache = sorted(
+                storage.render_objects_list,
+                key=lambda item: item.z_index
+            )
+            cls._cache_valid = True
+        return cls._sorted_cache
 
     @classmethod
     def set_surrent_fps(cls, value) -> None:
         cls._current_fps = value
-
-    @classmethod
-    def _render_rect_batch(cls, commands) -> None:
-        """Пакетная отрисовка прямоугольников"""
-        if not commands:
-            return
-
-        for color, rect in commands:
-            pygame.draw.rect(cls._window, color, rect)
-
-    @classmethod
-    def _render_circle_batch(cls, commands):
-        if not commands:
-            return
-
-        for color, x, y, radius in commands:
-            pygame.draw.circle(cls._window, color, (x, y), radius)
 
     @classmethod
     def update_render_objects(cls) -> None:
@@ -60,6 +60,7 @@ class RenderSystem(BaseSystem):
                         obj.destroy()
 
             storage.render_objects_list = new_render_objects_list
+            cls.invalidate_cache()
 
             CollisionSystem.update_visible_objects(storage.render_objects_list)
 
@@ -71,53 +72,44 @@ class RenderSystem(BaseSystem):
 
         text_surface = cls._debug_font.render(str(int(cls._current_fps)), False, (155, 0, 0))
         RenderSystem._window.blit(text_surface, (0, 0))
-        
-    @classmethod
-    def render_background(cls):
-        cls._window.fill((25, 150, 250))
-
-    @classmethod
-    def _render_image_batch(cls, commands) -> None:
-        for surface, rect in commands:
-            if surface.get_size() != rect.size:
-                surface = pygame.transform.scale(surface, rect.size)
-            cls._window.blit(surface, rect.topleft)
 
     @classmethod
     def render(cls, camera) -> None:
-        cls.render_background()
-
-        groups = {}
-        layer_objects = sorted(storage.render_objects_list, key=lambda item: item.z_index)
-        for element in layer_objects:
-            if not element.display:
+        sorted_objects = cls._get_sorted_objects()
+        viewport = camera.viewport
+        
+        for element in sorted_objects:
+            if not element.display or not element.rect.colliderect(viewport):
                 continue
-            object_to_render = element.prepare_to_render(camera)
-            if not groups.get(object_to_render['type']):
-                groups[object_to_render['type']] = []
-            groups[object_to_render['type']].append(object_to_render['data'])
-
-        for type in groups:
-            if type == 'rect':
-                cls._render_rect_batch(groups[type])
-            elif type == 'circle':
-                cls._render_circle_batch(groups[type])
-            elif type == 'image':
-                cls._render_image_batch(groups[type])
-
+            data = element.prepare_to_render(camera)
+            obj_type = data['type']
+            args = data['data']
+            
+            if obj_type == 'rect':
+                pygame.draw.rect(cls._window, *args)
+            elif obj_type == 'circle':
+                pygame.draw.circle(cls._window, *args)
+            elif obj_type == 'image':
+                surface, rect = args
+                if surface.get_size() != rect.size:
+                    surface = pygame.transform.scale(surface, rect.size)
+                cls._window.blit(surface, rect.topleft)
+        
         if DEBUG:
             cls.debug_render(cls._window)
-
         pygame.display.update()
 
     @classmethod
     def on_change_objects_list(cls, action=None, item=None, *args, **kwargs) -> None:
+        cls.invalidate_cache()
         if item and not item._ignore_render_check:
             cls.update_render_objects()
             super().on_change_objects_list(action, item, *args, **kwargs)
         else:
             if action == 'append':
                 storage.render_objects_list.append(item)
+            elif action == 'clear':
+                storage.render_objects_list.clear()
 
     @classmethod
     def update_before_render(cls):
@@ -144,4 +136,5 @@ class RenderSystem(BaseSystem):
         res = super().destroy(item)
         if item in storage.render_objects_list:
             storage.render_objects_list.remove(item)
+            cls.invalidate_cache()
         return res

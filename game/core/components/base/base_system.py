@@ -30,5 +30,4 @@ class BaseSystem:
 
     @classmethod
     def destroy_all(cls):
-        cls.objects = []
-        cls.on_change_objects_list("", None)
+        cls.objects.clear()

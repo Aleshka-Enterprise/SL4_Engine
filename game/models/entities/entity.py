@@ -15,6 +15,7 @@ class Entity(AnimationMixin, HealthMixin, AudioMixin, CollisionMixin, GravityMix
         self,
         weapon: Weapon = None,
         fraction: str = None,
+        z_index: int = 4,
         **kwargs
     ):
         super().__init__(**kwargs)
@@ -29,7 +30,7 @@ class Entity(AnimationMixin, HealthMixin, AudioMixin, CollisionMixin, GravityMix
         if self.weapon:
             self.weapon.entity = self
         
-        self.z_index = 4
+        self.z_index = z_index
 
     def can_move(self, new_x: int, new_y: int) -> bool:
         '''Проверяет возможность движения с учётом столкновений'''

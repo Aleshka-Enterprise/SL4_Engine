@@ -31,6 +31,15 @@ class RenderMixin(BaseMixin):
     @property
     def ignore_render_check(self):
         return self._ignore_render_check
+    
+    @property
+    def z_index(self):
+        return self._z_index
+
+    @z_index.setter
+    def z_index(self, value):
+        self._z_index = value
+        RenderSystem.invalidate_cache()
 
     def prepare_to_render(self, camera):
         ''' Подготовка данных к рендерингу '''

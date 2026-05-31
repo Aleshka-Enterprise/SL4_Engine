@@ -6,12 +6,12 @@ from game.models.envirements.envirement import Envirement
 
 
 class Building(Envirement, MoveMixin, CollisionMixin):
-    '''Простой класс земли'''
-    def __init__(self, transparent: bool = False, player=None, **kwargs):
+    is_movement_enabled = True
+ 
+    def __init__(self, transparent: bool = False, **kwargs):
         super().__init__(**kwargs)
         self.transparent = transparent
         self.play_animation('default', mode='freez')
-        self.player = player
 
         if self._frames:
             self.current_frame_index = random.randint(0, len(self._frames) - 1)
@@ -21,6 +21,6 @@ class Building(Envirement, MoveMixin, CollisionMixin):
         return self.rect.top
     
     def update_before_render(self):
-        if self.player and self.player.is_alive:
+        if self.is_movement_enabled:
             self.move(self.direction)
         return super().update_before_render()

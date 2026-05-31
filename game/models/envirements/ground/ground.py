@@ -4,9 +4,10 @@ from game.models.envirements.envirement import Envirement
 
 class Ground(Envirement, CollisionMixin):
     '''Простой класс земли'''
-    def __init__(self, transparent: bool = False, **kwargs):
+    def __init__(self, transparent: bool = False, z_index = 1, **kwargs):
         super().__init__(**kwargs)
         self.transparent = transparent
+        self.z_index = z_index
 
     @property
     def top(self):
