@@ -3,6 +3,7 @@ import random
 from game.core.components.audio.audio_mixin import AudioMixin
 from game.core.components.gameplay.event.event_mixin import EventMixin
 from game.core.components.system_manager import SystemManager
+from game.models.text.counter.counter import Counter
 from game.settings import DISPLAY, KEYS
 from game.core.components.utils.timer.timer_mixin import TimerMixin
 from game.models.entities.plane.plane import Plane
@@ -20,6 +21,7 @@ class FlappyBird(TimerMixin, AudioMixin, EventMixin):
         self.player = Plane(width=190, height=100, y=200, x=200, on_dead=self.on_plane_dead)
         self.player.jump()
         self.ground = Ground(width=2000, height=500, y=640, z_index=10, color=[0, 155, 0])
+        self.counter = Counter(font_name="flappy-font.ttf", text="asdsad", x=700, y=40, width=100, height=100, color=(255, 255, 255), font_size=50)
         BackgroundLayer(x=0, y=0, height=DISPLAY.HEIGHT - 150, width=DISPLAY.WIDTH, z_index=1)
         self.add_pipes_timer = self.add_timer([self.generate_buildings], seconds=1.5, loop=True, use_on_start=True)
 
@@ -35,7 +37,10 @@ class FlappyBird(TimerMixin, AudioMixin, EventMixin):
         self.add_timer([
             lambda: BackgroundLayer(x=0, y=0, height=DISPLAY.HEIGHT + 100, width=DISPLAY.WIDTH, state='game_over', z_index=9999)
             ], seconds=1)
-
+    
+    def on_building_passed(self):
+        self.counter.score += 1
+        self.play_sound('point')
 
     def restart_scene(self):
         SystemManager.destroy_all()
@@ -50,7 +55,7 @@ class FlappyBird(TimerMixin, AudioMixin, EventMixin):
         random_number = random.randint(0, 400)
 
         for i in range(2):
-            Building(
+            building = Building(
                 width = 100,
                 height = 500 + random_number if i == 1 else 1000,
                 x = 2200,
@@ -59,3 +64,6 @@ class FlappyBird(TimerMixin, AudioMixin, EventMixin):
                 destroy_on_render_exit = True,
                 player=self.player
             )
+
+            if (i == 1):
+                building.on_passed = self.on_building_passed

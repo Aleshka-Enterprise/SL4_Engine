@@ -10,7 +10,10 @@ class Building(Envirement, MoveMixin, CollisionMixin):
  
     def __init__(self, transparent: bool = False, **kwargs):
         super().__init__(**kwargs)
+
         self.transparent = transparent
+        self.is_passed = False
+
         self.play_animation('default', mode='freez')
 
         if self._frames:
@@ -21,6 +24,12 @@ class Building(Envirement, MoveMixin, CollisionMixin):
         return self.rect.top
     
     def update_before_render(self):
+        if not self.is_passed and self.x < 200:
+            self.is_passed = True
+            self.on_passed()
         if self.is_movement_enabled:
             self.move(self.direction)
         return super().update_before_render()
+    
+    def on_passed(self):
+        pass

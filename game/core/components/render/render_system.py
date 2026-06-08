@@ -94,6 +94,9 @@ class RenderSystem(BaseSystem):
                 if surface.get_size() != rect.size:
                     surface = pygame.transform.scale(surface, rect.size)
                 cls._window.blit(surface, rect.topleft)
+            elif obj_type == 'text':                     # <-- добавляем
+                surface, rect = args
+                cls._window.blit(surface, rect.topleft)
         
         if DEBUG:
             cls.debug_render(cls._window)
