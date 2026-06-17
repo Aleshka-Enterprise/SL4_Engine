@@ -13,7 +13,7 @@ def run() -> None:
     pygame.mixer.init(frequency=44100, size=-16, channels=2, buffer=512)
     SystemManager.init()
 
-    FlappyBird().run()
+    FlappyBird()
 
     clock = pygame.time.Clock()
 

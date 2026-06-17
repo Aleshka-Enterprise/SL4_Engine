@@ -110,10 +110,12 @@ class AnimationMixin(RenderMixin):
                 break
 
     def _get_scaled_frame(self, state: str, frame_index: int, width: int, height: int) -> pygame.Surface:
-        """Возвращает масштабированный кадр, используя кэш"""
+        """Масштабирует кадр, используя кэш. Вызывается с визуальными размерами."""
         key = (state, frame_index, width, height)
         if key not in self._scaled_cache:
-            original = self._loaded_frames.get(os.path.join(self.sprites_root, state), [])[frame_index]
+            original = self._loaded_frames.get(
+                os.path.join(self.sprites_root, state), []
+            )[frame_index]
             scaled = pygame.transform.scale(original, (width, height))
             self._scaled_cache[key] = scaled
         return self._scaled_cache[key]
@@ -124,20 +126,30 @@ class AnimationMixin(RenderMixin):
         if self.current_state and self._frames:
             self._scaled_cache = {}
 
+    def on_render_size_changed(self):
+        """Вызывается из RenderMixin при изменении padding или других параметров,
+        влияющих на визуальный размер."""
+        self.invalidate_scaled_cache()
+
     def prepare_to_render(self, camera):
-        """Если есть активный кадр – отдаём изображение, иначе – прямоугольник из RenderMixin."""
+        """Отдаёт кадр анимации, если активен, иначе вызывает RenderMixin.prepare_to_render."""
         if self.current_state and self._frames:
-            screen_pos = camera.apply((self.x, self.y))
-            # Берём масштабированный кадр из кэша (или создаём)
+            # Используем визуальное смещение и размеры
+            screen_pos = camera.apply((
+                self.x + self.render_offset_x,
+                self.y + self.render_offset_y
+            ))
             scaled_frame = self._get_scaled_frame(
                 self.current_state,
                 self.current_frame_index,
-                self.width,
-                self.height
+                self.render_width,
+                self.render_height
             )
             return {
                 'type': 'image',
-                'data': (scaled_frame, Rect(*screen_pos, self.width, self.height))
+                'data': (scaled_frame, Rect(
+                    *screen_pos, self.render_width, self.render_height
+                ))
             }
         return super().prepare_to_render(camera)
 
@@ -154,6 +166,7 @@ class AnimationMixin(RenderMixin):
         if self._width != value:
             self._width = value
             self.invalidate_scaled_cache()
+            self._render_rect_dirty = True
 
     @property
     def height(self):
@@ -164,3 +177,4 @@ class AnimationMixin(RenderMixin):
         if self._height != value:
             self._height = value
             self.invalidate_scaled_cache()
+            self._render_rect_dirty = True

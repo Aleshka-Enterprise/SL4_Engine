@@ -14,14 +14,10 @@ class Building(Envirement, MoveMixin, CollisionMixin):
         self.transparent = transparent
         self.is_passed = False
 
-        self.play_animation('default', mode='freez')
+        self.play_animation('default', mode='freeze')
 
         if self._frames:
             self.current_frame_index = random.randint(0, len(self._frames) - 1)
-
-    @property
-    def top(self):
-        return self.rect.top
     
     def update_before_render(self):
         if not self.is_passed and self.x < 200:
@@ -29,6 +25,8 @@ class Building(Envirement, MoveMixin, CollisionMixin):
             self.on_passed()
         if self.is_movement_enabled:
             self.move(self.direction)
+        else:
+            self.used_colision = False
         return super().update_before_render()
     
     def on_passed(self):

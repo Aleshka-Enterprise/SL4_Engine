@@ -29,7 +29,24 @@ class EventsSystem(BaseSystem):
                 event.callback()
 
     @classmethod
-    def on_change_objects_list(cls, action, item):
+    def _get_events(cls, event_type: EventState):
+        return [
+            event
+            for event in cls.objects
+            if event.event_type == event_type
+            and (not cls.is_frozen or not event.is_freezable)
+        ]
+    
+    @classmethod
+    def toggle_freez(cls) -> None:
+        cls.is_frozen = not cls.is_frozen
+
+        cls._key_pressed_events = cls._get_events(EventState.KEY_PRESSED)
+        cls._key_down_events = cls._get_events(EventState.KEY_DOWN)
+        cls._key_up_events = cls._get_events(EventState.KEY_UP)
+
+    @classmethod
+    def on_change_objects_list(cls, *args, **kwargs):
         cls._key_pressed_events = [event for event in cls.objects if event.event_type == EventState.KEY_PRESSED]
         cls._key_down_events = [event for event in cls.objects if event.event_type == EventState.KEY_DOWN]
         cls._key_up_events = [event for event in cls.objects if event.event_type == EventState.KEY_UP]

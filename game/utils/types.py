@@ -55,8 +55,10 @@ class Event:
     keys: Tuple[int]
     event_type: EventState
     callback: Function
+    is_freezable: bool
 
-    def __init__(self, keys: Tuple[int], event_type: EventState, callback: Function):
+    def __init__(self, keys: Tuple[int], event_type: EventState, callback: Function, is_freezable: bool = True):
         self.keys = keys
         self.event_type = event_type
         self.callback = callback
+        self.is_freezable = is_freezable

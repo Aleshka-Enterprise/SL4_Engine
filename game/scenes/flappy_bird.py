@@ -16,6 +16,10 @@ from game.utils.types import Event, EventState
 class FlappyBird(TimerMixin, AudioMixin, EventMixin):
     def __init__(self):
         self.play_sound('soundtrack', loops=-1)
+        BackgroundLayer(x=0, y=0, height=DISPLAY.HEIGHT, width=DISPLAY.WIDTH, state='startscreen', z_index=9999)
+        self.event_listener = [
+            Event(KEYS.JUMP, EventState.KEY_DOWN, self.restart_scene),
+        ]
 
     def run(self) -> None:
         self.player = Plane(width=190, height=100, y=200, x=200, on_dead=self.on_plane_dead)
@@ -26,7 +30,7 @@ class FlappyBird(TimerMixin, AudioMixin, EventMixin):
         self.add_pipes_timer = self.add_timer([self.generate_buildings], seconds=1.5, loop=True, use_on_start=True)
 
         self.event_listener = [
-            Event(KEYS.MENU, EventState.KEY_DOWN, self.toggle_stop_game),
+            Event(KEYS.MENU, EventState.KEY_DOWN, self.toggle_stop_game, False),
         ]
 
     def on_plane_dead(self, *args, **kwargs):

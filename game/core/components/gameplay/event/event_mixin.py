@@ -15,7 +15,7 @@ class EventMixin(BaseMixin):
         return self.__event_listener
     
     def toggle_stop_game(self):
-        EventsSystem.is_frozen = not EventsSystem.is_frozen
+        EventsSystem.toggle_freez()
 
     @event_listener.setter
     def event_listener(self, value):
