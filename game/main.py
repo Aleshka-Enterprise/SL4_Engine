@@ -21,8 +21,9 @@ def run() -> None:
         storage.camera = Camera(screen_width=DISPLAY.WIDTH, screen_height=DISPLAY.HEIGHT)
 
     while GAME_STATE.IS_RUNNING:
-        SystemManager.update()
-        clock.tick(FPS)
+        dt = clock.tick(FPS) / 1000.0
+        dt = min(dt, 0.05)
+        SystemManager.update(dt)
 
         if DEBUG:
             RenderSystem.set_surrent_fps(clock.get_fps())

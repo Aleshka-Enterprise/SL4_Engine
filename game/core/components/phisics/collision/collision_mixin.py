@@ -39,4 +39,10 @@ class CollisionMixin(BaseMixin):
         CollisionSystem.destroy(self)
         
     def on_collision(self, obj) -> None:
+        self.on_touched(obj)
+
+    def on_landed(self, obj):
+        self.on_touched(obj)
+
+    def on_touched(self, obj):
         pass

@@ -34,10 +34,12 @@ class GravitySystem(BaseSystem):
                 obj.y = landing_platform.rect.top - obj.height
                 obj.on_the_ground = True
                 obj.vel_y = 0
+                obj.on_lend(landing_platform)
+                landing_platform.on_landed(obj)
 
             else:
                 obj.on_the_ground = False
 
     @classmethod
-    def update(cls):
+    def update(cls, dt: float = 1.0):
         cls.apply_gravity()

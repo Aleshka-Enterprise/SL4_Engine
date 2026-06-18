@@ -14,7 +14,7 @@ class Building(Envirement, MoveMixin, CollisionMixin):
         self.transparent = transparent
         self.is_passed = False
 
-        self.play_animation('default', mode='freeze')
+        self.play_animation('type_1', mode='freez')
 
         if self._frames:
             self.current_frame_index = random.randint(0, len(self._frames) - 1)
@@ -31,3 +31,11 @@ class Building(Envirement, MoveMixin, CollisionMixin):
     
     def on_passed(self):
         pass
+
+    def play_destroy_building_animation(self):
+        self.play_animation('type_1_destroed', mode='loop', fps=10)
+
+    def on_touched(self, obj):
+        if obj.__class__.__name__ != 'Ground':
+            self.play_animation('type_1_destroed', mode='loop', fps=10)
+        return super().on_touched(obj)

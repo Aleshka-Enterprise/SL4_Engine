@@ -40,7 +40,7 @@ class FlappyBird(TimerMixin, AudioMixin, EventMixin):
         ]
         self.add_timer([
             lambda: BackgroundLayer(x=0, y=0, height=DISPLAY.HEIGHT + 100, width=DISPLAY.WIDTH, state='game_over', z_index=9999)
-            ], seconds=1)
+            ], seconds=3)
     
     def on_building_passed(self):
         self.counter.score += 1
@@ -66,7 +66,9 @@ class FlappyBird(TimerMixin, AudioMixin, EventMixin):
                 y = -500 if i == 1 else random_number + 200,
                 speed = 10,
                 destroy_on_render_exit = True,
-                player=self.player
+                player=self.player,
+                padding=(115, 140, 95, 140),
+                flip_y=(i == 1)
             )
 
             if (i == 1):

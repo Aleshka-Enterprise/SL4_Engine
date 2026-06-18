@@ -94,7 +94,7 @@ class RenderSystem(BaseSystem):
                 if surface.get_size() != rect.size:
                     surface = pygame.transform.scale(surface, rect.size)
                 cls._window.blit(surface, rect.topleft)
-            elif obj_type == 'text':                     # <-- добавляем
+            elif obj_type == 'text':
                 surface, rect = args
                 cls._window.blit(surface, rect.topleft)
         
@@ -125,7 +125,7 @@ class RenderSystem(BaseSystem):
             obj.update_after_render()
 
     @classmethod
-    def update(cls) -> None:
+    def update(cls, dt: float = 1.0) -> None:
         if not EventsSystem.is_frozen:
             cls.update_before_render()
             storage.camera.update(storage.camera.target or storage.player)

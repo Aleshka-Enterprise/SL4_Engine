@@ -50,6 +50,7 @@ class Plane(Entity, JumpMixin, EventMixin):
     
     def on_collision(self, obj) -> None:
         self.is_alive = False
+        return super().on_collision(obj)
         
     def update_before_render(self):
         if self.is_alive and self.on_the_ground:

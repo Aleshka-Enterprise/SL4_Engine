@@ -2,7 +2,6 @@ import os
 import random
 from typing import Dict, List, Optional, Tuple
 import pygame
-from pygame import Rect
 from game.core.components.render.render_mixin import RenderMixin
 
 
@@ -76,7 +75,7 @@ class AnimationMixin(RenderMixin):
 
         state_config = self.animations_config.get(state, {})
         self._mode = mode or state_config.get('mode', 'loop')
-        self._fps = fps or state_config.get('fps', 6)
+        self._fps = fps or state_config.get('fps')
         self._playing = True
 
     def stop(self):
@@ -87,12 +86,12 @@ class AnimationMixin(RenderMixin):
             return None
         return self._frames[self.current_frame_index]
 
-    def update_animation(self, dt: float):
-        if not self._playing or not self._frames:
+    def update_animation(self):
+        if not self._playing or not self._frames or self._fps == None:
             return
 
-        self._animation_timer += dt
-        frame_duration = 1.0 / self._fps
+        self._animation_timer += 1
+        frame_duration = self._fps
 
         while self._animation_timer >= frame_duration:
             self._animation_timer -= frame_duration
@@ -110,19 +109,43 @@ class AnimationMixin(RenderMixin):
                 break
 
     def _get_scaled_frame(self, state: str, frame_index: int, width: int, height: int) -> pygame.Surface:
-        """Масштабирует кадр, используя кэш. Вызывается с визуальными размерами."""
-        key = (state, frame_index, width, height)
-        if key not in self._scaled_cache:
-            original = self._loaded_frames.get(
-                os.path.join(self.sprites_root, state), []
-            )[frame_index]
-            scaled = pygame.transform.scale(original, (width, height))
-            self._scaled_cache[key] = scaled
-        return self._scaled_cache[key]
+        """Возвращает кадр с применёнными масштабом, отражением и поворотом."""
+        # Ключ кэша теперь включает параметры трансформации
+        key = (state, frame_index, width, height, self.flip_x, self.flip_y, self.rotation)
+        if key in self._scaled_cache:
+            return self._scaled_cache[key]
+
+        original_frames = self._loaded_frames.get(os.path.join(self.sprites_root, state))
+        if not original_frames or frame_index >= len(original_frames):
+            # Возвращаем заглушку, если кадр не найден
+            placeholder = pygame.Surface((width, height), pygame.SRCALPHA)
+            placeholder.fill((255, 0, 255, 128))
+            self._scaled_cache[key] = placeholder
+            return placeholder
+
+        original = original_frames[frame_index]
+
+        scaled = pygame.transform.scale(original, (width, height))
+
+        # 2. Применяем отражение (если нужно)
+        if self.flip_x or self.flip_y:
+            scaled = pygame.transform.flip(scaled, self.flip_x, self.flip_y)
+
+        # 3. Применяем поворот (если угол не 0)
+        if self.rotation != 0.0:
+            scaled = pygame.transform.rotate(scaled, self.rotation)
+            # После поворота размеры могут измениться, но мы оставляем их как есть,
+            # потому что rect позиционирования уже рассчитан для исходных размеров.
+            # Можно пересчитать rect с учётом поворота, но это сложнее.
+            # Для простоты будем считать, что поворот применяется к уже масштабированному кадру,
+            # и blit будет происходить по центру rect. Это можно сделать в RenderSystem.
+
+        self._scaled_cache[key] = scaled
+        return scaled
 
     def invalidate_scaled_cache(self):
-        """Вызывать при изменении ширины/высоты объекта"""
-        self._scaled_cache.clear()
+        if hasattr(self, '_scaled_cache'):
+            self._scaled_cache.clear()
         if self.current_state and self._frames:
             self._scaled_cache = {}
 
@@ -132,30 +155,32 @@ class AnimationMixin(RenderMixin):
         self.invalidate_scaled_cache()
 
     def prepare_to_render(self, camera):
-        """Отдаёт кадр анимации, если активен, иначе вызывает RenderMixin.prepare_to_render."""
         if self.current_state and self._frames:
-            # Используем визуальное смещение и размеры
             screen_pos = camera.apply((
                 self.x + self.render_offset_x,
                 self.y + self.render_offset_y
             ))
+            screen_pos = (int(round(screen_pos[0])), int(round(screen_pos[1])))
+
             scaled_frame = self._get_scaled_frame(
                 self.current_state,
                 self.current_frame_index,
                 self.render_width,
                 self.render_height
             )
+            center_x = screen_pos[0] + self.render_width / 2.0
+            center_y = screen_pos[1] + self.render_height / 2.0
+            rect = scaled_frame.get_rect(center=(center_x, center_y))
             return {
                 'type': 'image',
-                'data': (scaled_frame, Rect(
-                    *screen_pos, self.render_width, self.render_height
-                ))
+                'data': (scaled_frame, rect)
             }
         return super().prepare_to_render(camera)
 
-    def update_before_render(self, dt: float = 0.0):
-        if dt > 0:
-            self.update_animation(dt)
+    def update_before_render(self):
+        res = super().update_before_render()
+        self.update_animation()
+        return res
 
     @property
     def width(self):

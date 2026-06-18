@@ -21,10 +21,10 @@ class SystemManager:
         RenderSystem.init_window()
 
     @classmethod
-    def update(cls) -> None:
+    def update(cls, dt: float = 1.0) -> None:
         list = cls.NON_FREEZING_SYSTEMS_LIST if EventsSystem.is_frozen else cls.SYSTEMS_LIST
         for system in list:
-            system.update()
+            system.update(dt)
             
 
     @classmethod

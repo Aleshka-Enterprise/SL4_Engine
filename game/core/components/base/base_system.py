@@ -25,7 +25,7 @@ class BaseSystem:
         cls.objects.remove(item)
 
     @classmethod
-    def update(cls):
+    def update(cls, dt: float = 1.0):
         pass
 
     @classmethod

@@ -57,14 +57,14 @@ class Shoot(RenderMixin, GravityMixin, ParticleMixin, CollisionMixin, MoveMixin)
         self.render_particle('entity')
         self.hit_entity = entity
         
-    def on_collision(self, obj):
+    def on_touched(self, obj):
         if obj and obj != self.initializer:
             if isinstance(obj, Entity) and self.initializer != obj and self.initializer and self.initializer.fraction != obj.fraction:
                 self.damage_entity(obj)
 
             self.destroy()
         
-        return super().on_collision(obj)
+        return super().on_touched(obj)
 
     def update_before_render(self) -> None:
         self.move()

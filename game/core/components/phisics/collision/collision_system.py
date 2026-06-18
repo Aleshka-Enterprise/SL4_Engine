@@ -26,7 +26,7 @@ class CollisionSystem(BaseSystem):
                 return collision_object
             
     @classmethod
-    def update(cls):
+    def update(cls, dt: float = 1.0):
         for obj in cls.visible_collision_object_list:
             collision_object = cls.check_collision(obj.rect, [obj])
             if collision_object:

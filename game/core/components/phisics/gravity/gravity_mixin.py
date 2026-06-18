@@ -29,3 +29,6 @@ class GravityMixin(BaseMixin):
     @gravity.setter
     def gravity(self, value):
         self._gravity = value
+
+    def on_lend(self, platform):
+        pass

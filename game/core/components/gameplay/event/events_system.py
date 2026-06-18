@@ -62,7 +62,7 @@ class EventsSystem(BaseSystem):
         return any(pressed_keys[key] for key in keys)
 
     @classmethod
-    def update(cls):
+    def update(cls, dt: float = 1.0):
         pressed_keys = pygame.key.get_pressed()
 
         for event in cls._key_pressed_events:

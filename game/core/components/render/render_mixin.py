@@ -19,6 +19,8 @@ class RenderMixin(BaseMixin):
         padding_right: int = 0,
         padding_bottom: int = 0,
         padding_left: int = 0,
+        flip_x: bool = False,
+        flip_y: bool = False,
         **kwargs
     ):
         super().__init__(**kwargs)
@@ -29,6 +31,9 @@ class RenderMixin(BaseMixin):
         self.z_index = z_index
         self.position = position
         self.destroy_on_render_exit = destroy_on_render_exit
+        self._flip_x = bool(flip_x)
+        self._flip_y = bool(flip_y)
+        self._rotation = 0.0
 
         if padding is not None:
             if isinstance(padding, int):
@@ -36,7 +41,7 @@ class RenderMixin(BaseMixin):
                 self._padding_right = padding
                 self._padding_bottom = padding
                 self._padding_left = padding
-            elif isinstance(padding, tuple):
+            elif isinstance(padding, tuple) or isinstance(padding, list):
                 if len(padding) == 2:
                     self._padding_top = padding[0]
                     self._padding_right = padding[1]
@@ -64,7 +69,33 @@ class RenderMixin(BaseMixin):
     def padding_top(self, value):
         self._padding_top = value
         self._render_rect_dirty = True
-        self._on_render_size_changed()
+
+    @property
+    def flip_x(self):
+        return self._flip_x
+
+    @flip_x.setter
+    def flip_x(self, value):
+        self._flip_x = bool(value)
+        self._on_transform_changed()
+
+    @property
+    def flip_y(self):
+        return self._flip_y
+
+    @flip_y.setter
+    def flip_y(self, value):
+        self._flip_y = bool(value)
+        self._on_transform_changed()
+
+    @property
+    def rotation(self):
+        return self._rotation
+
+    @rotation.setter
+    def rotation(self, value):
+        self._rotation = float(value) % 360.0
+        self._on_transform_changed()
 
     @property
     def render_offset_x(self):
@@ -112,6 +143,11 @@ class RenderMixin(BaseMixin):
     def on_render_size_changed(self):
         pass
 
+    def _on_transform_changed(self):
+        self._transform_cache_dirty = True
+        self._render_rect_dirty = True
+        self.invalidate_scaled_cache()
+
     def prepare_to_render(self, camera):
         ''' Подготовка данных к рендерингу '''
         screen_pos = camera.apply((self.x - self._padding_left,
@@ -123,3 +159,6 @@ class RenderMixin(BaseMixin):
                           self.width + self._padding_left + self._padding_right,
                           self.height + self._padding_top + self._padding_bottom)),
         }
+    
+    def invalidate_scaled_cache(self):
+        pass
