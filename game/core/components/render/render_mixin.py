@@ -21,6 +21,7 @@ class RenderMixin(BaseMixin):
         padding_left: int = 0,
         flip_x: bool = False,
         flip_y: bool = False,
+        rotation: float = 0.0,
         **kwargs
     ):
         super().__init__(**kwargs)
@@ -33,7 +34,7 @@ class RenderMixin(BaseMixin):
         self.destroy_on_render_exit = destroy_on_render_exit
         self._flip_x = bool(flip_x)
         self._flip_y = bool(flip_y)
-        self._rotation = 0.0
+        self._rotation = rotation
 
         if padding is not None:
             if isinstance(padding, int):

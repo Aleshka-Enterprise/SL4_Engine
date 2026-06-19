@@ -25,7 +25,7 @@ class RenderSystem(BaseSystem):
 
         width = DISPLAY.WIDTH
         height = DISPLAY.HEIGHT
-        window = pygame.display.set_mode((width, height), pygame.RESIZABLE)
+        window = pygame.display.set_mode((width, height), pygame.RESIZABLE, vsync=1)
         pygame.display.set_caption(WINDOW_CAPTION)
         cls._window = window
         return window
