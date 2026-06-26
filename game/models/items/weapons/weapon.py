@@ -1,3 +1,5 @@
+from typing import Literal
+
 from game.core.components.phisics.collision import CollisionMixin
 from game.core.components.phisics.collision.collision_types import CollisionResponseTypes
 from game.core.components.phisics.gravity import GravityMixin
@@ -29,14 +31,13 @@ class Weapon(Item, AudioMixin, CollisionMixin, TimerMixin, GravityMixin):
         self.offset_y = offset_y
         self.cooling_down = cooling_down
         self.maximum_number_of_bullets = maximum_number_of_bullets
-        self.shoot_list = []
         self.delete_after_death = delete_after_death
         self.vel_y = 0
         self.gravity = gravity
         self.weapon_is_ready = True
         self.damage = damage
         self.collision_response = CollisionResponseTypes.PUSH
-
+        self._direction = 'left'
         self.is_pickable = True
 
     @property
@@ -46,6 +47,16 @@ class Weapon(Item, AudioMixin, CollisionMixin, TimerMixin, GravityMixin):
     @property
     def entity(self):
         return self._entity
+    
+    @property
+    def direction(self):
+        if self.entity:
+            return self.entity.direction
+        return self._direction
+    
+    @direction.setter
+    def direction(self, value: Literal['left', 'right']):
+        self._direction = value
 
     @entity.setter
     def entity(self, value):
@@ -56,7 +67,7 @@ class Weapon(Item, AudioMixin, CollisionMixin, TimerMixin, GravityMixin):
         self.weapon_is_ready = value
 
     def can_atack(self) -> bool:
-        if self.weapon_is_ready and len(self.shoot_list) < self.maximum_number_of_bullets:
+        if self.weapon_is_ready:
             self.play_sound('shoot')
             self.add_timer(
                 [lambda: self.chenge_weapon_status(True)],

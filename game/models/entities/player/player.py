@@ -17,6 +17,7 @@ class Player(Entity, JumpMixin, EventMixin, MoveMixin):
         self.max_energy = energy
         self._is_sitting = False
         self.default_height = self.height
+        self.max_jump_count = 2
 
         self.event_listener = [
             Event(KEYS.ATTACK, EventState.KEY_PRESSED, self.attack),
@@ -101,5 +102,5 @@ class Player(Entity, JumpMixin, EventMixin, MoveMixin):
         return res
 
     def attack(self):
-        if self.weapon:
+        if self.weapon and self.weapon.attack:
             self.weapon.attack()

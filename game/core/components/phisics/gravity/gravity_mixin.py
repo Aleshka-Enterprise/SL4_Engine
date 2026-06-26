@@ -30,5 +30,6 @@ class GravityMixin(BaseMixin):
     def gravity(self, value):
         self._gravity = value
 
-    def on_lend(self, platform):
+    def on_lend(self, platform: BaseMixin) -> None:
+        ''' Слушатель события: объект приземлился '''
         pass

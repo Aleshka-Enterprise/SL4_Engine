@@ -12,7 +12,7 @@ class RenderMixin(BaseMixin):
         ignore_check: bool = False,
         display: bool = True,
         z_index: int = 1,
-        position: Literal["absolut", "window"] = "absolut",
+        position: Literal["world", "window"] = "world",
         destroy_on_render_exit: bool = False,
         padding: int | tuple[int, ...] | None = None,
         padding_top: int = 0,
@@ -69,6 +69,33 @@ class RenderMixin(BaseMixin):
     @padding_top.setter
     def padding_top(self, value):
         self._padding_top = value
+        self._render_rect_dirty = True
+
+    @property
+    def padding_bottom(self):
+        return self._padding_bottom
+
+    @padding_bottom.setter
+    def padding_bottom(self, value):
+        self._padding_bottom = value
+        self._render_rect_dirty = True
+
+    @property
+    def padding_left(self):
+        return self._padding_left
+
+    @padding_left.setter
+    def padding_left(self, value):
+        self._padding_left = value
+        self._render_rect_dirty = True
+
+    @property
+    def padding_right(self):
+        return self._padding_right
+
+    @padding_right.setter
+    def padding_right(self, value):
+        self._padding_right = value
         self._render_rect_dirty = True
 
     @property
@@ -132,9 +159,11 @@ class RenderMixin(BaseMixin):
         return super().destroy()
 
     def update_before_render(self) -> None:
+        ''' Вызывается перед рендером '''
         pass
 
     def update_after_render(self) -> None:
+        ''' Вызывается после рендера '''
         pass
 
     def on_exit_render_zone(self) -> None:
@@ -142,6 +171,7 @@ class RenderMixin(BaseMixin):
         pass
 
     def on_render_size_changed(self):
+        ''' Вызывается при изменении размера '''
         pass
 
     def _on_transform_changed(self):
@@ -151,8 +181,11 @@ class RenderMixin(BaseMixin):
 
     def prepare_to_render(self, camera):
         ''' Подготовка данных к рендерингу '''
-        screen_pos = camera.apply((self.x - self._padding_left,
-                                   self.y - self._padding_top))
+        if self.position == 'window':
+            screen_pos = (self.x, self.y)
+        elif self.position == 'world':
+            screen_pos = camera.apply((self.x - self._padding_left,
+                                    self.y - self._padding_top))
         return {
             'type': 'rect',
             'data': (self.color,

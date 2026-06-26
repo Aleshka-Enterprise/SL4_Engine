@@ -13,23 +13,26 @@ class EventsSystem(BaseSystem):
     _key_up_events: Tuple[Event] = []
 
     @classmethod
-    def check_key(cls, keys: list[int]):
+    def check_key(cls, keys: list[int]) -> bool:
+        ''' Проверка клавиши '''
         pressed_keys = pygame.key.get_pressed()
         return any(pressed_keys[key] for key in keys)
 
     @classmethod
-    def quit(cls):
+    def quit(cls) -> None:
         '''Выход из игры'''
         GAME_STATE.IS_RUNNING = False
 
     @classmethod
     def key_pressed_listener(cls):
+        ''' Слушатель события нажатия клавиши '''
         for event in cls._key_pressed_events:
             if cls.check_key(event.keys):
                 event.callback()
 
     @classmethod
-    def _get_events(cls, event_type: EventState):
+    def _get_events(cls, event_type: EventState) -> list[Event]:
+        ''' Получение списка событий по типу события '''
         return [
             event
             for event in cls.objects
@@ -39,6 +42,7 @@ class EventsSystem(BaseSystem):
     
     @classmethod
     def toggle_freez(cls) -> None:
+        ''' Переключатель статуса игры (Пауза/Плей) '''
         cls.is_frozen = not cls.is_frozen
 
         cls._key_pressed_events = cls._get_events(EventState.KEY_PRESSED)
@@ -46,7 +50,7 @@ class EventsSystem(BaseSystem):
         cls._key_up_events = cls._get_events(EventState.KEY_UP)
 
     @classmethod
-    def on_change_objects_list(cls, *args, **kwargs):
+    def on_change_objects_list(cls, *args, **kwargs) -> None:
         cls._key_pressed_events = [event for event in cls.objects if event.event_type == EventState.KEY_PRESSED]
         cls._key_down_events = [event for event in cls.objects if event.event_type == EventState.KEY_DOWN]
         cls._key_up_events = [event for event in cls.objects if event.event_type == EventState.KEY_UP]

@@ -57,5 +57,5 @@ class Particle(RenderMixin):
         radius = int(self.size * (self.lifetime / self.max_lifetime))
         return {
             'type': 'circle',
-            'data': [color, *screen_pos, radius],
+            'data': [color, screen_pos, radius],
         }

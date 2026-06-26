@@ -1,5 +1,6 @@
 from game.core.components.render import RenderSystem
 from game.core.components.system_manager import SystemManager
+from game.core.saveload.saveload import load_level
 from game.models.system_objects.camera import Camera
 from game.scenes.flappy_bird import FlappyBird
 from game.settings import DEBUG, DISPLAY, FPS
@@ -14,6 +15,8 @@ def run() -> None:
     SystemManager.init()
 
     FlappyBird()
+
+    # load_level("game/levels/mario.json")
 
     clock = pygame.time.Clock()
 

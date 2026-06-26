@@ -1,21 +1,30 @@
-from game.core.components.base.base_mixin import BaseMixin
+from game.core.components.phisics.gravity.gravity_mixin import GravityMixin
 
-
-class JumpMixin(BaseMixin):
+class JumpMixin(GravityMixin):
     def __init__(
         self,
         jump_force: int = -24,
-        gravity: float = 1,
         on_the_ground: bool = False,
+        max_jump_count: int = 0,
         **kwargs
     ):
         super().__init__(**kwargs)
 
         self._is_jumping = False
-        self.vel_y = 0  # Вертикальная скорость
-        self.gravity = gravity
         self.jump_force = jump_force
-        self.on_the_ground = on_the_ground
+        self._on_the_ground = on_the_ground
+        self.max_jump_count = max_jump_count
+        self.current_jump_count = max_jump_count
+
+    @property
+    def on_the_ground(self):
+        return self._on_the_ground
+    
+    @on_the_ground.setter
+    def on_the_ground(self, value: bool):
+        if value:
+            self.current_jump_count = 0
+        self._on_the_ground = value
 
     @property
     def is_jumping(self):
@@ -29,6 +38,7 @@ class JumpMixin(BaseMixin):
         if value:
             self.vel_y = self.jump_force
             self.on_start_jump()
+            self.current_jump_count += 1
 
         if self._is_jumping != value and not value:
             self.on_end_jump()
@@ -39,13 +49,17 @@ class JumpMixin(BaseMixin):
                 self.vel_y = self.jump_force
 
     def can_jump(self) -> bool:
-        return self.on_the_ground
+        ''' Проверка, можно ли совершить сейчас прыжок '''
+        return (self.max_jump_count and self.max_jump_count > self.current_jump_count) or self.on_the_ground
 
     def on_start_jump(self) -> None:
+        ''' Обработчик событий: начало прыжка '''
         pass
 
     def on_end_jump(self) -> None:
+        ''' Обработчик события: конец прыжка '''
         pass
 
-    def jump(self):
+    def jump(self) -> None:
+        ''' Прыжок '''
         self.is_jumping = True

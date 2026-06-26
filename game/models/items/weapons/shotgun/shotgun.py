@@ -12,15 +12,14 @@ class Shotgun(Weapon):
         if self.can_atack():
             for _ in range(self.number_of_bullets):
                 shoot = Shoot(
-                    x=self.x + randint(-10, 10),
+                    x=self.x + (0 if self.direction == 'left' else self.width),
                     y=self.y + randint(-10, 10),
-                    direction=self.entity.direction,
+                    direction=self.direction,
                     height=3,
                     width=5,
                     owner_weapon=self,
                     damage=self.damage,
-                    initializer=self.entity
+                    initializer=self.entity,
                     )
-                self.shoot_list.append(shoot)
 
         return super().attack()

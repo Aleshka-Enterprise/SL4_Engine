@@ -127,18 +127,11 @@ class AnimationMixin(RenderMixin):
 
         scaled = pygame.transform.scale(original, (width, height))
 
-        # 2. Применяем отражение (если нужно)
         if self.flip_x or self.flip_y:
             scaled = pygame.transform.flip(scaled, self.flip_x, self.flip_y)
 
-        # 3. Применяем поворот (если угол не 0)
         if self.rotation != 0.0:
             scaled = pygame.transform.rotate(scaled, self.rotation)
-            # После поворота размеры могут измениться, но мы оставляем их как есть,
-            # потому что rect позиционирования уже рассчитан для исходных размеров.
-            # Можно пересчитать rect с учётом поворота, но это сложнее.
-            # Для простоты будем считать, что поворот применяется к уже масштабированному кадру,
-            # и blit будет происходить по центру rect. Это можно сделать в RenderSystem.
 
         self._scaled_cache[key] = scaled
         return scaled

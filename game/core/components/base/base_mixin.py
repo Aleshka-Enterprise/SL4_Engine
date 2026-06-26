@@ -71,4 +71,5 @@ class BaseMixin:
         return self._rect
 
     def destroy(self):
+        ''' Уничтожение объекта '''
         pass

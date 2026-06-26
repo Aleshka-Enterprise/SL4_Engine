@@ -24,7 +24,7 @@ class HealthMixin(BaseMixin):
     def hp(self, value):
         self._hp = min(value, self.max_hp)
 
-        if self.hp < 1:
+        if self.hp <= 0:
             if self.invulnerable:
                 self._hp = 1
             else:
@@ -35,14 +35,18 @@ class HealthMixin(BaseMixin):
         return self._max_hp
 
     def on_take_damage(self):
+        ''' Слушатель события: получение урона '''
         pass
 
     def on_died(self):
+        ''' Слушатель события: объект умер '''
         pass
 
     def died(self):
+        ''' Смерть объекта. Вызывается если hp <= 0 '''
         self.on_died()
 
-    def take_damage(self, damage):
+    def take_damage(self, damage) -> None:
+        ''' Получить урон '''
         self.hp -= damage
         self.on_take_damage()

@@ -75,6 +75,8 @@ class RenderSystem(BaseSystem):
 
     @classmethod
     def render(cls, camera) -> None:
+        cls._window.fill((25, 150, 250))
+
         sorted_objects = cls._get_sorted_objects()
         viewport = camera.viewport
         
