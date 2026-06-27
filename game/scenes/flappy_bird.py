@@ -67,7 +67,7 @@ class FlappyBird(TimerMixin, AudioMixin, EventMixin):
                 speed = 10,
                 destroy_on_render_exit = True,
                 player=self.player,
-                padding=(115, 140, 95, 140),
+                padding=(115, 140, 85, 140),
                 flip_y=(i == 1)
             )
 

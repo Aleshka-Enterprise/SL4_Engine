@@ -7,7 +7,7 @@ from game.utils.types import Event, EventState
 
 
 class Plane(Entity, JumpMixin, EventMixin):
-    def __init__(self, on_died: function, **kwargs):
+    def __init__(self, on_died = lambda: None, **kwargs):
         super().__init__(**kwargs)
         self._init_audio_mixin()
 

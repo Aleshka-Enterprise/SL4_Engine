@@ -1,3 +1,4 @@
+import random
 from typing import Literal
 
 from game.core.components.phisics.collision import CollisionMixin
@@ -17,7 +18,7 @@ class Weapon(Item, AudioMixin, CollisionMixin, TimerMixin, GravityMixin):
                  cooling_down: int = 30,
                  maximum_number_of_bullets: int = 10,
                  delete_after_death: bool = False,
-                 gravity: float = 0.7,
+                 gravity: float = 7,
                  damage: float = 1,
                  **kwargs
                  ):

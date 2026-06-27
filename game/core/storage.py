@@ -8,6 +8,8 @@ class GameStorage:
         self.render_objects_list = []
         self.collision_object_list = []
 
+        self.clock = None
+
 
 class GAME_STATE:
     ''' Общее состаяние игры '''

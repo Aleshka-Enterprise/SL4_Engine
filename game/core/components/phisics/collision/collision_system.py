@@ -11,7 +11,7 @@ class CollisionSystem(BaseSystem):
     @classmethod
     def update_visible_objects(cls, visible_objects):
         '''Вызывается только при изменении зоны рендеринга'''
-        cls.visible_collision_object_list = [elem for elem in cls.objects if elem in visible_objects and elem.used_colision]
+        cls.visible_collision_object_list = [elem for elem in cls.objects if elem in visible_objects]
 
     @classmethod
     def on_change_objects_list(cls, action, item):
@@ -34,7 +34,11 @@ class CollisionSystem(BaseSystem):
             collision_object = cls.check_collision(obj.rect, [obj, *obj.collision_ignore_list])
             if collision_object:
                 obj.on_collision(collision_object)
-                if obj.collision_response == CollisionResponseTypes.PUSH and collision_object.collision_response != CollisionResponseTypes.IGNORE and not obj in collision_object.collision_ignore_list:
+
+                if collision_object.collision_response == CollisionResponseTypes.IGNORE:
+                    continue
+
+                if obj.collision_response == CollisionResponseTypes.PUSH and not obj in collision_object.collision_ignore_list:
                     # Перекрытие по X
                     overlap_x = min(obj.rect.right - collision_object.rect.left,
                                     collision_object.rect.right - obj.rect.left)

@@ -14,7 +14,8 @@ class KEYS:
     INTERACT = (pygame.K_e,)
     DROP = (pygame.K_q,)
     MENU = (pygame.K_ESCAPE,)
+    USE_DEBUG_RENDER = (pygame.K_F3,)
 
-DEBUG = False
+DEBUG = True
 FPS = 60
 WINDOW_CAPTION = 'Flappy Fly'

@@ -21,7 +21,7 @@ CLASS_REGISTRY: Dict[str, Type] = {
     'Weapon': Weapon,
     'Shotgun': Shotgun,
     'Camera': Camera,
-    'PoisonGun': PoisonGun
+    'PoisonGun': PoisonGun,
 }
 
 
@@ -243,8 +243,8 @@ def generate_ai_documentation(registry):
     
     return docs
 
-
-if settings.DEBUG:
+if settings.DEBUG and False:
+    # TODO починить генератор документации
     docs = generate_ai_documentation(CLASS_REGISTRY)
     with open('level_docs.json', 'w', encoding='utf-8') as f:
         json.dump(docs, f, ensure_ascii=False, indent=2, default=str)

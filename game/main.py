@@ -1,4 +1,3 @@
-from game.core.components.render import RenderSystem
 from game.core.components.system_manager import SystemManager
 from game.core.saveload.saveload import load_level
 from game.models.system_objects.camera import Camera
@@ -14,22 +13,21 @@ def run() -> None:
     pygame.mixer.init(frequency=44100, size=-16, channels=2, buffer=512)
     SystemManager.init()
 
-    FlappyBird()
+    # FlappyBird()
 
-    # load_level("game/levels/mario.json")
+    load_level("game/levels/mario.json")
 
     clock = pygame.time.Clock()
+    storage.clock = clock
 
     if not storage.camera:
         storage.camera = Camera(screen_width=DISPLAY.WIDTH, screen_height=DISPLAY.HEIGHT)
+        storage.camera.target = storage.player
 
     while GAME_STATE.IS_RUNNING:
         dt = clock.tick(FPS) / 1000.0
         dt = min(dt, 0.05)
         SystemManager.update(dt)
-
-        if DEBUG:
-            RenderSystem.set_surrent_fps(clock.get_fps())
 
 
 if __name__ == '__main__':
