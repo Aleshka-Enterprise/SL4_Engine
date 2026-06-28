@@ -36,7 +36,7 @@
       "attributes": {
         "id": {
           "type": "UUID",
-          "example": "9e531426-91af-427a-916b-d120933442cd",
+          "example": "3f2e0b5c-f2bf-448a-923e-6f8bb950ac76",
           "is_object": false
         },
         "x": {
@@ -309,13 +309,20 @@
         "z_index"
       ]
     },
-    "Zombie": {
-      "description": "Class Zombie",
+    "Player": {
+      "description": "Class Player",
       "parent": [
-        "Enemy",
-        "JumpMixin"
+        "Entity",
+        "JumpMixin",
+        "EventMixin",
+        "MoveMixin"
       ],
       "init_parameters": {
+        "energy": {
+          "type": "<class 'int'>",
+          "required": false,
+          "default": 350
+        },
         "kwargs": {
           "type": "Any",
           "required": true,
@@ -323,9 +330,25 @@
         }
       },
       "attributes": {
+        "EventMixin__event_listener": {
+          "type": "list",
+          "example": [
+            "Event(keys=(122,), event_type=<EventState.KEY_PRESSED: 'key_pressed'>, callback=<bound method Player.attack of <game.models.entities.player.player.Player object at 0x000002C5696D4590>>, is_freezable=True)",
+            "Event(keys=(1073741904, 97), event_type=<EventState.KEY_PRESSED: 'key_pressed'>, callback=<function Player.__init__.<locals>.<lambda> at 0x000002C5696FC040>, is_freezable=True)",
+            "Event(keys=(1073741903, 100), event_type=<EventState.KEY_PRESSED: 'key_pressed'>, callback=<function Player.__init__.<locals>.<lambda> at 0x000002C5696FC0F0>, is_freezable=True)",
+            "Event(keys=(32, 119, 1073741906), event_type=<EventState.KEY_DOWN: 'key_down'>, callback=<bound method JumpMixin.jump of <game.models.entities.player.player.Player object at 0x000002C5696D4590>>, is_freezable=True)",
+            "Event(keys=(1073742049,), event_type=<EventState.KEY_DOWN: 'key_down'>, callback=<bound method MoveMixin.speed_boost of <game.models.entities.player.player.Player object at 0x000002C5696D4590>>, is_freezable=True)",
+            "Event(keys=(115, 1073741905), event_type=<EventState.KEY_DOWN: 'key_down'>, callback=<bound method Player.sit of <game.models.entities.player.player.Player object at 0x000002C5696D4590>>, is_freezable=True)",
+            "Event(keys=(101,), event_type=<EventState.KEY_DOWN: 'key_down'>, callback=<bound method Entity.take_item of <game.models.entities.player.player.Player object at 0x000002C5696D4590>>, is_freezable=True)",
+            "Event(keys=(113,), event_type=<EventState.KEY_DOWN: 'key_down'>, callback=<bound method Entity.drop_weapon of <game.models.entities.player.player.Player object at 0x000002C5696D4590>>, is_freezable=True)",
+            "Event(keys=(1073742049,), event_type=<EventState.KEY_UP: 'key_up'>, callback=<bound method MoveMixin.stop_speed_boost of <game.models.entities.player.player.Player object at 0x000002C5696D4590>>, is_freezable=True)",
+            "Event(keys=(115, 1073741905), event_type=<EventState.KEY_UP: 'key_up'>, callback=<bound method Player.stand_up of <game.models.entities.player.player.Player object at 0x000002C5696D4590>>, is_freezable=True)"
+          ],
+          "is_object": false
+        },
         "id": {
           "type": "UUID",
-          "example": "310100af-5e81-439a-bccc-48c5c4a03969",
+          "example": "0ead5b0d-0838-44d0-bf32-387a99980f1e",
           "is_object": false
         },
         "x": {
@@ -393,9 +416,361 @@
           "example": false,
           "is_object": false
         },
-        "max_particles": {
+        "InteractiveMixin__interactive_width": {
           "type": "int",
-          "example": 300,
+          "example": 100,
+          "is_object": false
+        },
+        "InteractiveMixin__interactive_height": {
+          "type": "int",
+          "example": 100,
+          "is_object": false
+        },
+        "vel_y": {
+          "type": "int",
+          "example": 24,
+          "is_object": false
+        },
+        "gravity": {
+          "type": "int",
+          "example": 24,
+          "is_object": false
+        },
+        "on_the_ground": {
+          "type": "bool",
+          "example": false,
+          "is_object": false
+        },
+        "is_jumping": {
+          "type": "bool",
+          "example": false,
+          "is_object": false
+        },
+        "jump_force": {
+          "type": "int",
+          "example": -24,
+          "is_object": false
+        },
+        "max_jump_count": {
+          "type": "int",
+          "example": 2,
+          "is_object": false
+        },
+        "current_jump_count": {
+          "type": "int",
+          "example": 0,
+          "is_object": false
+        },
+        "used_colision": {
+          "type": "bool",
+          "example": true,
+          "is_object": false
+        },
+        "collision_response": {
+          "type": "CollisionResponseTypes",
+          "example": "CollisionResponseTypes.PUSH",
+          "is_object": true
+        },
+        "collision_ignore_list": {
+          "type": "list",
+          "example": [],
+          "is_object": false
+        },
+        "hp": {
+          "type": "int",
+          "example": 1,
+          "is_object": false
+        },
+        "max_hp": {
+          "type": "int",
+          "example": 1,
+          "is_object": false
+        },
+        "invulnerable": {
+          "type": "bool",
+          "example": false,
+          "is_object": false
+        },
+        "destroy_after_dead": {
+          "type": "bool",
+          "example": true,
+          "is_object": false
+        },
+        "color": {
+          "type": "tuple",
+          "example": "(0, 0, 0)",
+          "is_object": false
+        },
+        "ignore_render_check": {
+          "type": "bool",
+          "example": false,
+          "is_object": false
+        },
+        "display": {
+          "type": "bool",
+          "example": true,
+          "is_object": false
+        },
+        "z_index": {
+          "type": "int",
+          "example": 4,
+          "is_object": false
+        },
+        "position": {
+          "type": "str",
+          "example": "world",
+          "is_object": false
+        },
+        "destroy_on_render_exit": {
+          "type": "bool",
+          "example": false,
+          "is_object": false
+        },
+        "flip_x": {
+          "type": "bool",
+          "example": false,
+          "is_object": false
+        },
+        "flip_y": {
+          "type": "bool",
+          "example": false,
+          "is_object": false
+        },
+        "rotation": {
+          "type": "float",
+          "example": 0.0,
+          "is_object": false
+        },
+        "padding_top": {
+          "type": "int",
+          "example": 0,
+          "is_object": false
+        },
+        "padding_right": {
+          "type": "int",
+          "example": 0,
+          "is_object": false
+        },
+        "padding_bottom": {
+          "type": "int",
+          "example": 0,
+          "is_object": false
+        },
+        "padding_left": {
+          "type": "int",
+          "example": 0,
+          "is_object": false
+        },
+        "render_rect_dirty": {
+          "type": "bool",
+          "example": true,
+          "is_object": false
+        },
+        "render_rect": {
+          "type": "Rect",
+          "example": "Rect(0, 0, 0, 0)",
+          "is_object": false
+        },
+        "sprites_root": {
+          "type": "str",
+          "example": "C:\\projects\\SL4_Engine\\game\\models\\entities\\player\\sprites",
+          "is_object": false
+        },
+        "animations_config": {
+          "type": "dict",
+          "example": "{}",
+          "is_object": false
+        },
+        "current_state": {
+          "type": "NoneType",
+          "example": "None",
+          "is_object": false
+        },
+        "current_frame_index": {
+          "type": "int",
+          "example": 0,
+          "is_object": false
+        },
+        "frames": {
+          "type": "list",
+          "example": [],
+          "is_object": false
+        },
+        "animation_timer": {
+          "type": "float",
+          "example": 0.0,
+          "is_object": false
+        },
+        "fps": {
+          "type": "int",
+          "example": 6,
+          "is_object": false
+        },
+        "mode": {
+          "type": "str",
+          "example": "loop",
+          "is_object": false
+        },
+        "playing": {
+          "type": "bool",
+          "example": false,
+          "is_object": false
+        },
+        "scaled_cache": {
+          "type": "dict",
+          "example": "{}",
+          "is_object": false
+        },
+        "audio_volume": {
+          "type": "float",
+          "example": 1.0,
+          "is_object": false
+        },
+        "currently_playing": {
+          "type": "dict",
+          "example": "{}",
+          "is_object": false
+        },
+        "variation_settings": {
+          "type": "dict",
+          "example": "{'enabled': True, 'volume_range': (0.8, 1.2), 'variation_chance': 1.0}",
+          "is_object": false
+        },
+        "prevent_overlap_settings": {
+          "type": "dict",
+          "example": "{'move': True, 'shoot': False, 'reload': True, 'jump': True, 'hurt': False}",
+          "is_object": false
+        },
+        "sound_groups": {
+          "type": "dict",
+          "example": "{'damage': <game.core.components.audio.audio_mixin.SoundGroup object at 0x000002C5696D46E0>, 'move': <game.core.components.audio.audio_mixin.SoundGroup object at 0x000002C5696ECA50>}",
+          "is_object": false
+        },
+        "is_enemy": {
+          "type": "bool",
+          "example": false,
+          "is_object": false
+        },
+        "weapon": {
+          "type": "NoneType",
+          "example": "None",
+          "is_object": false
+        },
+        "fraction": {
+          "type": "NoneType",
+          "example": "None",
+          "is_object": false
+        },
+        "energy": {
+          "type": "int",
+          "example": 350,
+          "is_object": false
+        },
+        "max_energy": {
+          "type": "int",
+          "example": 350,
+          "is_object": false
+        },
+        "is_sitting": {
+          "type": "bool",
+          "example": false,
+          "is_object": false
+        },
+        "default_height": {
+          "type": "int",
+          "example": 0,
+          "is_object": false
+        }
+      },
+      "required_attributes": [
+        "kwargs"
+      ],
+      "optional_attributes": [
+        "energy"
+      ]
+    },
+    "Zombie": {
+      "description": "Class Zombie",
+      "parent": [
+        "Enemy",
+        "JumpMixin"
+      ],
+      "init_parameters": {
+        "kwargs": {
+          "type": "Any",
+          "required": true,
+          "default": null
+        }
+      },
+      "attributes": {
+        "id": {
+          "type": "UUID",
+          "example": "148645f5-5a9a-44f0-b79a-10e435f3e350",
+          "is_object": false
+        },
+        "x": {
+          "type": "int",
+          "example": 0,
+          "is_object": false
+        },
+        "y": {
+          "type": "int",
+          "example": 0,
+          "is_object": false
+        },
+        "width": {
+          "type": "int",
+          "example": 0,
+          "is_object": false
+        },
+        "height": {
+          "type": "int",
+          "example": 0,
+          "is_object": false
+        },
+        "rect": {
+          "type": "Rect",
+          "example": "Rect(0, 0, 0, 0)",
+          "is_object": false
+        },
+        "BaseMixin__rect_is_dirty": {
+          "type": "bool",
+          "example": false,
+          "is_object": false
+        },
+        "auto_register": {
+          "type": "bool",
+          "example": true,
+          "is_object": false
+        },
+        "speed": {
+          "type": "int",
+          "example": 0,
+          "is_object": false
+        },
+        "direction": {
+          "type": "str",
+          "example": "left",
+          "is_object": false
+        },
+        "frez": {
+          "type": "bool",
+          "example": false,
+          "is_object": false
+        },
+        "boost": {
+          "type": "int",
+          "example": 5,
+          "is_object": false
+        },
+        "base_speed": {
+          "type": "int",
+          "example": 0,
+          "is_object": false
+        },
+        "is_running": {
+          "type": "bool",
+          "example": false,
           "is_object": false
         },
         "InteractiveMixin__interactive_width": {
@@ -625,7 +1000,7 @@
         },
         "sound_groups": {
           "type": "dict",
-          "example": "{'died': <game.core.components.audio.audio_mixin.SoundGroup object at 0x00000175950386E0>, 'move': <game.core.components.audio.audio_mixin.SoundGroup object at 0x0000017595028910>}",
+          "example": "{'died': <game.core.components.audio.audio_mixin.SoundGroup object at 0x000002C5696ECE10>, 'move': <game.core.components.audio.audio_mixin.SoundGroup object at 0x000002C56960F950>}",
           "is_object": false
         },
         "is_enemy": {
@@ -649,9 +1024,9 @@
           "is_object": false
         },
         "target": {
-          "type": "NoneType",
-          "example": "None",
-          "is_object": false
+          "type": "Player",
+          "example": "<game.models.entities.player.player.Player object at 0x000002C5696D4590>",
+          "is_object": true
         },
         "melee_damage": {
           "type": "int",
@@ -713,7 +1088,7 @@
       "attributes": {
         "id": {
           "type": "UUID",
-          "example": "cd32a82d-3762-4e7f-95af-2b7727933b78",
+          "example": "76b4112f-b4fa-4840-8651-0a39b3bcba95",
           "is_object": false
         },
         "x": {
@@ -964,7 +1339,7 @@
       "attributes": {
         "id": {
           "type": "UUID",
-          "example": "8e0e64f7-bc16-418f-958f-ba782dc3f045",
+          "example": "748af03a-53b3-4758-8655-5075796b3d2c",
           "is_object": false
         },
         "x": {
@@ -1229,7 +1604,7 @@
       "error": "Weapon.__init__() missing 2 required positional arguments: 'offset_x' and 'offset_y'"
     },
     "Camera": {
-      "description": "Class Camera",
+      "description": "\nКамера с мёртвой зоной (deadzone), плавным следованием и опережением (look-ahead).\n\nОсобенности:\n    - Deadzone центрирована и занимает ½ ширины и ½ высоты экрана.\n    - Плавная интерполяция положения камеры (smooth_speed).\n    - Опережение в сторону движения (look-ahead) для лучшего обзора.\n    - Автоматическое обновление render_zone (зоны видимости) для оптимизации рендеринга.\n    - Поддержка горизонтального и опционально вертикального look-ahead.\n\nВНИМАНИЕ: все временные параметры зависят от FPS (нет привязки к dt).\nВ будущем планируется адаптация под реальное время.\n\nAttributes:\n    screen_width (int): Ширина экрана в пикселях.\n    screen_height (int): Высота экрана в пикселях.\n    viewport (Rect): Текущая видимая область (мировые координаты).\n    deadzone (Rect): Прямоугольник (экранные координаты), внутри которого цель может двигаться без смещения камеры.\n    smooth_speed (float): Скорость интерполяции (0.0 – мгновенно, 1.0 – бесконечно медленно).\n    look_ahead_offset (float): Максимальное смещение вперёд в пикселях.\n    look_ahead_speed (float): Скорость нарастания/затухания опережения.\n    current_offset_x (float): Текущее горизонтальное опережение (плавно меняется).\n    current_offset_y (float): Текущее вертикальное опережение.\n    padding (int): Отступ вокруг viewport для вычисления render_zone.\n    target (BaseMixin | None): Объект, за которым следит камера (обычно игрок).\n    use_horizontal_look_ahead (bool): Включено ли горизонтальное опережение.\n    use_vertical_look_ahead (bool): Включено ли вертикальное опережение.\n",
       "parent": [
         "TimerMixin"
       ],
@@ -1259,6 +1634,21 @@
           "required": false,
           "default": false
         },
+        "smooth_speed": {
+          "type": "<class 'float'>",
+          "required": false,
+          "default": 0.2
+        },
+        "look_ahead_offset": {
+          "type": "<class 'float'>",
+          "required": false,
+          "default": 100.0
+        },
+        "look_ahead_speed": {
+          "type": "<class 'float'>",
+          "required": false,
+          "default": 0.05
+        },
         "kwargs": {
           "type": "Any",
           "required": true,
@@ -1268,7 +1658,7 @@
       "attributes": {
         "id": {
           "type": "UUID",
-          "example": "84f6c5b7-52c6-4542-b84c-3882837499da",
+          "example": "c9040035-6677-45c9-93f0-8b3de0dc7201",
           "is_object": false
         },
         "x": {
@@ -1343,12 +1733,12 @@
         },
         "smooth_speed": {
           "type": "float",
-          "example": 0.13,
+          "example": 0.2,
           "is_object": false
         },
         "look_ahead_offset": {
-          "type": "int",
-          "example": 100,
+          "type": "float",
+          "example": 100.0,
           "is_object": false
         },
         "look_ahead_speed": {
@@ -1395,7 +1785,10 @@
       "optional_attributes": [
         "target",
         "use_horizontal_look_ahead",
-        "use_vertical_look_ahead"
+        "use_vertical_look_ahead",
+        "smooth_speed",
+        "look_ahead_offset",
+        "look_ahead_speed"
       ]
     },
     "PoisonGun": {

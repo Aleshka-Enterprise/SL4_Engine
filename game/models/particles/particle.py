@@ -1,61 +1,176 @@
 import random
+import math
 from typing import Tuple
 from game.core.components.render import RenderMixin
-from game.core.components.render import RenderSystem
+from game.core.components.render.render_types import RenderComand, RenderType
 
 
 class Particle(RenderMixin):
-    def __init__(self, velocity: Tuple[float, float], lifetime: float = 1.0, particle_destroy_listener=None, **kwargs):
+    """Группа частиц одного типа (взрыв, кровь и т.д.). Регистрируется как один объект в RenderSystem."""
+    _pool = []  # глобальный пул словарей-частиц
+    MAX_POOL_SIZE = 1000
+
+    def __init__(
+        self,
+        x: float,
+        y: float,
+        count: int,
+        particle_type: str = 'explosion',
+        color: Tuple[int, int, int] = (255, 100, 50),
+        lifetime_range: Tuple[float, float] = (0.5, 1.5),
+        speed_range: Tuple[float, float] = (50, 200),
+        size_range: Tuple[float, float] = (2, 6),
+        gravity: Tuple[float, float] = (0, 0),
+        spread_radius: float = 0.0,
+        merge_threshold: float = 5.0,
+        fade_type: str = 'linear',
+        **kwargs
+    ):
+        kwargs.setdefault('z_index', 100)
+        kwargs.setdefault('auto_register', True)
+        kwargs.setdefault('_ignore_render_check', True)
         super().__init__(**kwargs)
 
-        self.velocity = velocity
-        self._lifetime = lifetime
-        self.max_lifetime = lifetime
-        self.size = random.uniform(2, 6)
-        self._is_active = True
-        self.dt = 0.03
-        self._ignore_render_check = True
-        self.particle_destroy_listener = particle_destroy_listener
-        self.auto_register = self.is_active
+        self.x = x
+        self.y = y
+        self.color = color
+        self.particle_type = particle_type
+        self.gravity = gravity
+        self.spread_radius = spread_radius
+        self.merge_threshold = merge_threshold
+        self.fade_type = fade_type
+        self._particles = []
 
-    @property
-    def lifetime(self):
-        return self._lifetime
+        self._generate_particles(count, particle_type, color, lifetime_range, speed_range, size_range)
 
-    @lifetime.setter
-    def lifetime(self, value):
-        self._lifetime = value
-        self.max_lifetime = value
+    def _generate_particles(self, count, particle_type, color, lifetime_range, speed_range, size_range):
+        for _ in range(count):
+            # Генерируем параметры
+            if particle_type == 'explosion':
+                angle = random.uniform(0, 2 * math.pi)
+                speed = random.uniform(*speed_range)
+                vx = math.cos(angle) * speed
+                vy = math.sin(angle) * speed
+                lifetime = random.uniform(*lifetime_range)
+                size = random.uniform(*size_range)
+                color = color
+            elif particle_type == 'blood':
+                vx = random.uniform(-100, 100)
+                vy = random.uniform(-100, 0)
+                lifetime = random.uniform(*lifetime_range)
+                size = random.uniform(*size_range)
+                color = (random.randint(120, 200), 0, 0)
+            else:
+                vx = random.uniform(-50, 50)
+                vy = random.uniform(-50, 50)
+                lifetime = random.uniform(*lifetime_range)
+                size = random.uniform(*size_range)
+                color = color
 
-    def destroy(self):
-        self.is_active = False
-        if self.particle_destroy_listener:
-            self.particle_destroy_listener(self)
-        return super().destroy()
+            # Координаты с разбросом
+            px = self.x + random.uniform(-self.spread_radius, self.spread_radius)
+            py = self.y + random.uniform(-self.spread_radius, self.spread_radius)
 
-    @property
-    def is_active(self):
-        return self._is_active
+            # Проверка дубликатов
+            merged = False
+            if self.merge_threshold > 0:
+                for existing in self._particles:
+                    dx = existing['x'] - px
+                    dy = existing['y'] - py
+                    if dx*dx + dy*dy < self.merge_threshold * self.merge_threshold:
+                        # Объединяем: увеличиваем размер и время жизни до максимума
+                        existing['size'] = max(existing['size'], size)
+                        existing['lifetime'] = max(existing['lifetime'], lifetime)
+                        existing['max_lifetime'] = max(existing['max_lifetime'], lifetime)
+                        # Можно смешать цвета (среднее арифметическое)
+                        existing['color'] = (
+                            (existing['color'][0] + color[0]) // 2,
+                            (existing['color'][1] + color[1]) // 2,
+                            (existing['color'][2] + color[2]) // 2
+                        )
+                        merged = True
+                        break
 
-    @is_active.setter
-    def is_active(self, value):
-        self._is_active = value
-        if (value):
-            RenderSystem.register(self)
+            if not merged:
+                # Берём из пула или создаём новый словарь
+                particle = self._get_particle_data()
+                particle['x'] = px
+                particle['y'] = py
+                particle['vx'] = vx
+                particle['vy'] = vy
+                particle['lifetime'] = lifetime
+                particle['max_lifetime'] = lifetime
+                particle['color'] = color
+                particle['size'] = size
+                particle['active'] = True
+                self._particles.append(particle)
 
-    def update_before_render(self):
-        self.x += self.velocity[0] * self.dt
-        self.y += self.velocity[1] * self.dt
-        self.lifetime -= self.dt
-        if self.lifetime < 0:
+    def _get_particle_data(self):
+        """Взять из пула или создать новый словарь."""
+        if self._pool:
+            return self._pool.pop()
+        return {
+            'x': 0, 'y': 0,
+            'vx': 0, 'vy': 0,
+            'lifetime': 0, 'max_lifetime': 0,
+            'color': (0, 0, 0),
+            'size': 0,
+            'active': False
+        }
+
+    def _recycle_particle_data(self, data):
+        if len(self._pool) < self.MAX_POOL_SIZE:
+            data['active'] = False
+            self._pool.append(data)
+
+    def update_before_render(self, dt=0.03):
+        for p in self._particles[:]:
+            if not p['active']:
+                continue
+            p['x'] += p['vx'] * dt
+            p['y'] += p['vy'] * dt
+            p['vx'] += self.gravity[0] * dt
+            p['vy'] += self.gravity[1] * dt
+            p['lifetime'] -= dt
+            if p['lifetime'] <= 0:
+                p['active'] = False
+                self._particles.remove(p)
+                self._recycle_particle_data(p)
+
+        if not self._particles:
             self.destroy()
 
     def prepare_to_render(self, camera):
-        screen_pos = camera.apply((self.x, self.y))
-        alpha = int(255 * (self.lifetime / self.max_lifetime))
-        color = (*self.color[:3], min(max(alpha, 0), 255))
-        radius = int(self.size * (self.lifetime / self.max_lifetime))
-        return {
-            'type': 'circle',
-            'data': [color, screen_pos, radius],
-        }
+        commands = []
+        for p in self._particles:
+            if not p['active']:
+                continue
+
+            # Расчёт коэффициента затухания (1.0 в начале, 0.0 в конце)
+            t = p['lifetime'] / p['max_lifetime']  # от 1 до 0
+
+            if self.fade_type == 'linear':
+                factor = t
+            elif self.fade_type == 'exponential':
+                # Настраиваем крутизну: exp(-3*(1-t)) даёт резкое затухание в конце
+                factor = math.exp(-4 * (1 - t))
+            elif self.fade_type == 'quadratic':
+                factor = t * t  # медленное начало, быстрое затухание в конце
+            elif self.fade_type == 'sqrt':
+                factor = math.sqrt(t)  # быстрое начало, медленное затухание
+            elif self.fade_type == 'sine':
+                factor = math.sin(t * math.pi / 2)  # плавное затухание по синусоиде
+            else:
+                factor = t  # fallback
+
+            # Применяем factor к прозрачности и размеру
+            alpha = int(255 * factor)
+            color = (*p['color'][:3], min(max(alpha, 0), 255))
+            radius = int(p['size'] * factor)
+
+            screen_pos = camera.apply((p['x'], p['y']))
+            commands.append(RenderComand(
+                type=RenderType.CIRCLE,
+                data={'color': color, 'center': screen_pos, 'radius': radius}
+            ))
+        return commands

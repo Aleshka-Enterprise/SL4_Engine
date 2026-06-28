@@ -13,5 +13,5 @@ class Ground(Envirement, CollisionMixin):
     def top(self):
         return self.rect.top
     
-    def update_before_render(self):
-        return super().update_before_render()
+    def update_before_render(self, dt):
+        return super().update_before_render(dt)

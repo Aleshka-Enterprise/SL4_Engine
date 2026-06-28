@@ -70,10 +70,10 @@ class Player(Entity, JumpMixin, EventMixin, MoveMixin):
     def stand_up(self):
         self.is_sitting = False
 
-    def update_before_render(self):
+    def update_before_render(self, dt):
         if self.energy < self.max_energy:
             self.energy = min(self.max_energy, self.energy + 1)
-        super().update_before_render()
+        super().update_before_render(dt)
 
     def on_died(self):
         res = super().on_died()

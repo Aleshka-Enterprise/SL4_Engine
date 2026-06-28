@@ -19,7 +19,7 @@ class Building(Envirement, MoveMixin, CollisionMixin):
         if self._frames:
             self.current_frame_index = random.randint(0, len(self._frames) - 1)
     
-    def update_before_render(self):
+    def update_before_render(self, dt):
         if not self.is_passed and self.x < 200:
             self.is_passed = True
             self.on_passed()
@@ -27,7 +27,7 @@ class Building(Envirement, MoveMixin, CollisionMixin):
             self.move(self.direction)
         else:
             self.used_colision = False
-        return super().update_before_render()
+        return super().update_before_render(dt)
     
     def on_passed(self):
         pass

@@ -4,7 +4,7 @@ from game.core.components.gameplay.event.event_mixin import EventMixin
 from game.core.components.phisics.collision.collision_types import CollisionResponseTypes
 from game.core.storage import storage
 from game.core.components.phisics.collision import CollisionSystem
-from game.settings import KEYS
+from game.settings import KEYS, FPS
 from game.utils.types import Event, EventState
 
 
@@ -23,6 +23,9 @@ class DebugRender(EventMixin):
     def __init__(self):
         self.window = None
         self.debug_font = pygame.font.SysFont(None, 30)
+        self.min_fps = FPS
+        self.fps_history = []
+        self.fps_history_maxlen = 1000
 
         self.render_debug = True
 
@@ -70,6 +73,8 @@ class DebugRender(EventMixin):
             f"Offset X: {camera.current_offset_x:.1f}",
             f"Offset Y: {camera.current_offset_y:.1f}",
             f"Displayed objects: {len(storage.render_objects_list)}",
+            f"Min FPS: {self.min_fps}",
+            f"Avg FPS: {self.avg_fps:.1f}"
         ]
 
         if camera.target:
@@ -89,6 +94,14 @@ class DebugRender(EventMixin):
         fps = storage.clock.get_fps()
         text_surface = self.debug_font.render(str(int(fps)), False, self.FPS_COLOR)
         self.window.blit(text_surface, (0, 0))
+
+        self.fps_history.append(fps)
+        if len(self.fps_history) > self.fps_history_maxlen:
+            self.fps_history.pop(0)
+        self.avg_fps = sum(self.fps_history) / len(self.fps_history) if self.fps_history else 0
+
+        if fps and fps < self.min_fps:
+            self.min_fps = int(fps)
 
     def render_collision_rects(self):
         ''' Отображает рамки коллизий всех объектов (или выбранных) для отладки '''

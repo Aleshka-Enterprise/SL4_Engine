@@ -83,7 +83,7 @@ class Weapon(Item, AudioMixin, CollisionMixin, TimerMixin, GravityMixin):
     def attack(self) -> None:
         pass
 
-    def update_before_render(self):
+    def update_before_render(self, dt):
         if self.entity:
             direction = self.entity.direction
             self.y = self.entity.y + self.offset_y

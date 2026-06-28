@@ -2,6 +2,7 @@ from typing import Literal, Tuple
 from pygame import Rect
 from game.core.components.base.base_mixin import BaseMixin
 from game.core.components.render.render_system import RenderSystem
+from game.core.components.render.render_types import RenderComand, RenderType
 
 
 class RenderMixin(BaseMixin):
@@ -9,7 +10,7 @@ class RenderMixin(BaseMixin):
     def __init__(
         self,
         color: Tuple[int, int, int] = (0, 0, 0),
-        ignore_check: bool = False,
+        ignore_render_check: bool = False,
         display: bool = True,
         z_index: int = 1,
         position: Literal["world", "window"] = "world",
@@ -27,7 +28,7 @@ class RenderMixin(BaseMixin):
         super().__init__(**kwargs)
 
         self.color = color
-        self._ignore_render_check = ignore_check
+        self._ignore_render_check = ignore_render_check
         self.display = display
         self.z_index = z_index
         self.position = position
@@ -158,11 +159,11 @@ class RenderMixin(BaseMixin):
         RenderSystem.destroy(self)
         return super().destroy()
 
-    def update_before_render(self) -> None:
+    def update_before_render(self, dt) -> None:
         ''' Вызывается перед рендером '''
         pass
 
-    def update_after_render(self) -> None:
+    def update_after_render(self, dt) -> None:
         ''' Вызывается после рендера '''
         pass
 
@@ -186,13 +187,15 @@ class RenderMixin(BaseMixin):
         elif self.position == 'world':
             screen_pos = camera.apply((self.x - self._padding_left,
                                     self.y - self._padding_top))
-        return {
-            'type': 'rect',
-            'data': (self.color,
-                     Rect(*screen_pos,
+        rect = Rect(*screen_pos,
                           self.width + self._padding_left + self._padding_right,
-                          self.height + self._padding_top + self._padding_bottom)),
-        }
+                          self.height + self._padding_top + self._padding_bottom)
+        return [
+            RenderComand(
+                type=RenderType.RECT,
+                data={ 'color': self.color, 'rect': rect }
+            )
+        ]
     
     def invalidate_scaled_cache(self):
         pass

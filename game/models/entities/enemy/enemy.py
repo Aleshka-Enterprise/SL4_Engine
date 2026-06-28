@@ -76,7 +76,7 @@ class Enemy(Entity, ParticleMixin, TimerMixin, MoveMixin):
         if self.target and abs(self.target.x - self.x) < self.viewing_radius and self.can_see_target():
             self.target_is_detecte = True
 
-    def update_before_render(self):
+    def update_before_render(self, dt):
         if not self.target_is_detecte or not self.target:
             self.patrol()
         if self.target_is_detecte:
@@ -84,4 +84,4 @@ class Enemy(Entity, ParticleMixin, TimerMixin, MoveMixin):
             if self.target.y < self.y and hasattr(self, 'is_jumping'):
                 self.jump()
 
-        return super().update_before_render()
+        return super().update_before_render(dt)

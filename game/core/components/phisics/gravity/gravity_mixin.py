@@ -4,7 +4,7 @@ from game.core.components.phisics.gravity.gravity_system import GravitySystem
 
 
 class GravityMixin(BaseMixin):
-    def __init__(self, vel_y: int = 24, gravity: int = 24, **kwargs):
+    def __init__(self, vel_y: int = 24, gravity: int = 1, **kwargs):
         super().__init__(**kwargs)
 
         self._vel_y = vel_y

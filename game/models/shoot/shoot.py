@@ -67,8 +67,8 @@ class Shoot(RenderMixin, GravityMixin, ParticleMixin, MoveMixin, CollisionMixin)
         
         return super().on_touched(obj)
 
-    def update_before_render(self) -> None:
+    def update_before_render(self, dt) -> None:
         self.move()
         
-        return super().update_before_render()
+        return super().update_before_render(dt)
         

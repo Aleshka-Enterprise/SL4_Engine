@@ -1,93 +1,82 @@
-import math
-import random
-from game.core.components.base.base_mixin import BaseMixin
+from game.core.components.utils.timer.timer_mixin import TimerMixin
 from game.models.particles.particle import Particle
 
 
-class ParticleMixin(BaseMixin):
-    ''' Миксин отвечающий за добавление и управление частиц '''
-
-    particles = []
-
-    def __init__(self, max_particles: int = 300, **kwargs):
+class ParticleMixin(TimerMixin):
+    def __init__(self, **kwargs):
         super().__init__(**kwargs)
+        self._particle_cooldown = {}
 
-        self.max_particles = max_particles
-
-    def __get_inactive_particles(self):
-        return [particle for particle in __class__.particles if not particle.is_active]
-
-    def add_explosion_particles(self, x: float = None, y: float = None, color=(255, 100, 50), count=20):
-        particle_x = x or self.x
-        particle_y = y or self.y
-
-        for _ in range(count):
-            if len(__class__.particles) > self.max_particles:
-                break
-
-            angle = random.uniform(0, 6.28)
-            speed = random.uniform(50, 200)
-            vx = math.cos(angle) * speed
-            vy = math.sin(angle) * speed
-
-            new_particle = Particle(
-                x=particle_x,
-                y=particle_y,
-                width=10,
-                height=10,
-                color=color,
-                velocity=(vx, vy),
-                lifetime=random.uniform(0.5, 1.5),
+    def _can_call_particle(self, particle_type: str, cooldown_seconds: float) -> bool:
+        if cooldown_seconds <= 0:
+            return True
+        key = f"particle_{particle_type}"
+        if self._particle_cooldown.get(key, True):
+            self._particle_cooldown[key] = False
+            self.add_timer(
+                callbacks=[lambda: self._particle_cooldown.__setitem__(key, True)],
+                frames=cooldown_seconds,
+                loop=False
             )
-            
-            __class__.particles.append(new_particle)
+            return True
+        return False
 
-            count -= 1
+    def add_explosion_particles(
+        self,
+        x=None, y=None,
+        color=(255,100,50),
+        count=20,
+        fade_type='linear',
+        lifetime_range=(0.5, 1.5),
+        speed_range=(50, 200),
+        size_range=(2, 6),
+        spread_radius=0.0,
+        merge_threshold=5.0,
+        cooldown=3
+    ):
+        if not self._can_call_particle('explosion', cooldown):
+            return
 
-        for particle in self.__get_inactive_particles()[0:count]:
-            angle = random.uniform(0, 6.28)
-            speed = random.uniform(50, 200)
-            vx = math.cos(angle) * speed
-            vy = math.sin(angle) * speed
+        x = x or self.x
+        y = y or self.y
+        Particle(
+            x=x, y=y,
+            count=count,
+            particle_type='explosion',
+            color=color,
+            lifetime_range=lifetime_range,
+            speed_range=speed_range,
+            size_range=size_range,
+            fade_type=fade_type,
+            spread_radius=spread_radius,
+            merge_threshold=merge_threshold,
+            ignore_render_check=True
+        )
 
-            particle.x = particle_x
-            particle.y = particle_y
-            particle.width = 10
-            particle.height = 10
-            particle.color = color
-            particle.velocity = [vx, vy]
-            particle.lifetime = random.uniform(0.5, 2.0)
-            particle.is_active = True
+    def add_blood_particles(
+        self,
+        x=None, y=None,
+        intensity=10,
+        fade_type='linear',
+        lifetime_range=(1.0, 3.0),
+        spread_radius=0.0,
+        merge_threshold=5.0,
+        cooldown=3
+    ):
+        if not self._can_call_particle('blood', cooldown):
+            return
 
-    def add_blood_particles(self, x: float, y: float, intensity=10):
-        particle_x = x or self.x
-        particle_y = y or self.y  
-
-        for _ in range(intensity):
-            if len(__class__.particles) > self.max_particles:
-                break
-
-            new_particle = Particle(
-                x=particle_x,
-                y=particle_y,
-                width=10,
-                height=10,
-                color=(random.randint(120, 200), 0, 0),
-                velocity=(random.uniform(-100, 100), random.uniform(-100, 0)),
-                lifetime=random.uniform(1.0, 3.0),
-            )
-            
-            __class__.particles.append(new_particle)
-
-            intensity -= 1
-
-        for particle in self.__get_inactive_particles()[0:intensity]:
-            particle.x = particle_x
-            particle.y = particle_y
-            particle.width = 10
-            particle.height = 10
-            particle.color = (random.randint(120, 200), 0, 0)
-            particle.velocity = (random.uniform(-100, 100), random.uniform(-100, 0))
-            particle.lifetime = random.uniform(1.0, 3.0)
-            particle.auto_register = False
-            particle.is_active = True
+        x = x or self.x
+        y = y or self.y
+        Particle(
+            x=x, y=y,
+            count=intensity,
+            particle_type='blood',
+            lifetime_range=lifetime_range,
+            speed_range=(-100, 100),
+            size_range=(2, 6),
+            fade_type=fade_type,
+            spread_radius=spread_radius,
+            merge_threshold=merge_threshold,
+            ignore_render_check=True
+        )

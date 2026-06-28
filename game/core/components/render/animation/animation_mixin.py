@@ -3,6 +3,7 @@ import random
 from typing import Dict, List, Optional, Tuple
 import pygame
 from game.core.components.render.render_mixin import RenderMixin
+from game.core.components.render.render_types import RenderComand, RenderType
 
 
 class AnimationMixin(RenderMixin):
@@ -164,14 +165,14 @@ class AnimationMixin(RenderMixin):
             center_x = screen_pos[0] + self.render_width / 2.0
             center_y = screen_pos[1] + self.render_height / 2.0
             rect = scaled_frame.get_rect(center=(center_x, center_y))
-            return {
-                'type': 'image',
-                'data': (scaled_frame, rect)
-            }
+
+            res = RenderComand(type=RenderType.IMAGE, data={ 'surface': scaled_frame, 'rect': rect })
+            return [res]
+
         return super().prepare_to_render(camera)
 
-    def update_before_render(self):
-        res = super().update_before_render()
+    def update_before_render(self, dt):
+        res = super().update_before_render(dt)
         self.update_animation()
         return res
 

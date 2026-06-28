@@ -2,7 +2,7 @@ import os
 from typing import Optional, Tuple
 import pygame
 from game.core.components.render.render_mixin import RenderMixin
-from game.core.components.render.render_system import RenderSystem
+from game.core.components.render.render_types import RenderComand, RenderType
 
 class TextMixin(RenderMixin):
     _font_cache: dict = {}
@@ -133,10 +133,6 @@ class TextMixin(RenderMixin):
         )
 
     def prepare_to_render(self, camera):
-        """
-        Возвращает словарь с типом 'text', содержащий поверхность с текстом
-        и прямоугольник.
-        """
         if self._rendered_surface is None:
             self._render_text()
 
@@ -144,7 +140,9 @@ class TextMixin(RenderMixin):
         text_rect = self._rendered_surface.get_rect()
         text_rect.topleft = screen_pos
 
-        return {
-            'type': 'text',
-            'data': (self._rendered_surface, text_rect)
-        }
+        return [
+            RenderComand(
+                type=RenderType.TEXT,
+                data={ 'surface': self._rendered_surface, 'rect': text_rect }
+            )
+        ]

@@ -49,10 +49,10 @@ class Poison(Shoot, ParticleMixin, TimerMixin):
             self.particle_timer.delete_timer()
         super(Poison, Poison).hit_entity.__set__(self, value)
 
-    def update_before_render(self) -> None:
+    def update_before_render(self, dt) -> None:
         if self.hit_entity and self.hit_entity.hp > 0:
             self.hit_entity.color = self.entity_old_color
             self.hit_entity = None
             self.destroy()
 
-        return super().update_before_render()
+        return super().update_before_render(dt)

@@ -15,7 +15,7 @@ def run() -> None:
 
     # FlappyBird()
 
-    load_level("game/levels/mario.json")
+    load_level("game/levels/test_level.json")
 
     clock = pygame.time.Clock()
     storage.clock = clock
