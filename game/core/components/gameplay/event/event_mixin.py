@@ -14,7 +14,7 @@ class EventMixin(BaseMixin):
     def event_listener(self):
         return self.__event_listener
     
-    def toggle_stop_game(self) -> None:
+    def toggle_stop_game(self, dt=None) -> None:
         ''' Переключатель статуса игры (Пауза/Плей) '''
         EventsSystem.toggle_freez()
 

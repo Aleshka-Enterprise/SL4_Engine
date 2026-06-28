@@ -1,3 +1,4 @@
+from enum import Enum
 import random
 import math
 from typing import Tuple
@@ -5,9 +6,17 @@ from game.core.components.render import RenderMixin
 from game.core.components.render.render_types import RenderComand, RenderType
 
 
+class ParticleFadeType(Enum):
+    LINER = 'linear'
+    EXPONENTIAL = 'exponential'
+    QUADRATIC = 'quadratic'
+    SQRT = 'sqrt'
+    SINE = 'sine'
+
+
 class Particle(RenderMixin):
-    """Группа частиц одного типа (взрыв, кровь и т.д.). Регистрируется как один объект в RenderSystem."""
-    _pool = []  # глобальный пул словарей-частиц
+    '''Группа частиц одного типа (взрыв, кровь и т.д.). Регистрируется как один объект в RenderSystem.'''
+    _pool = []
     MAX_POOL_SIZE = 1000
 
     def __init__(
@@ -15,10 +24,10 @@ class Particle(RenderMixin):
         x: float,
         y: float,
         count: int,
-        particle_type: str = 'explosion',
+        particle_type: ParticleFadeType = ParticleFadeType.LINER,
         color: Tuple[int, int, int] = (255, 100, 50),
         lifetime_range: Tuple[float, float] = (0.5, 1.5),
-        speed_range: Tuple[float, float] = (50, 200),
+        speed_range: Tuple[float, float] = (10, 30),
         size_range: Tuple[float, float] = (2, 6),
         gravity: Tuple[float, float] = (0, 0),
         spread_radius: float = 0.0,
@@ -45,7 +54,6 @@ class Particle(RenderMixin):
 
     def _generate_particles(self, count, particle_type, color, lifetime_range, speed_range, size_range):
         for _ in range(count):
-            # Генерируем параметры
             if particle_type == 'explosion':
                 angle = random.uniform(0, 2 * math.pi)
                 speed = random.uniform(*speed_range)
@@ -92,7 +100,6 @@ class Particle(RenderMixin):
                         break
 
             if not merged:
-                # Берём из пула или создаём новый словарь
                 particle = self._get_particle_data()
                 particle['x'] = px
                 particle['y'] = py
@@ -146,24 +153,21 @@ class Particle(RenderMixin):
             if not p['active']:
                 continue
 
-            # Расчёт коэффициента затухания (1.0 в начале, 0.0 в конце)
-            t = p['lifetime'] / p['max_lifetime']  # от 1 до 0
+            t = p['lifetime'] / p['max_lifetime']
 
-            if self.fade_type == 'linear':
+            if self.fade_type == ParticleFadeType.LINER:
                 factor = t
-            elif self.fade_type == 'exponential':
-                # Настраиваем крутизну: exp(-3*(1-t)) даёт резкое затухание в конце
+            elif self.fade_type == ParticleFadeType.EXPONENTIAL:
                 factor = math.exp(-4 * (1 - t))
-            elif self.fade_type == 'quadratic':
-                factor = t * t  # медленное начало, быстрое затухание в конце
-            elif self.fade_type == 'sqrt':
-                factor = math.sqrt(t)  # быстрое начало, медленное затухание
-            elif self.fade_type == 'sine':
-                factor = math.sin(t * math.pi / 2)  # плавное затухание по синусоиде
+            elif self.fade_type == ParticleFadeType.QUADRATIC:
+                factor = t * t
+            elif self.fade_type == ParticleFadeType.SQRT:
+                factor = math.sqrt(t)
+            elif self.fade_type == ParticleFadeType.SINE:
+                factor = math.sin(t * math.pi / 2)
             else:
-                factor = t  # fallback
+                factor = t
 
-            # Применяем factor к прозрачности и размеру
             alpha = int(255 * factor)
             color = (*p['color'][:3], min(max(alpha, 0), 255))
             radius = int(p['size'] * factor)

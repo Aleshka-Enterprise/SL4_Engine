@@ -33,7 +33,7 @@ class DebugRender(EventMixin):
             Event(KEYS.USE_DEBUG_RENDER, EventState.KEY_DOWN, self.__toggle_debug_render),
         ]
     
-    def __toggle_debug_render(self):
+    def __toggle_debug_render(self, dt):
         self.render_debug = not self.render_debug
 
     def render_camera_debug(self):

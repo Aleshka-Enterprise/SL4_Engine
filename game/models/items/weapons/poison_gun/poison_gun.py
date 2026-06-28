@@ -23,7 +23,7 @@ class PoisonGun(Weapon):
                 initializer=self.entity,
                 experation_time=200,
                 color=(0, 100, 0),
-                speed=50
+                speed=1500
                 )
 
         return super().attack()

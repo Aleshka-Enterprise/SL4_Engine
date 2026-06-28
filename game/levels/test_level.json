@@ -13,16 +13,16 @@
           0,
           0
         ],
-        "speed": 10,
+        "speed": 600,
         "hp": 350,
         "gravity": 1,
         "jump_force": -24,
         "direction": "left",
-        "boost": 5,
+        "boost": 300,
         "show_hp": false,
         "energy": 350,
         "weapon": {
-          "__class__": "PoisonGun",
+          "__class__": "Shotgun",
           "__id__": 2919279658048,
           "attributes": {
               "offset_x": -15,
@@ -64,7 +64,7 @@
           0,
           0
         ],
-        "speed": 3,
+        "speed": 180,
         "hp": 300,
         "gravity": 1,
         "jump_force": -24,
@@ -113,7 +113,7 @@
           0,
           0
         ],
-        "speed": 3,
+        "speed": 180,
         "hp": 300,
         "gravity": 1,
         "jump_force": -24,
@@ -163,7 +163,7 @@
           0,
           0
         ],
-        "speed": 3,
+        "speed": 180,
         "hp": 300,
         "gravity": 1,
         "jump_force": -24,
@@ -213,7 +213,7 @@
           0,
           0
         ],
-        "speed": 3,
+        "speed": 180,
         "hp": 300,
         "gravity": 1,
         "jump_force": -24,
@@ -263,7 +263,7 @@
           0,
           0
         ],
-        "speed": 3,
+        "speed": 180,
         "hp": 300,
         "gravity": 1,
         "jump_force": -24,

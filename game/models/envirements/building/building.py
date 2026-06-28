@@ -24,7 +24,7 @@ class Building(Envirement, MoveMixin, CollisionMixin):
             self.is_passed = True
             self.on_passed()
         if self.is_movement_enabled:
-            self.move(self.direction)
+            self.move(self.direction, dt)
         else:
             self.used_colision = False
         return super().update_before_render(dt)

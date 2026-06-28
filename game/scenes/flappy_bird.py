@@ -46,7 +46,7 @@ class FlappyBird(TimerMixin, AudioMixin, EventMixin):
         self.counter.score += 1
         self.play_sound('point')
 
-    def restart_scene(self):
+    def restart_scene(self, dt=None):
         SystemManager.destroy_all()
         Building.is_movement_enabled = True
         self.run()
@@ -64,7 +64,7 @@ class FlappyBird(TimerMixin, AudioMixin, EventMixin):
                 height = 500 + random_number if i == 1 else 1000,
                 x = 2200,
                 y = -500 if i == 1 else random_number + 200,
-                speed = 10,
+                speed = 600,
                 destroy_on_render_exit = True,
                 player=self.player,
                 padding=(115, 140, 85, 140),

@@ -15,7 +15,7 @@ class Shoot(RenderMixin, GravityMixin, ParticleMixin, MoveMixin, CollisionMixin)
         owner_weapon=None,
         initializer=None,
         damage: int = 0,
-        speed: int = 30,
+        speed: int = 1800,
         z_index: int = 7,
         collision_ignore_list: list[CollisionMixin] | None = None,
         **kwargs
@@ -68,7 +68,7 @@ class Shoot(RenderMixin, GravityMixin, ParticleMixin, MoveMixin, CollisionMixin)
         return super().on_touched(obj)
 
     def update_before_render(self, dt) -> None:
-        self.move()
+        self.move(self.direction, dt)
         
         return super().update_before_render(dt)
         

@@ -10,7 +10,7 @@ class Poison(Shoot, ParticleMixin, TimerMixin):
         self.entity_old_color = None
         self.poison_entity_timer = None
 
-        self.particle_timer = self.add_timer([self.render_poison_particles], frames=2, loop=True)
+        self.particle_timer = self.add_timer([self.render_poison_particles], frames=1, loop=True)
 
     def render_poison_particles(self):
         self.add_explosion_particles(self.x, self.y, self.color, 5)

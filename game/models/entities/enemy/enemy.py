@@ -66,8 +66,8 @@ class Enemy(Entity, ParticleMixin, TimerMixin, MoveMixin):
             for obstacle in storage.grounds
         )
 
-    def patrol(self):
-        self.move(self.direction)
+    def patrol(self, dt):
+        self.move(self.direction, dt)
         if self.direction == 'left' and self.patrol_points[0] > self.x:
             self.direction = 'right'
         elif self.direction == 'right' and self.patrol_points[1] < self.x:
@@ -78,9 +78,9 @@ class Enemy(Entity, ParticleMixin, TimerMixin, MoveMixin):
 
     def update_before_render(self, dt):
         if not self.target_is_detecte or not self.target:
-            self.patrol()
+            self.patrol(dt)
         if self.target_is_detecte:
-            self.move('left' if self.x > self.target.x else 'right')
+            self.move('left' if self.x > self.target.x else 'right', dt)
             if self.target.y < self.y and hasattr(self, 'is_jumping'):
                 self.jump()
 

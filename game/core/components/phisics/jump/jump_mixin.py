@@ -60,6 +60,6 @@ class JumpMixin(GravityMixin):
         ''' Обработчик события: конец прыжка '''
         pass
 
-    def jump(self) -> None:
+    def jump(self, dt=None) -> None:
         ''' Прыжок '''
         self.is_jumping = True

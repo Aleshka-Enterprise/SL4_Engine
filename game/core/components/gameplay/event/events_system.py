@@ -71,17 +71,17 @@ class EventsSystem(BaseSystem):
 
         for event in cls._key_pressed_events:
             if cls.check_pressed_keys(pressed_keys, event.keys):
-                event.callback()
+                event.callback(dt)
 
         for event in pygame.event.get():
             if event.type == pygame.KEYDOWN:
                 for keydown_event in cls._key_down_events:
                     if event.key in keydown_event.keys:
-                        keydown_event.callback()
+                        keydown_event.callback(dt)
             elif event.type == pygame.KEYUP:
                 for keyup_event in cls._key_up_events:
                     if event.key in keyup_event.keys:
-                        keyup_event.callback()
+                        keyup_event.callback(dt)
             elif event.type == pygame.QUIT:
                 cls.quit()
 

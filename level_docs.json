@@ -396,7 +396,7 @@
           "example": "left",
           "is_object": false
         },
-        "frez": {
+        "freez": {
           "type": "bool",
           "example": false,
           "is_object": false
@@ -753,7 +753,7 @@
           "example": "left",
           "is_object": false
         },
-        "frez": {
+        "freez": {
           "type": "bool",
           "example": false,
           "is_object": false

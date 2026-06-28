@@ -4,12 +4,13 @@ from game.core.components.phisics.collision.collision_types import CollisionResp
 from game.core.components.phisics.gravity import GravityMixin
 from game.core.components.gameplay.health import HealthMixin
 from game.core.components.gameplay.interactive import InteractiveMixin
+from game.core.components.phisics.move.move_mixin import MoveMixin
 from game.core.components.render import AnimationMixin
 from game.models.items.weapons.weapon import Weapon
 from pygame import Rect
 
 
-class Entity(AnimationMixin, HealthMixin, AudioMixin, CollisionMixin, GravityMixin, InteractiveMixin):
+class Entity(AnimationMixin, MoveMixin, HealthMixin, AudioMixin, CollisionMixin, GravityMixin, InteractiveMixin):
     '''Базовый класс сущностей'''
     def __init__(
         self,
@@ -33,18 +34,9 @@ class Entity(AnimationMixin, HealthMixin, AudioMixin, CollisionMixin, GravityMix
         self.z_index = z_index
 
     def can_move(self, new_x: int, new_y: int) -> bool:
-        '''Проверяет возможность движения с учётом столкновений'''
-        entity_new_rect = Rect(new_x, new_y, self.width, self.height - 10)
-        colision_object = self.check_collision(entity_new_rect, [self])
-
-        if colision_object:
-            x = colision_object.x + colision_object.width if self.direction == 'left' else colision_object.x - self.width
-            colision_object = self.check_collision(Rect(x, self.y, self.width, self.height), [self])
-            if not colision_object:
-                self.x = x
-            return False
-
-        return not colision_object
+        '''Проверяет возможность движения (без коллизий)'''
+        entity_new_rect = Rect(new_x, new_y, self.width, self.height)
+        return self.check_collision(entity_new_rect, [self]) is None
 
     def on_died(self) -> None:
         '''Срабатывает при смерти сущности'''
@@ -55,7 +47,7 @@ class Entity(AnimationMixin, HealthMixin, AudioMixin, CollisionMixin, GravityMix
 
         return res
 
-    def take_item(self) -> None:
+    def take_item(self, dt=None) -> None:
         item = super().take_item(ignore=[self.weapon])
         if item:
             if item.item_type == 'weapon' and not item.entity:
@@ -64,7 +56,7 @@ class Entity(AnimationMixin, HealthMixin, AudioMixin, CollisionMixin, GravityMix
                 self.weapon = item
                 self.weapon.entity = self
 
-    def drop_weapon(self):
+    def drop_weapon(self, dt=None):
         if self.weapon:
             self.weapon.entity = None
             self.weapon = None

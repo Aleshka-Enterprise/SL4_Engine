@@ -1,7 +1,7 @@
 from typing import Literal
 from game.core.components.gameplay.event import EventMixin
 from game.core.components.phisics.jump import JumpMixin
-from game.core.components.phisics.move.move_mixin import MoveMixin
+from game.core.components.phisics.move.move_mixin import CompassDirection, MoveMixin, MoveModeType
 from game.models.entities.entity import Entity
 from game.core.storage import storage
 from game.settings import KEYS
@@ -21,8 +21,8 @@ class Player(Entity, JumpMixin, EventMixin, MoveMixin):
 
         self.event_listener = [
             Event(KEYS.ATTACK, EventState.KEY_PRESSED, self.attack),
-            Event(KEYS.LEFT, EventState.KEY_PRESSED, lambda: self.move('left')),
-            Event(KEYS.RIGHT, EventState.KEY_PRESSED, lambda: self.move('right')),
+            Event(KEYS.LEFT, EventState.KEY_PRESSED, lambda dt: self.move('left', dt)),
+            Event(KEYS.RIGHT, EventState.KEY_PRESSED, lambda dt: self.move('right', dt)),
 
             Event(KEYS.JUMP, EventState.KEY_DOWN, self.jump),
             Event(KEYS.RUN, EventState.KEY_DOWN, self.speed_boost),
@@ -64,10 +64,10 @@ class Player(Entity, JumpMixin, EventMixin, MoveMixin):
             self.speed = self.base_speed
         self._is_sitting = value
 
-    def sit(self):
+    def sit(self, dt=None):
         self.is_sitting = True
 
-    def stand_up(self):
+    def stand_up(self, dt=None):
         self.is_sitting = False
 
     def update_before_render(self, dt):
@@ -94,13 +94,13 @@ class Player(Entity, JumpMixin, EventMixin, MoveMixin):
         self.energy -= 3
         return super().on_run()
 
-    def move(self, direction: Literal['left', 'right']):
+    def move(self, direction: Literal['left', 'right'], dt):
         '''Движение Игрока'''
-        res = super().move(direction)
+        res = super().move(direction, dt)
         if self.energy < 10 or self.is_sitting:
             self.is_running = False
         return res
 
-    def attack(self):
+    def attack(self, dt=None):
         if self.weapon and self.weapon.attack:
             self.weapon.attack()

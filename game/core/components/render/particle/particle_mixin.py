@@ -1,3 +1,5 @@
+import random
+
 from game.core.components.utils.timer.timer_mixin import TimerMixin
 from game.models.particles.particle import Particle
 
@@ -24,21 +26,20 @@ class ParticleMixin(TimerMixin):
     def add_explosion_particles(
         self,
         x=None, y=None,
-        color=(255,100,50),
+        color=(255, 100, 50),
         count=20,
-        fade_type='linear',
-        lifetime_range=(0.5, 1.5),
-        speed_range=(50, 200),
-        size_range=(2, 6),
+        lifetime_range=(0.5, 1),
+        speed_range=(-40, 40),
+        size_range=(2, 4),
         spread_radius=0.0,
-        merge_threshold=5.0,
-        cooldown=3
+        merge_threshold=1.0,
+        cooldown=1
     ):
         if not self._can_call_particle('explosion', cooldown):
             return
 
-        x = x or self.x
-        y = y or self.y
+        x = x or self.x + random.randint(-5, 5)
+        y = y or self.y + random.randint(-5, 5)
         Particle(
             x=x, y=y,
             count=count,
@@ -47,7 +48,6 @@ class ParticleMixin(TimerMixin):
             lifetime_range=lifetime_range,
             speed_range=speed_range,
             size_range=size_range,
-            fade_type=fade_type,
             spread_radius=spread_radius,
             merge_threshold=merge_threshold,
             ignore_render_check=True
