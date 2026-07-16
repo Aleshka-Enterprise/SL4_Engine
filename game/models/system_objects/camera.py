@@ -15,9 +15,6 @@ class Camera(TimerMixin):
         - Автоматическое обновление render_zone (зоны видимости) для оптимизации рендеринга.
         - Поддержка горизонтального и опционально вертикального look-ahead.
 
-    ВНИМАНИЕ: все временные параметры зависят от FPS (нет привязки к dt).
-    В будущем планируется адаптация под реальное время.
-
     Attributes:
         screen_width (int): Ширина экрана в пикселях.
         screen_height (int): Высота экрана в пикселях.
@@ -45,6 +42,8 @@ class Camera(TimerMixin):
                  smooth_speed: float = 0.2,
                  look_ahead_offset: float = 100.0,
                  look_ahead_speed: float = 0.05,
+                 smooth_time: float = 0.3,
+                 look_ahead_time: float = 0.1,
                  **kwargs
                 ):
         '''
@@ -87,11 +86,13 @@ class Camera(TimerMixin):
         self._prev_y = 0.0
         self.use_horizontal_look_ahead = use_horizontal_look_ahead
         self.use_vertical_look_ahead = use_vertical_look_ahead
+        self.smooth_time = smooth_time
+        self.look_ahead_time = look_ahead_time
 
         self.add_timer(
             [self.update_render_zone],
             loop=True,
-            frames=5
+            seconds=0.1
         )
 
     @property
@@ -117,36 +118,30 @@ class Camera(TimerMixin):
             RenderSystem.update_render_objects()
         return self._render_zone
 
-    def update(self):
-        target = self.target
-
-        if not target:
+    def update(self, dt: float):
+        if not self.target:
             return
+
+        target = self.target
 
         dx = target.x - self._prev_x
         dy = target.y - self._prev_y
         self._prev_x = target.x
         self._prev_y = target.y
 
-        # Целевое смещение: вперёд по направлению движения
-        target_offset_x = 0.0
-        target_offset_y = 0.0
-        if dx > 0:
-            target_offset_x = self.look_ahead_offset
-        elif dx < 0:
-            target_offset_x = -self.look_ahead_offset
+        target_offset_x = self.look_ahead_offset if dx > 0 else -self.look_ahead_offset if dx < 0 else 0.0
+        target_offset_y = self.look_ahead_offset if dy > 0 else -self.look_ahead_offset if dy < 0 else 0.0
 
-        if self.use_vertical_look_ahead:
-            if dy > 0:
-                target_offset_y = self.look_ahead_offset
-            elif dy < 0:
-                target_offset_y = -self.look_ahead_offset
 
-        # Плавно подводим текущее смещение к целевому
-        self.current_offset_x += (target_offset_x - self.current_offset_x) * self.look_ahead_speed
-        self.current_offset_y += (target_offset_y - self.current_offset_y) * self.look_ahead_speed
+        if self.look_ahead_time > 0:
+            factor = 1 - (0.001 ** (dt / self.look_ahead_time))
+            self.current_offset_x += (target_offset_x - self.current_offset_x) * factor
+            if self.use_vertical_look_ahead:
+                self.current_offset_y += (target_offset_y - self.current_offset_y) * factor
+        else:
+            self.current_offset_x = target_offset_x
+            self.current_offset_y = target_offset_y
 
-        # ---- Расчёт целевой позиции камеры (как раньше) ----
         target_x = self.viewport.x
         target_y = self.viewport.y
 
@@ -160,17 +155,19 @@ class Camera(TimerMixin):
         elif target.y + target.height > self.viewport.y + self.deadzone.bottom:
             target_y = target.y + target.height - self.deadzone.bottom
 
-        # ---- Добавляем look‑ahead к целевой позиции ----
         target_x += self.current_offset_x
         target_y += self.current_offset_y
 
-        # ---- Ограничения уровня (после смещения) ----
         target_x = max(0, min(target_x, self.MAX_LEVEL_WIDTH - self.screen_width))
         target_y = max(0, min(target_y, self.MAX_LEVEL_HEIGHT - self.screen_height))
 
-        # ---- Плавное движение камеры ----
-        self.viewport.x += (target_x - self.viewport.x) * self.smooth_speed
-        self.viewport.y += (target_y - self.viewport.y) * self.smooth_speed
+        if self.smooth_time > 0:
+            factor = 1 - (0.001 ** (dt / self.smooth_time))
+            self.viewport.x += (target_x - self.viewport.x) * factor
+            self.viewport.y += (target_y - self.viewport.y) * factor
+        else:
+            self.viewport.x = target_x
+            self.viewport.y = target_y
 
     def apply(self, pos) -> None:
         '''Преобразует глобальные координаты в экранные'''

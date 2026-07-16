@@ -1,17 +1,16 @@
-
 from game.core.components.base.base_system import BaseSystem
-from game.core.components.phisics.collision import CollisionSystem
+from game.core.components.phisics.collision.collision_system import CollisionSystem
 
 
 class GravitySystem(BaseSystem):
 
     @classmethod
-    def apply_gravity(cls) -> None:
-        '''Применение гравитации'''
+    def apply_gravity(cls, dt: float) -> None:
+        '''Применение гравитации с правильным dt'''
         for obj in cls.objects:
-            obj.vel_y += obj.gravity
-            obj.y += obj.vel_y
-
+            obj.vel_y += obj.gravity * dt
+            obj.y += obj.vel_y * dt
+            
             landing_platform = None
             min_penetration = float('inf')
             
@@ -23,7 +22,6 @@ class GravitySystem(BaseSystem):
                         obj.vel_y = collision_object.vel_y
                     else:
                         obj.vel_y = 0
-
                 else:
                     penetration = obj.y - collision_object.y
                     if penetration < min_penetration:
@@ -36,10 +34,9 @@ class GravitySystem(BaseSystem):
                 obj.vel_y = 0
                 obj.on_lend(landing_platform)
                 landing_platform.on_landed(obj)
-
             else:
                 obj.on_the_ground = False
 
     @classmethod
     def update(cls, dt: float = 1.0):
-        cls.apply_gravity()
+        cls.apply_gravity(dt)

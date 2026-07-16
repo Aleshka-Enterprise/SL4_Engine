@@ -15,8 +15,8 @@
         ],
         "speed": 600,
         "hp": 350,
-        "gravity": 1,
-        "jump_force": -24,
+        "gravity": 2500,
+        "jump_force": -900,
         "direction": "left",
         "boost": 300,
         "show_hp": false,
@@ -34,8 +34,7 @@
                   0,
                   0
               ],
-              "cooling_down": 10,
-              "current_cooling_down": 5,
+              "cooling_down": 0.16,
               "maximum_number_of_bullets": 10,
               "shoot_list": [],
               "entity": {
@@ -45,7 +44,7 @@
               "y": 1564.8284606933594,
               "delete_after_death": false,
               "vel_y": 0,
-              "gravity": 0.7,
+              "gravity": 1000,
               "damage": 100
           }
         }
@@ -66,8 +65,8 @@
         ],
         "speed": 180,
         "hp": 300,
-        "gravity": 1,
-        "jump_force": -24,
+        "gravity": 2500,
+        "jump_force": 900,
         "direction": "left",
         "boost": 5,
         "show_hp": false,
@@ -84,8 +83,7 @@
                 0,
                 0
             ],
-            "cooling_down": 10,
-            "current_cooling_down": 5,
+            "cooling_down": 0.16,
             "maximum_number_of_bullets": 10,
             "shoot_list": [],
             "entity": {
@@ -95,7 +93,7 @@
             "y": 1436.1680603027346,
             "delete_after_death": false,
             "vel_y": 0,
-            "gravity": 0.7
+            "gravity": 1000
           }
         }
       }
@@ -115,8 +113,8 @@
         ],
         "speed": 180,
         "hp": 300,
-        "gravity": 1,
-        "jump_force": -24,
+        "gravity": 2500,
+        "jump_force": -900,
         "direction": "left",
         "boost": 5,
         "show_hp": false,
@@ -134,8 +132,8 @@
                 0,
                 0
             ],
-            "cooling_down": 10,
-            "current_cooling_down": 5,
+            "cooling_down": 0.16,
+            
             "maximum_number_of_bullets": 10,
             "shoot_list": [],
             "entity": {
@@ -145,7 +143,7 @@
             "y": 1454.487274169922,
             "delete_after_death": false,
             "vel_y": 0,
-            "gravity": 0.7
+            "gravity": 1000
           }
         }
       }
@@ -165,8 +163,8 @@
         ],
         "speed": 180,
         "hp": 300,
-        "gravity": 1,
-        "jump_force": -24,
+        "gravity": 2500,
+        "jump_force": 1000,
         "direction": "left",
         "boost": 5,
         "show_hp": false,
@@ -184,8 +182,8 @@
                 0,
                 0
             ],
-            "cooling_down": 10,
-            "current_cooling_down": 5,
+            "cooling_down": 0.16,
+            
             "maximum_number_of_bullets": 10,
             "shoot_list": [],
             "entity": {
@@ -195,7 +193,7 @@
             "y": 1416.7842712402346,
             "delete_after_death": false,
             "vel_y": 0,
-            "gravity": 0.7
+            "gravity": 1000
           }
         }
       }
@@ -215,8 +213,8 @@
         ],
         "speed": 180,
         "hp": 300,
-        "gravity": 1,
-        "jump_force": -24,
+        "gravity": 2500,
+        "jump_force": -900,
         "direction": "left",
         "boost": 5,
         "show_hp": false,
@@ -234,8 +232,8 @@
                 0,
                 0
             ],
-            "cooling_down": 10,
-            "current_cooling_down": 5,
+            "cooling_down": 0.16,
+            
             "maximum_number_of_bullets": 10,
             "shoot_list": [],
             "entity": {
@@ -245,7 +243,7 @@
             "y": 1416.7842712402346,
             "delete_after_death": false,
             "vel_y": 0,
-            "gravity": 0.7
+            "gravity": 1000
           }
         }
       }
@@ -265,8 +263,8 @@
         ],
         "speed": 180,
         "hp": 300,
-        "gravity": 1,
-        "jump_force": -24,
+        "gravity": 2500,
+        "jump_force": -900,
         "direction": "left",
         "boost": 5,
         "show_hp": false,
@@ -283,8 +281,8 @@
                 0,
                 0
             ],
-            "cooling_down": 10,
-            "current_cooling_down": 5,
+            "cooling_down": 0.16,
+            
             "maximum_number_of_bullets": 10,
             "shoot_list": [],
             "entity": {
@@ -294,7 +292,7 @@
             "y": 1369.9439697265627,
             "delete_after_death": false,
             "vel_y": 0,
-            "gravity": 0.7
+            "gravity": 1000
           }
         }
       }
@@ -860,7 +858,7 @@
       "__class__": "Ground",
       "__id__": "a5ceq7i7l",
       "attributes": {
-        "x": 18000.893367767334,
+        "x": 25000.893367767334,
         "y": 1802.5772705078125,
         "width": 1216.8072547912598,
         "height": 310.504150390625,
@@ -875,7 +873,7 @@
       "__class__": "Ground",
       "__id__": "qcmy10wv5",
       "attributes": {
-        "x": 18004.089447021484,
+        "x": 25004.089447021484,
         "y": 1429.635498046875,
         "width": 122.689453125,
         "height": 385.7142333984375,

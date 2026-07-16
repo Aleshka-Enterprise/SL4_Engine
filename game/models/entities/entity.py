@@ -60,3 +60,19 @@ class Entity(AnimationMixin, MoveMixin, HealthMixin, AudioMixin, CollisionMixin,
         if self.weapon:
             self.weapon.entity = None
             self.weapon = None
+
+    #TODO объект сейчас не подходит к колизии вплотную
+    def resolve_collision(self, new_x: int, new_y: int) -> tuple[int, int]:
+        test_rect_x = Rect(new_x, self.y, self.width, self.height)
+        if self.check_collision(test_rect_x, [self]) is None:
+            test_rect_y = Rect(self.x, new_y, self.width, self.height)
+            if self.check_collision(test_rect_y, [self]) is None:
+                return (new_x, new_y)
+            else:
+                return (new_x, self.y)
+        else:
+            test_rect_y = Rect(self.x, new_y, self.width, self.height)
+            if self.check_collision(test_rect_y, [self]) is None:
+                return (self.x, new_y)
+            else:
+                return (self.x, self.y)

@@ -11,8 +11,8 @@ class Plane(Entity, JumpMixin, EventMixin):
         super().__init__(**kwargs)
         self._init_audio_mixin()
 
-        self.jump_force = -8
-        self.gravity = 0.3
+        self.jump_force = -600
+        self.gravity = 1500
         self._is_alive = True
         self.on_died = on_died
         self.collision_response = CollisionResponseTypes.IGNORE
@@ -20,7 +20,7 @@ class Plane(Entity, JumpMixin, EventMixin):
         self.play_animation('jump', mode='freez')
 
         self.event_listener = [
-            Event(KEYS.JUMP, EventState.KEY_DOWN, self.jump),
+            Event(KEYS.JUMP, EventState.KEY_DOWN, lambda dt: self.jump()),
         ]
         
     @property

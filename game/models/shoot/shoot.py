@@ -28,8 +28,8 @@ class Shoot(RenderMixin, GravityMixin, ParticleMixin, MoveMixin, CollisionMixin)
         self.speed = speed
         self.initializer = initializer
         self._hit_entity = None
-        self.gravity = 0.05
-        self.vel_y = -0.1
+        self.gravity = 0
+        self.vel_y = 0
         self.destroy_on_render_exit = True
         self.collision_response = CollisionResponseTypes.IGNORE
         self.collision_ignore_list = collision_ignore_list or []

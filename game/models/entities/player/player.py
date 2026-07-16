@@ -1,7 +1,8 @@
 from typing import Literal
 from game.core.components.gameplay.event import EventMixin
 from game.core.components.phisics.jump import JumpMixin
-from game.core.components.phisics.move.move_mixin import CompassDirection, MoveMixin, MoveModeType
+from game.core.components.phisics.move.move_mixin import MoveMixin
+from game.core.components.utils.timer.timer_mixin import TimerMixin
 from game.models.entities.entity import Entity
 from game.core.storage import storage
 from game.settings import KEYS
@@ -9,7 +10,7 @@ from game.core.storage import GAME_STATE
 from game.utils.types import Event, EventState
 
 
-class Player(Entity, JumpMixin, EventMixin, MoveMixin):
+class Player(Entity, JumpMixin, EventMixin, MoveMixin, TimerMixin):
     def __init__(self, energy: int = 350, **kwargs):
         super().__init__(**kwargs)
 
@@ -35,6 +36,12 @@ class Player(Entity, JumpMixin, EventMixin, MoveMixin):
         ]
 
         storage.player = self
+
+        self.add_timer([self.regenerate_energy], loop=True, seconds=0.1)
+    
+    def regenerate_energy(self):
+        if self.energy < self.max_energy:
+            self.energy = min(self.max_energy, self.energy + 10)
         
     def can_jump(self):
         if self.energy < 100 and not self.is_sitting:
@@ -69,11 +76,6 @@ class Player(Entity, JumpMixin, EventMixin, MoveMixin):
 
     def stand_up(self, dt=None):
         self.is_sitting = False
-
-    def update_before_render(self, dt):
-        if self.energy < self.max_energy:
-            self.energy = min(self.max_energy, self.energy + 1)
-        super().update_before_render(dt)
 
     def on_died(self):
         res = super().on_died()

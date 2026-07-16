@@ -34,7 +34,7 @@ class Enemy(Entity, ParticleMixin, TimerMixin, MoveMixin):
             self.attack_timer = self.add_timer(
                 [self.weapon.attack],
                 loop=True,
-                frames=self.weapon.cooling_down,
+                seconds=self.weapon.cooling_down,
                 use_on_start=True
             )
         elif not value and self.attack_timer:

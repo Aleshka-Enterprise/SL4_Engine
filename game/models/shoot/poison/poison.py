@@ -10,7 +10,7 @@ class Poison(Shoot, ParticleMixin, TimerMixin):
         self.entity_old_color = None
         self.poison_entity_timer = None
 
-        self.particle_timer = self.add_timer([self.render_poison_particles], frames=1, loop=True)
+        self.particle_timer = self.add_timer([self.render_poison_particles], seconds=0, loop=True)
 
     def render_poison_particles(self):
         self.add_explosion_particles(self.x, self.y, self.color, 5)
@@ -35,7 +35,7 @@ class Poison(Shoot, ParticleMixin, TimerMixin):
                     lambda: self.hit_entity.take_damage(self.damage),
                     lambda: self.poison_entity_timer.delete_timer() if self.hit_entity and self.hit_entity.hp <= 0 else None
                 ],
-                frames=1,
+                seconds=0,
                 loop=True
             )
             self.add_timer(
@@ -43,7 +43,7 @@ class Poison(Shoot, ParticleMixin, TimerMixin):
                     lambda: self.poison_entity_timer.delete_timer(),
                     lambda: self.destroy()
                 ],
-                frames=self.experation_time,
+                seconds=self.experation_time,
                 loop=False
             )
             self.particle_timer.delete_timer()

@@ -21,7 +21,7 @@ class PoisonGun(Weapon):
                 owner_weapon=self,
                 damage=self.damage,
                 initializer=self.entity,
-                experation_time=200,
+                experation_time=3,
                 color=(0, 100, 0),
                 speed=1500
                 )

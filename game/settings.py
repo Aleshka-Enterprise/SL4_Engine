@@ -17,5 +17,5 @@ class KEYS:
     USE_DEBUG_RENDER = (pygame.K_F3,)
 
 DEBUG = True
-FPS = 60
+FPS = 144
 WINDOW_CAPTION = 'Flappy Fly'

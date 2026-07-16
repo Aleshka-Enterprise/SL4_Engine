@@ -18,7 +18,7 @@ class FlappyBird(TimerMixin, AudioMixin, EventMixin):
         self.play_sound('soundtrack', loops=-1)
         BackgroundLayer(x=0, y=0, height=DISPLAY.HEIGHT, width=DISPLAY.WIDTH, state='startscreen', z_index=9999)
         self.event_listener = [
-            Event(KEYS.JUMP, EventState.KEY_DOWN, self.restart_scene),
+            Event(KEYS.JUMP, EventState.KEY_DOWN, lambda dt: self.restart_scene()),
         ]
 
     def run(self) -> None:
@@ -30,13 +30,13 @@ class FlappyBird(TimerMixin, AudioMixin, EventMixin):
         self.add_pipes_timer = self.add_timer([self.generate_buildings], seconds=1.5, loop=True, use_on_start=True)
 
         self.event_listener = [
-            Event(KEYS.MENU, EventState.KEY_DOWN, self.toggle_stop_game, False),
+            Event(KEYS.MENU, EventState.KEY_DOWN, lambda dt: self.toggle_stop_game(), False),
         ]
 
     def on_plane_dead(self, *args, **kwargs):
         Building.is_movement_enabled = False
         self.event_listener = [
-            Event(KEYS.JUMP, EventState.KEY_DOWN, self.restart_scene),
+            Event(KEYS.JUMP, EventState.KEY_DOWN, lambda dt: self.restart_scene(dt)),
         ]
         self.add_timer([
             lambda: BackgroundLayer(x=0, y=0, height=DISPLAY.HEIGHT + 100, width=DISPLAY.WIDTH, state='game_over', z_index=9999)

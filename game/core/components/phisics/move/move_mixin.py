@@ -1,4 +1,5 @@
 from enum import Enum
+import math
 from typing import Literal, Tuple, Optional, Union
 from game.core.components.base.base_mixin import BaseMixin
 from game.settings import DEBUG
@@ -185,7 +186,7 @@ class MoveMixin(BaseMixin):
         if self.move_freez:
             return (self.x, self.y)
 
-        displacement = self.speed * dt
+        displacement = math.floor(self.speed * dt)
         dx = dy = 0.0
 
         if self.move_mode == MoveModeType.HORIZONTAL:
@@ -240,8 +241,9 @@ class MoveMixin(BaseMixin):
                 self.on_run()
             else:
                 self.on_move()
-            self.x = new_x
-            self.y = new_y
+            self.x, self.y = new_x, new_y
+        else:
+            self.x, self.y = self.resolve_collision(new_x, new_y)
 
         return (self.x, self.y)
 
@@ -273,3 +275,10 @@ class MoveMixin(BaseMixin):
     def stop_speed_boost(self, dt=None) -> None:
         """Выключает бег."""
         self.is_running = False
+
+    def resolve_collision(self,  new_x: int, new_y: int) -> tuple[int, int]:
+        '''
+        Возвращает скорректированную позицию при столкновении (скользит по стенам).
+        Пытается двигаться по X и Y по отдельности.
+        '''
+

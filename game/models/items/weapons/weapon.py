@@ -15,10 +15,10 @@ class Weapon(Item, AudioMixin, CollisionMixin, TimerMixin, GravityMixin):
                  offset_x: int,
                  offset_y: int,
                  entity=None,
-                 cooling_down: int = 30,
+                 cooling_down: int = 0.5,
                  maximum_number_of_bullets: int = 10,
                  delete_after_death: bool = False,
-                 gravity: float = 7,
+                 gravity: float = 1000,
                  damage: float = 1,
                  **kwargs
                  ):
@@ -72,7 +72,7 @@ class Weapon(Item, AudioMixin, CollisionMixin, TimerMixin, GravityMixin):
             self.play_sound('shoot')
             self.add_timer(
                 [lambda: self.chenge_weapon_status(True)],
-                frames=self.cooling_down,
+                seconds=self.cooling_down,
                 loop=False
             )
             self.chenge_weapon_status(False)

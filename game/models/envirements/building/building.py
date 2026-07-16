@@ -33,9 +33,9 @@ class Building(Envirement, MoveMixin, CollisionMixin):
         pass
 
     def play_destroy_building_animation(self):
-        self.play_animation('type_1_destroed', mode='loop', fps=10)
+        self.play_animation('type_1_destroed', mode='loop', timer=0.2)
 
     def on_touched(self, obj):
         if obj.__class__.__name__ != 'Ground':
-            self.play_animation('type_1_destroed', mode='loop', fps=10)
+            self.play_animation('type_1_destroed', mode='loop', timer=0.2)
         return super().on_touched(obj)

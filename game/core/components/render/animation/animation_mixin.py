@@ -33,7 +33,7 @@ class AnimationMixin(RenderMixin):
         self.current_frame_index: int = 0
         self._frames: List[pygame.Surface] = []
         self._animation_timer: float = 0.0
-        self._fps: int = 6
+        self._timer: int = 6
         self._mode: str = 'loop'
         self._playing: bool = False
 
@@ -66,7 +66,7 @@ class AnimationMixin(RenderMixin):
         return frames
 
     def play_animation(self, state: str, mode: Optional[str] = None,
-             fps: Optional[int] = None, reset: bool = True):
+             timer: Optional[int] = None, reset: bool = True):
         if state != self.current_state:
             self._frames = self.load_state_frames(state)
             self.current_state = state
@@ -76,7 +76,7 @@ class AnimationMixin(RenderMixin):
 
         state_config = self.animations_config.get(state, {})
         self._mode = mode or state_config.get('mode', 'loop')
-        self._fps = fps or state_config.get('fps')
+        self._timer = timer or state_config.get('timer')
         self._playing = True
 
     def stop(self):
@@ -87,12 +87,12 @@ class AnimationMixin(RenderMixin):
             return None
         return self._frames[self.current_frame_index]
 
-    def update_animation(self):
-        if not self._playing or not self._frames or self._fps == None:
+    def update_animation(self, dt):
+        if not self._playing or not self._frames or self._timer == None:
             return
 
-        self._animation_timer += 1
-        frame_duration = self._fps
+        self._animation_timer += dt
+        frame_duration = self._timer
 
         while self._animation_timer >= frame_duration:
             self._animation_timer -= frame_duration
@@ -173,7 +173,7 @@ class AnimationMixin(RenderMixin):
 
     def update_before_render(self, dt):
         res = super().update_before_render(dt)
-        self.update_animation()
+        self.update_animation(dt)
         return res
 
     @property

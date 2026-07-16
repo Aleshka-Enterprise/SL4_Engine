@@ -125,7 +125,7 @@ class RenderSystem(BaseSystem):
     def update(cls, dt: float = 1.0) -> None:
         if not EventsSystem.is_frozen:
             cls.update_before_render(dt)
-            storage.camera.update()
+            storage.camera.update(dt)
             cls.render(storage.camera)
             cls.update_after_render(dt)
         else:
