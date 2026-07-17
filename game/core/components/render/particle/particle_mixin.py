@@ -16,7 +16,7 @@ class ParticleMixin(TimerMixin):
         if self._particle_cooldown.get(key, True):
             self._particle_cooldown[key] = False
             self.add_timer(
-                callbacks=[lambda: self._particle_cooldown.__setitem__(key, True)],
+                lambda: self._particle_cooldown.__setitem__(key, True),
                 seconds=cooldown_seconds,
                 loop=False,
             )

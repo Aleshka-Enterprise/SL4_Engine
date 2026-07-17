@@ -11,18 +11,17 @@ class TimerMixin(BaseMixin):
 
     def add_timer(
         self,
-        callbacks: List[Function] | Tuple[Function],
+        callback: Function,
         seconds: int = 0,
         loop: bool = False,
-        use_on_start: bool = False,
+        call_immediately: bool = False,
     ) -> Timer:
         time = seconds
 
-        if use_on_start:
-            for callback in callbacks:
-                callback()
+        if call_immediately:
+            callback()
 
-        new_timer = Timer(time, callbacks, loop)
+        new_timer = Timer(time, callback, loop)
 
         TimerSystem.register(new_timer)
 

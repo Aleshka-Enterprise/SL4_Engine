@@ -5,6 +5,7 @@ from typing import Tuple
 
 
 class ObservableList:
+    """Список, который уведомляет о изменениях"""
     def __init__(self, on_change: Function | None = None):
         self._items = []
         self.on_change = on_change

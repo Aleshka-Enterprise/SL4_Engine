@@ -1,10 +1,8 @@
 from game.core.components.audio import AudioMixin
 from game.core.components.gameplay.health import HealthMixin
-from game.core.components.gameplay.interactive import InteractiveMixin
 from game.core.components.phisics.collision import CollisionMixin
 from game.core.components.phisics.collision.collision_types import CollisionResponseTypes
 from game.core.components.phisics.gravity import GravityMixin
-from game.core.components.phisics.move.move_mixin import MoveMixin
 from game.core.components.render import AnimationMixin
 from game.models.items.weapons.weapon import Weapon
 from pygame import Rect
@@ -12,12 +10,10 @@ from pygame import Rect
 
 class Entity(
     AnimationMixin,
-    MoveMixin,
     HealthMixin,
     AudioMixin,
     CollisionMixin,
     GravityMixin,
-    InteractiveMixin,
 ):
     """Базовый класс сущностей"""
 

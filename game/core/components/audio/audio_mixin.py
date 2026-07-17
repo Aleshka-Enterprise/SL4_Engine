@@ -133,10 +133,6 @@ class SoundGroup:
 
 
 class AudioMixin:
-    """
-    Продвинутый миксин для управления звуками с поддержкой папок и режимов воспроизведения
-    """
-
     # Настройки вариаций по умолчанию
     _default_variation_settings = {
         "enabled": True,

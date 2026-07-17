@@ -41,23 +41,17 @@ class RenderMixin(BaseMixin):
 
         if padding is not None:
             if isinstance(padding, int):
-                self._padding_top = padding
-                self._padding_right = padding
-                self._padding_bottom = padding
-                self._padding_left = padding
-            elif isinstance(padding, tuple) or isinstance(padding, list):
+                self._padding_top = self._padding_right = self._padding_bottom = self._padding_left = padding
+            elif isinstance(padding, (tuple, list)):
                 if len(padding) == 2:
-                    self._padding_top = padding[0]
-                    self._padding_right = padding[1]
-                    self._padding_bottom = padding[0]
-                    self._padding_left = padding[1]
+                    self._padding_top = self._padding_bottom = padding[0]
+                    self._padding_right = self._padding_left = padding[1]
                 elif len(padding) == 4:
-                    (
-                        self._padding_top,
-                        self._padding_right,
-                        self._padding_bottom,
-                        self._padding_left,
-                    ) = padding
+                    self._padding_top, self._padding_right, self._padding_bottom, self._padding_left = padding
+                else:
+                    self._padding_top = self._padding_right = self._padding_bottom = self._padding_left = 0
+            else:
+                self._padding_top = self._padding_right = self._padding_bottom = self._padding_left = 0
         else:
             self._padding_top = padding_top
             self._padding_right = padding_right

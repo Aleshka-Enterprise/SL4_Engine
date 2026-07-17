@@ -71,7 +71,7 @@ class Weapon(Item, AudioMixin, CollisionMixin, TimerMixin, GravityMixin):
         if self.weapon_is_ready:
             self.play_sound("shoot")
             self.add_timer(
-                [lambda: self.chenge_weapon_status(True)], seconds=self.cooling_down, loop=False
+                lambda: self.chenge_weapon_status(True), seconds=self.cooling_down, loop=False
             )
             self.chenge_weapon_status(False)
             return True

@@ -5,32 +5,6 @@ from pygame import Rect
 
 
 class Camera(TimerMixin):
-    """
-    Камера с мёртвой зоной (deadzone), плавным следованием и опережением (look-ahead).
-
-    Особенности:
-        - Deadzone центрирована и занимает ½ ширины и ½ высоты экрана.
-        - Плавная интерполяция положения камеры (smooth_speed).
-        - Опережение в сторону движения (look-ahead) для лучшего обзора.
-        - Автоматическое обновление render_zone (зоны видимости) для оптимизации рендеринга.
-        - Поддержка горизонтального и опционально вертикального look-ahead.
-
-    Attributes:
-        screen_width (int): Ширина экрана в пикселях.
-        screen_height (int): Высота экрана в пикселях.
-        viewport (Rect): Текущая видимая область (мировые координаты).
-        deadzone (Rect): Прямоугольник (экранные координаты), внутри которого цель может двигаться без смещения камеры.
-        smooth_speed (float): Скорость интерполяции (0.0 – мгновенно, 1.0 – бесконечно медленно).
-        look_ahead_offset (float): Максимальное смещение вперёд в пикселях.
-        look_ahead_speed (float): Скорость нарастания/затухания опережения.
-        current_offset_x (float): Текущее горизонтальное опережение (плавно меняется).
-        current_offset_y (float): Текущее вертикальное опережение.
-        padding (int): Отступ вокруг viewport для вычисления render_zone.
-        target (BaseMixin | None): Объект, за которым следит камера (обычно игрок).
-        use_horizontal_look_ahead (bool): Включено ли горизонтальное опережение.
-        use_vertical_look_ahead (bool): Включено ли вертикальное опережение.
-    """
-
     MAX_LEVEL_HEIGHT = 100_000
     MAX_LEVEL_WIDTH = 100_000
 
@@ -48,20 +22,6 @@ class Camera(TimerMixin):
         look_ahead_time: float = 0.1,
         **kwargs,
     ):
-        """
-        Инициализация камеры.
-
-        Args:
-            screen_width (int): Ширина окна.
-            screen_height (int): Высота окна.
-            target (BaseMixin | None, optional): Целевой объект (игрок). По умолчанию None.
-            use_horizontal_look_ahead (bool, optional): Включить горизонтальное опережение. По умолчанию True.
-            use_vertical_look_ahead (bool, optional): Включить вертикальное опережение. По умолчанию False.
-            smooth_speed (float, optional): Скорость интерполяции (чем меньше, тем плавнее). По умолчанию 0.2.
-            look_ahead_offset (float, optional): Максимальное смещение опережения. По умолчанию 100.0.
-            look_ahead_speed (float, optional): Скорость изменения опережения. По умолчанию 0.05.
-            **kwargs: Пробрасываются в родительские классы (TimerMixin).
-        """
         super().__init__(**kwargs)
 
         self.screen_width = screen_width
@@ -88,22 +48,14 @@ class Camera(TimerMixin):
         self.smooth_time = smooth_time
         self.look_ahead_time = look_ahead_time
 
-        self.add_timer([self.update_render_zone], loop=True, seconds=0.1)
+        self.add_timer(self.update_render_zone, loop=True, seconds=0.1)
 
     @property
     def render_zone(self):
         return self._render_zone
 
     def update_render_zone(self) -> Rect:
-        """
-        Обновляет зону рендеринга, если текущий viewport вышел за её границы.
-
-        Зона рендеринга – это viewport, расширенный на padding со всех сторон.
-        При изменении зоны уведомляет RenderSystem о необходимости пересчитать список объектов для отрисовки.
-
-        Returns:
-            Rect: Актуальная зона рендеринга.
-        """
+        """Обновляет зону рендеринга, если текущий viewport вышел за её границы."""
         if not self.render_zone.contains(self.viewport):
             x = self.viewport.x - self.padding
             y = self.viewport.y - self.padding

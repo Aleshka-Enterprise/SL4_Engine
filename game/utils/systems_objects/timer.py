@@ -1,12 +1,11 @@
 from pyclbr import Function
-from typing import List
 
 
 class Timer:
     def __init__(
         self,
         time: int,
-        callbacks: List[Function],
+        callback: Function,
         loop: bool = False,
         is_active: bool = True,
         **kwargs,
@@ -15,7 +14,7 @@ class Timer:
 
         self.time = time
         self.base_time = time
-        self.callbacks = callbacks
+        self.callback = callback
         self.loop = loop
         self.__is_frozen = False
         self.__is_active = is_active
@@ -36,8 +35,7 @@ class Timer:
         self.time -= dt
 
         if self.time <= 0:
-            for callback in self.callbacks:
-                callback()
+            self.callback()
 
             if self.loop:
                 self.time = self.base_time

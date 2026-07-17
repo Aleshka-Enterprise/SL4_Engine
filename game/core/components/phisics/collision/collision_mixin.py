@@ -10,7 +10,7 @@ class CollisionMixin(BaseMixin):
         self,
         used_colision: bool = True,
         collision_response: CollisionResponseTypes = CollisionResponseTypes.STATIC,
-        collision_ignore_list: list[CollisionMixin] | None = None,
+        collision_ignore_list: list["CollisionMixin"] | None = None,
         **kwargs,
     ):
         super().__init__(**kwargs)
@@ -29,7 +29,7 @@ class CollisionMixin(BaseMixin):
     def used_colision(self, value: bool):
         self._used_colision = value
 
-    def check_collision(self, rect, ignore_list=None) -> CollisionMixin | None:
+    def check_collision(self, rect, ignore_list=None) -> "CollisionMixin" | None:
         """Проверка столкновения"""
         if ignore_list is None:
             ignore_list = []
@@ -39,14 +39,14 @@ class CollisionMixin(BaseMixin):
         super().destroy()
         CollisionSystem.destroy(self)
 
-    def on_collision(self, obj: CollisionMixin) -> None:
+    def on_collision(self, obj: "CollisionMixin") -> None:
         """Обработчик события: объект столкнулся"""
         self.on_touched(obj)
 
-    def on_landed(self, obj: CollisionMixin) -> None:
+    def on_landed(self, obj: "CollisionMixin") -> None:
         """Обработчик события: объект приземлился"""
         self.on_touched(obj)
 
-    def on_touched(self, obj: CollisionMixin) -> None:
+    def on_touched(self, obj: "CollisionMixin") -> None:
         """Обработчик события: объект был тронут"""
         pass

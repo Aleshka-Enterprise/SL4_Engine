@@ -95,9 +95,7 @@ def serialize_obj(obj, _seen: Set[int] = None) -> dict:
 
 
 def create_objects_from_json(json_data: Dict[str, Any]) -> None:
-    """
-    Создает объекты из JSON данных с учетом вложенности и регистрации классов.
-    """
+    """Создает объекты из JSON данных с учетом вложенности и регистрации классов."""
     # Словарь для хранения созданных объектов по их ID
     created_objects: Dict[int, Any] = {}
 

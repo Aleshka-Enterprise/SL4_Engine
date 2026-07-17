@@ -8,7 +8,7 @@ class GravityMixin(BaseMixin):
 
         self._vel_y = vel_y
         self._gravity = gravity
-        self.on_the_ground = False
+        self.is_on_ground = False
 
         if self.auto_register:
             GravitySystem.register(self)

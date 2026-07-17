@@ -94,7 +94,7 @@
           "example": 24,
           "is_object": false
         },
-        "on_the_ground": {
+        "is_on_ground": {
           "type": "bool",
           "example": false,
           "is_object": false
@@ -436,7 +436,7 @@
           "example": 24,
           "is_object": false
         },
-        "on_the_ground": {
+        "is_on_ground": {
           "type": "bool",
           "example": false,
           "is_object": false
@@ -793,7 +793,7 @@
           "example": 24,
           "is_object": false
         },
-        "on_the_ground": {
+        "is_on_ground": {
           "type": "bool",
           "example": false,
           "is_object": false
@@ -1387,7 +1387,7 @@
           "example": 7,
           "is_object": false
         },
-        "on_the_ground": {
+        "is_on_ground": {
           "type": "bool",
           "example": false,
           "is_object": false

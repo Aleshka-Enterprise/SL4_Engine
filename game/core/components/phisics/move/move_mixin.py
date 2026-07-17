@@ -143,10 +143,7 @@ class MoveMixin(BaseMixin):
                 self.direction = direction
 
     def set_direction_vector(self, dx: float, dy: float) -> None:
-        """
-        Устанавливает нормализованный вектор направления (для FREE режима).
-        Если длина вектора равна нулю, вектор остаётся прежним.
-        """
+        """Устанавливает нормализованный вектор направления (для FREE режима)"""
         length = (dx * dx + dy * dy) ** 0.5
         if length > 0:
             self._direction_vector = (dx / length, dy / length)
@@ -157,9 +154,6 @@ class MoveMixin(BaseMixin):
             self.direction = "down" if vy > 0 else "up"
 
     def set_compass_direction(self, direction: Union[CompassDirection, str]) -> None:
-        """Устанавливает направление для режима COMPASS"""
-        if self.move_mode != MoveModeType.COMPASS:
-            raise ValueError("set_compass_direction() can only be used in COMPASS mode")
         if isinstance(direction, CompassDirection):
             self._compass_direction = direction
         else:
@@ -168,26 +162,6 @@ class MoveMixin(BaseMixin):
     def move(
         self, direction: Optional[str] = None, dt: Optional[float] = None
     ) -> Tuple[float, float]:
-        """
-        Перемещает объект в заданном направлении с учётом dt.
-
-        Для режимов HORIZONTAL и VERTICAL:
-            direction: 'left'/'right' или 'up'/'down'. Если не указан – используется self.direction.
-        Для режима FREE:
-            direction игнорируется; используется вектор, установленный через set_direction_vector().
-
-        Args:
-            direction: направление (строка).
-            dt: дельта-время в секундах.
-
-        Returns:
-            (x, y) после перемещения.
-
-        Raises:
-            ValueError: если dt не передан или направление недопустимо.
-        """
-        if dt is None:
-            raise ValueError("MoveMixin.move() requires dt argument")
         if self.move_freez:
             return (self.x, self.y)
 
@@ -196,27 +170,15 @@ class MoveMixin(BaseMixin):
 
         if self.move_mode == MoveModeType.HORIZONTAL:
             dir_str = direction or self.direction
-            if dir_str == "left":
-                dx = -displacement
-            elif dir_str == "right":
-                dx = displacement
-            else:
-                if DEBUG:
-                    raise ValueError(f"Invalid direction for HORIZONTAL mode: {dir_str}")
-                return
+            dx = -displacement if dir_str == "left" else displacement
+
             if dir_str != self.direction:
                 self.direction = dir_str
 
         elif self.move_mode == MoveModeType.VERTICAL:
             dir_str = direction or self.direction
-            if dir_str == "up":
-                dy = -displacement
-            elif dir_str == "down":
-                dy = displacement
-            else:
-                if DEBUG:
-                    raise ValueError(f"Invalid direction for VERTICAL mode: {dir_str}")
-                return
+            dy = -displacement if dir_str == "up" else displacement
+
             if dir_str != self.direction:
                 self.direction = dir_str
 
@@ -236,16 +198,10 @@ class MoveMixin(BaseMixin):
             else:
                 self.direction = "down" if vy > 0 else "up"
 
-        else:
-            raise ValueError(f"Invalid direction: {dir_str}")
-
         new_x = self.x + dx
         new_y = self.y + dy
         if self.can_move(new_x, new_y):
-            if self.is_running:
-                self.on_run()
-            else:
-                self.on_move()
+            self.on_move()
             self.x, self.y = new_x, new_y
         else:
             self.x, self.y = self.resolve_collision(new_x, new_y)
@@ -253,36 +209,23 @@ class MoveMixin(BaseMixin):
         return (self.x, self.y)
 
     def move_xy(self, dx: float, dy: float, dt: float) -> Tuple[float, float]:
-        """
-        Перемещает объект в направлении (dx, dy) (режим FREE).
-        dx, dy — компоненты направления (могут быть любыми, нормализуются автоматически).
-        Удобно для управления с клавиатуры (WASD/стик).
-
-        Args:
-            dx: смещение по X (нормализуется).
-            dy: смещение по Y (нормализуется).
-            dt: дельта-время.
-
-        Returns:
-            (x, y) после перемещения.
-        """
-        if self.move_mode != MoveModeType.FREE:
-            if DEBUG:
-                raise ValueError("move_xy() can only be used in FREE mode")
-            return
+        """Перемещает объект в направлении"""
         self.set_direction_vector(dx, dy)
         return self.move(dt=dt)
 
     def speed_boost(self, dt=None) -> None:
         """Включает бег."""
-        self.is_running = True
+        if not self.can_run():
+            return
+
+        self.speed = self.base_speed + self.boost
+        self._is_running = True
+        self.on_run()
 
     def stop_speed_boost(self, dt=None) -> None:
         """Выключает бег."""
-        self.is_running = False
+        self._is_running = False
+        self.speed = self.base_speed
 
     def resolve_collision(self, new_x: int, new_y: int) -> tuple[int, int]:
-        """
-        Возвращает скорректированную позицию при столкновении (скользит по стенам).
-        Пытается двигаться по X и Y по отдельности.
-        """
+        """Возвращает скорректированную позицию при столкновении (скользит по стенам)"""

@@ -1,6 +1,7 @@
 from typing import Literal
 
 from game.core.components.gameplay.event import EventMixin
+from game.core.components.gameplay.interactive.interactive_mixin import InteractiveMixin
 from game.core.components.phisics.jump import JumpMixin
 from game.core.components.phisics.move.move_mixin import MoveMixin
 from game.core.components.utils.timer.timer_mixin import TimerMixin
@@ -10,7 +11,7 @@ from game.settings import KEYS
 from game.utils.types import Event, EventState
 
 
-class Player(Entity, JumpMixin, EventMixin, MoveMixin, TimerMixin):
+class Player(Entity, JumpMixin, EventMixin, MoveMixin, TimerMixin, InteractiveMixin):
     def __init__(self, energy: int = 350, **kwargs):
         super().__init__(**kwargs)
 
@@ -35,7 +36,7 @@ class Player(Entity, JumpMixin, EventMixin, MoveMixin, TimerMixin):
 
         storage.player = self
 
-        self.add_timer([self.regenerate_energy], loop=True, seconds=0.1)
+        self.add_timer(self.regenerate_energy, loop=True, seconds=0.1)
 
     def regenerate_energy(self):
         if self.energy < self.max_energy:
@@ -49,11 +50,6 @@ class Player(Entity, JumpMixin, EventMixin, MoveMixin, TimerMixin):
     def on_start_jump(self):
         self.energy -= 100
         return super().on_start_jump()
-
-    @MoveMixin.is_running.setter
-    def is_running(self, value):
-        if not value or self.energy > 50 and not self.is_sitting:
-            super(Player, Player).is_running.__set__(self, value)
 
     @property
     def is_sitting(self):
@@ -86,20 +82,21 @@ class Player(Entity, JumpMixin, EventMixin, MoveMixin, TimerMixin):
 
     def on_move(self):
         res = super().on_move()
-        if not self.is_jumping and not self.is_sitting and not self.is_running:
+        if self.is_on_ground and not self.is_sitting and not self.is_running:
             self.play_sound("move")
+        if self.is_running:
+            self.energy -= 3
         return res
-
-    def on_run(self):
-        self.energy -= 3
-        return super().on_run()
 
     def move(self, direction: Literal["left", "right"], dt):
         """Движение Игрока"""
         res = super().move(direction, dt)
         if self.energy < 10 or self.is_sitting:
-            self.is_running = False
+            self.stop_speed_boost()
         return res
+    
+    def can_run(self):
+        return self.energy > 50 and not self.is_sitting
 
     def attack(self, dt=None):
         if self.weapon and self.weapon.attack:

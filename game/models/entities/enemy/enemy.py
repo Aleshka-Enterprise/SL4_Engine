@@ -32,7 +32,7 @@ class Enemy(Entity, ParticleMixin, TimerMixin, MoveMixin):
     def target_is_detecte(self, value):
         if value and self.weapon and self._target_is_detecte != value:
             self.attack_timer = self.add_timer(
-                [self.weapon.attack], loop=True, seconds=self.weapon.cooling_down, use_on_start=True
+                self.weapon.attack, loop=True, seconds=self.weapon.cooling_down, call_immediately=True
             )
         elif not value and self.attack_timer:
             self.attack_timer.delete_timer()
