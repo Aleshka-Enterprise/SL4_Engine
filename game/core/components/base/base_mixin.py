@@ -1,4 +1,5 @@
 from uuid import uuid4
+
 from pygame import Rect
 
 
@@ -12,7 +13,7 @@ class BaseMixin:
         height: int = 0,
         auto_register: bool = True,
         *args,
-        **kwargs
+        **kwargs,
     ):
         self._id = id or uuid4()
         self._x = int(x)
@@ -21,7 +22,7 @@ class BaseMixin:
         self._height = int(height)
         self._rect = Rect(self.x, self.y, self.width, self.height)
         self.__rect_is_dirty = False
-        
+
         self.auto_register = auto_register
 
     @property
@@ -71,5 +72,5 @@ class BaseMixin:
         return self._rect
 
     def destroy(self):
-        ''' Уничтожение объекта '''
+        """Уничтожение объекта"""
         pass

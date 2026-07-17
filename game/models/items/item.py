@@ -3,18 +3,20 @@ from game.core.storage import storage
 
 
 class Item(RenderMixin):
-    def __init__(self, is_pickable: bool = False, is_dropable: bool = False, z_index: int = 10, **kwargs):
+    def __init__(
+        self, is_pickable: bool = False, is_dropable: bool = False, z_index: int = 10, **kwargs
+    ):
         super().__init__(**kwargs)
-        
+
         self.is_pickable = is_pickable
         self.is_dropable = is_dropable
         self.z_index = z_index
-        
+
         storage.items.append(self)
 
     @property
     def item_type(self) -> str:
-        return 'item'
+        return "item"
 
     @property
     def can_pick(self):

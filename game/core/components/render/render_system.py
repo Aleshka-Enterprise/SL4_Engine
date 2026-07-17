@@ -1,11 +1,11 @@
 import pygame
 from game.core.components.base.base_system import BaseSystem
+from game.core.components.gameplay.event import EventsSystem
+from game.core.components.phisics.collision import CollisionSystem
 from game.core.components.render.debug_render import DebugRender
 from game.core.components.render.render_types import RenderComand, RenderType
-from game.settings import DISPLAY, DEBUG, WINDOW_CAPTION
 from game.core.storage import storage
-from game.core.components.phisics.collision import CollisionSystem
-from game.core.components.gameplay.event import EventsSystem
+from game.settings import DEBUG, DISPLAY, WINDOW_CAPTION
 
 
 class RenderSystem(BaseSystem):
@@ -14,14 +14,14 @@ class RenderSystem(BaseSystem):
     _debug_render = DebugRender()
 
     _window: pygame.Surface | None = None
-    _sorted_cache = []           # кэш отсортированных объектов
-    _cache_valid = False         # флаг "кэш актуален"
+    _sorted_cache = []  # кэш отсортированных объектов
+    _cache_valid = False  # флаг "кэш актуален"
 
     is_freezable = False
 
     @classmethod
     def init_window(cls) -> pygame.Surface:
-        '''Инициализация окна pygame'''
+        """Инициализация окна pygame"""
         if cls._window:
             return cls._window
 
@@ -31,7 +31,7 @@ class RenderSystem(BaseSystem):
         pygame.display.set_caption(WINDOW_CAPTION)
         cls._window = window
         return window
-    
+
     @classmethod
     def invalidate_cache(cls):
         cls._cache_valid = False
@@ -39,20 +39,21 @@ class RenderSystem(BaseSystem):
     @classmethod
     def _get_sorted_objects(cls):
         if not cls._cache_valid:
-            cls._sorted_cache = sorted(
-                storage.render_objects_list,
-                key=lambda item: item.z_index
-            )
+            cls._sorted_cache = sorted(storage.render_objects_list, key=lambda item: item.z_index)
             cls._cache_valid = True
         return cls._sorted_cache
 
     @classmethod
     def update_render_objects(cls) -> None:
         if storage.camera:
-            new_render_objects_list = [obj for obj in cls.objects if obj._ignore_render_check or obj.rect.colliderect(storage.camera.render_zone)]
-            
+            new_render_objects_list = [
+                obj
+                for obj in cls.objects
+                if obj._ignore_render_check or obj.rect.colliderect(storage.camera.render_zone)
+            ]
+
             for obj in storage.render_objects_list:
-                if ( obj not in new_render_objects_list):
+                if obj not in new_render_objects_list:
                     obj.on_exit_render_zone()
                     if obj.destroy_on_render_exit:
                         obj.destroy()
@@ -68,7 +69,7 @@ class RenderSystem(BaseSystem):
 
         sorted_objects = cls._get_sorted_objects()
         viewport = camera.viewport
-        
+
         for element in sorted_objects:
             if not element.display:
                 continue
@@ -81,15 +82,12 @@ class RenderSystem(BaseSystem):
                     pygame.draw.rect(cls._window, **comand.data)
                 elif comand.type == RenderType.CIRCLE:
                     pygame.draw.circle(cls._window, **comand.data)
-                elif comand.type == RenderType.IMAGE:
-                    surface, rect = comand.data['surface'], comand.data['rect']
-                    cls._window.blit(surface, rect.topleft)
-                elif comand.type == RenderType.TEXT:
-                    surface, rect = comand.data['surface'], comand.data['rect']
+                elif comand.type == RenderType.IMAGE or comand.type == RenderType.TEXT:
+                    surface, rect = comand.data["surface"], comand.data["rect"]
                     cls._window.blit(surface, rect.topleft)
                 elif DEBUG:
                     print(f"Unknown render type: {comand.type}")
-        
+
         if DEBUG:
             cls._debug_render.render(cls._window)
 
@@ -103,12 +101,12 @@ class RenderSystem(BaseSystem):
         if item and not item._ignore_render_check:
             cls.update_render_objects()
         else:
-            if action == 'append':
+            if action == "append":
                 storage.render_objects_list.append(item)
-            elif action == 'remove':
+            elif action == "remove":
                 if item in storage.render_objects_list:
                     storage.render_objects_list.remove(item)
-            elif action == 'clear':
+            elif action == "clear":
                 storage.render_objects_list.clear()
 
     @classmethod

@@ -1,7 +1,7 @@
-from pygame import Rect
 from game.core.components.base.base_mixin import BaseMixin
-from game.core.components.utils.timer import TimerMixin
 from game.core.components.render import RenderSystem
+from game.core.components.utils.timer import TimerMixin
+from pygame import Rect
 
 
 class Camera(TimerMixin):
@@ -30,23 +30,25 @@ class Camera(TimerMixin):
         use_horizontal_look_ahead (bool): Включено ли горизонтальное опережение.
         use_vertical_look_ahead (bool): Включено ли вертикальное опережение.
     """
+
     MAX_LEVEL_HEIGHT = 100_000
     MAX_LEVEL_WIDTH = 100_000
 
-    def __init__(self,
-                 screen_width: int,
-                 screen_height: int,
-                 target: BaseMixin | None = None,
-                 use_horizontal_look_ahead: bool = True,
-                 use_vertical_look_ahead: bool = False,
-                 smooth_speed: float = 0.2,
-                 look_ahead_offset: float = 100.0,
-                 look_ahead_speed: float = 0.05,
-                 smooth_time: float = 0.3,
-                 look_ahead_time: float = 0.1,
-                 **kwargs
-                ):
-        '''
+    def __init__(
+        self,
+        screen_width: int,
+        screen_height: int,
+        target: BaseMixin | None = None,
+        use_horizontal_look_ahead: bool = True,
+        use_vertical_look_ahead: bool = False,
+        smooth_speed: float = 0.2,
+        look_ahead_offset: float = 100.0,
+        look_ahead_speed: float = 0.05,
+        smooth_time: float = 0.3,
+        look_ahead_time: float = 0.1,
+        **kwargs,
+    ):
+        """
         Инициализация камеры.
 
         Args:
@@ -59,7 +61,7 @@ class Camera(TimerMixin):
             look_ahead_offset (float, optional): Максимальное смещение опережения. По умолчанию 100.0.
             look_ahead_speed (float, optional): Скорость изменения опережения. По умолчанию 0.05.
             **kwargs: Пробрасываются в родительские классы (TimerMixin).
-        '''
+        """
         super().__init__(**kwargs)
 
         self.screen_width = screen_width
@@ -70,10 +72,7 @@ class Camera(TimerMixin):
         self.target = target
 
         self.deadzone = Rect(
-            screen_width // 4,
-            screen_height // 4,
-            screen_width // 2,
-            screen_height // 2
+            screen_width // 4, screen_height // 4, screen_width // 2, screen_height // 2
         )
 
         self.smooth_speed = smooth_speed
@@ -89,18 +88,14 @@ class Camera(TimerMixin):
         self.smooth_time = smooth_time
         self.look_ahead_time = look_ahead_time
 
-        self.add_timer(
-            [self.update_render_zone],
-            loop=True,
-            seconds=0.1
-        )
+        self.add_timer([self.update_render_zone], loop=True, seconds=0.1)
 
     @property
     def render_zone(self):
         return self._render_zone
 
     def update_render_zone(self) -> Rect:
-        '''
+        """
         Обновляет зону рендеринга, если текущий viewport вышел за её границы.
 
         Зона рендеринга – это viewport, расширенный на padding со всех сторон.
@@ -108,7 +103,7 @@ class Camera(TimerMixin):
 
         Returns:
             Rect: Актуальная зона рендеринга.
-        '''
+        """
         if not self.render_zone.contains(self.viewport):
             x = self.viewport.x - self.padding
             y = self.viewport.y - self.padding
@@ -129,9 +124,12 @@ class Camera(TimerMixin):
         self._prev_x = target.x
         self._prev_y = target.y
 
-        target_offset_x = self.look_ahead_offset if dx > 0 else -self.look_ahead_offset if dx < 0 else 0.0
-        target_offset_y = self.look_ahead_offset if dy > 0 else -self.look_ahead_offset if dy < 0 else 0.0
-
+        target_offset_x = (
+            self.look_ahead_offset if dx > 0 else -self.look_ahead_offset if dx < 0 else 0.0
+        )
+        target_offset_y = (
+            self.look_ahead_offset if dy > 0 else -self.look_ahead_offset if dy < 0 else 0.0
+        )
 
         if self.look_ahead_time > 0:
             factor = 1 - (0.001 ** (dt / self.look_ahead_time))
@@ -170,5 +168,5 @@ class Camera(TimerMixin):
             self.viewport.y = target_y
 
     def apply(self, pos) -> None:
-        '''Преобразует глобальные координаты в экранные'''
+        """Преобразует глобальные координаты в экранные"""
         return (pos[0] - self.viewport.x, pos[1] - self.viewport.y)

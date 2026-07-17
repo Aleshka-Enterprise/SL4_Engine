@@ -1,7 +1,7 @@
 import random
 
-from game.models.shoot.poison.poison import Poison
 from game.models.items.weapons.weapon import Weapon
+from game.models.shoot.poison.poison import Poison
 
 
 class PoisonGun(Weapon):
@@ -12,8 +12,8 @@ class PoisonGun(Weapon):
 
     def attack(self) -> bool:
         if self.can_atack():
-            shoot = Poison(
-                x=self.x + (-50 if self.direction == 'left' else self.width),
+            Poison(
+                x=self.x + (-50 if self.direction == "left" else self.width),
                 y=self.y + random.randint(-10, 10),
                 direction=self.direction,
                 height=2,
@@ -23,7 +23,7 @@ class PoisonGun(Weapon):
                 initializer=self.entity,
                 experation_time=3,
                 color=(0, 100, 0),
-                speed=1500
-                )
+                speed=1500,
+            )
 
         return super().attack()

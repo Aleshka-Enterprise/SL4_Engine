@@ -12,13 +12,14 @@ class GameStorage:
 
 
 class GAME_STATE:
-    ''' Общее состаяние игры '''
+    """Общее состаяние игры"""
+
     IS_PAUSED = False
     IS_RUNNING = True
 
 
 class LEVEL_STATE:
-    ''' Состояние уровня '''
+    """Состояние уровня"""
 
 
 storage = GameStorage()

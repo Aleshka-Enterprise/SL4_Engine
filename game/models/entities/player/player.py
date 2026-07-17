@@ -1,12 +1,12 @@
 from typing import Literal
+
 from game.core.components.gameplay.event import EventMixin
 from game.core.components.phisics.jump import JumpMixin
 from game.core.components.phisics.move.move_mixin import MoveMixin
 from game.core.components.utils.timer.timer_mixin import TimerMixin
+from game.core.storage import GAME_STATE, storage
 from game.models.entities.entity import Entity
-from game.core.storage import storage
 from game.settings import KEYS
-from game.core.storage import GAME_STATE
 from game.utils.types import Event, EventState
 
 
@@ -22,15 +22,13 @@ class Player(Entity, JumpMixin, EventMixin, MoveMixin, TimerMixin):
 
         self.event_listener = [
             Event(KEYS.ATTACK, EventState.KEY_PRESSED, self.attack),
-            Event(KEYS.LEFT, EventState.KEY_PRESSED, lambda dt: self.move('left', dt)),
-            Event(KEYS.RIGHT, EventState.KEY_PRESSED, lambda dt: self.move('right', dt)),
-
+            Event(KEYS.LEFT, EventState.KEY_PRESSED, lambda dt: self.move("left", dt)),
+            Event(KEYS.RIGHT, EventState.KEY_PRESSED, lambda dt: self.move("right", dt)),
             Event(KEYS.JUMP, EventState.KEY_DOWN, self.jump),
             Event(KEYS.RUN, EventState.KEY_DOWN, self.speed_boost),
             Event(KEYS.SIT, EventState.KEY_DOWN, self.sit),
             Event(KEYS.INTERACT, EventState.KEY_DOWN, self.take_item),
             Event(KEYS.DROP, EventState.KEY_DOWN, self.drop_weapon),
-
             Event(KEYS.RUN, EventState.KEY_UP, self.stop_speed_boost),
             Event(KEYS.SIT, EventState.KEY_UP, self.stand_up),
         ]
@@ -38,16 +36,16 @@ class Player(Entity, JumpMixin, EventMixin, MoveMixin, TimerMixin):
         storage.player = self
 
         self.add_timer([self.regenerate_energy], loop=True, seconds=0.1)
-    
+
     def regenerate_energy(self):
         if self.energy < self.max_energy:
             self.energy = min(self.max_energy, self.energy + 10)
-        
+
     def can_jump(self):
         if self.energy < 100 and not self.is_sitting:
             return False
         return super().can_jump()
-    
+
     def on_start_jump(self):
         self.energy -= 100
         return super().on_start_jump()
@@ -83,21 +81,21 @@ class Player(Entity, JumpMixin, EventMixin, MoveMixin, TimerMixin):
         return res
 
     def on_take_damage(self):
-        self.play_sound('damage')
+        self.play_sound("damage")
         return super().on_take_damage()
 
     def on_move(self):
         res = super().on_move()
         if not self.is_jumping and not self.is_sitting and not self.is_running:
-            self.play_sound('move')
+            self.play_sound("move")
         return res
 
     def on_run(self):
         self.energy -= 3
         return super().on_run()
 
-    def move(self, direction: Literal['left', 'right'], dt):
-        '''Движение Игрока'''
+    def move(self, direction: Literal["left", "right"], dt):
+        """Движение Игрока"""
         res = super().move(direction, dt)
         if self.energy < 10 or self.is_sitting:
             self.is_running = False

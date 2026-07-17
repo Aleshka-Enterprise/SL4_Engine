@@ -1,8 +1,10 @@
 import os
 from typing import Optional, Tuple
+
 import pygame
 from game.core.components.render.render_mixin import RenderMixin
 from game.core.components.render.render_types import RenderComand, RenderType
+
 
 class TextMixin(RenderMixin):
     _font_cache: dict = {}
@@ -15,7 +17,7 @@ class TextMixin(RenderMixin):
         text_color: Optional[Tuple[int, int, int]] = None,
         antialias: bool = True,
         fonts_root: Optional[str] = None,
-        **kwargs
+        **kwargs,
     ):
         super().__init__(**kwargs)
 
@@ -29,11 +31,11 @@ class TextMixin(RenderMixin):
 
         if fonts_root is None:
             try:
-                module_file = self.__class__.__module__.replace('.', '/') + '.py'
+                module_file = self.__class__.__module__.replace(".", "/") + ".py"
                 base_dir = os.path.dirname(os.path.abspath(module_file))
-                fonts_root = os.path.join(base_dir, 'fonts')
+                fonts_root = os.path.join(base_dir, "fonts")
             except Exception:
-                fonts_root = ''
+                fonts_root = ""
         self.fonts_root = fonts_root
 
         # Загружаем шрифт и создаём начальную текстовую поверхность
@@ -107,9 +109,9 @@ class TextMixin(RenderMixin):
         return self._font_cache[key]
 
     def _get_fonts_root_static(self):
-        module_file = self.__class__.__module__.replace('.', '/') + '.py'
+        module_file = self.__class__.__module__.replace(".", "/") + ".py"
         base_dir = os.path.dirname(os.path.abspath(module_file))
-        return base_dir + '\\fonts'
+        return base_dir + "\\fonts"
 
     def _load_font_instance(self, font_name: Optional[str], size: int) -> pygame.font.Font:
         if font_name is None:
@@ -128,9 +130,7 @@ class TextMixin(RenderMixin):
         if not self._font:
             self._rendered_surface = pygame.Surface((0, 0))
             return
-        self._rendered_surface = self._font.render(
-            self._text, self._antialias, self.text_color
-        )
+        self._rendered_surface = self._font.render(self._text, self._antialias, self.text_color)
 
     def prepare_to_render(self, camera):
         if self._rendered_surface is None:
@@ -142,7 +142,6 @@ class TextMixin(RenderMixin):
 
         return [
             RenderComand(
-                type=RenderType.TEXT,
-                data={ 'surface': self._rendered_surface, 'rect': text_rect }
+                type=RenderType.TEXT, data={"surface": self._rendered_surface, "rect": text_rect}
             )
         ]

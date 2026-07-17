@@ -1,8 +1,8 @@
 from game.core.components.phisics.move.move_mixin import MoveMixin
 from game.core.components.render.particle import ParticleMixin
 from game.core.components.utils.timer import TimerMixin
-from game.models.entities.entity import Entity
 from game.core.storage import storage
+from game.models.entities.entity import Entity
 
 
 class Enemy(Entity, ParticleMixin, TimerMixin, MoveMixin):
@@ -12,7 +12,7 @@ class Enemy(Entity, ParticleMixin, TimerMixin, MoveMixin):
         melee_damage: int = 10,
         patrol_distance: int = 200,
         viewing_radius: int = 500,
-        **kwargs
+        **kwargs,
     ):
         super().__init__(**kwargs)
         self.attack_timer = None
@@ -32,10 +32,7 @@ class Enemy(Entity, ParticleMixin, TimerMixin, MoveMixin):
     def target_is_detecte(self, value):
         if value and self.weapon and self._target_is_detecte != value:
             self.attack_timer = self.add_timer(
-                [self.weapon.attack],
-                loop=True,
-                seconds=self.weapon.cooling_down,
-                use_on_start=True
+                [self.weapon.attack], loop=True, seconds=self.weapon.cooling_down, use_on_start=True
             )
         elif not value and self.attack_timer:
             self.attack_timer.delete_timer()
@@ -54,12 +51,15 @@ class Enemy(Entity, ParticleMixin, TimerMixin, MoveMixin):
 
     def can_move(self, new_x, new_y):
         res = super().can_move(new_x, new_y)
-        if not res and hasattr(self, 'is_jumping'):
+        if not res and hasattr(self, "is_jumping"):
             self.jump()
         return res
 
     def can_see_target(self):
-        if self.target and ((self.x < self.target.x and self.direction == 'left') or (self.x > self.target.x and self.direction == 'right')):
+        if self.target and (
+            (self.x < self.target.x and self.direction == "left")
+            or (self.x > self.target.x and self.direction == "right")
+        ):
             return False
         return not any(
             obstacle.rect.clipline(self.rect.center, self.target.rect.center)
@@ -68,20 +68,24 @@ class Enemy(Entity, ParticleMixin, TimerMixin, MoveMixin):
 
     def patrol(self, dt):
         self.move(self.direction, dt)
-        if self.direction == 'left' and self.patrol_points[0] > self.x:
-            self.direction = 'right'
-        elif self.direction == 'right' and self.patrol_points[1] < self.x:
-            self.direction = 'left'
+        if self.direction == "left" and self.patrol_points[0] > self.x:
+            self.direction = "right"
+        elif self.direction == "right" and self.patrol_points[1] < self.x:
+            self.direction = "left"
 
-        if self.target and abs(self.target.x - self.x) < self.viewing_radius and self.can_see_target():
+        if (
+            self.target
+            and abs(self.target.x - self.x) < self.viewing_radius
+            and self.can_see_target()
+        ):
             self.target_is_detecte = True
 
     def update_before_render(self, dt):
         if not self.target_is_detecte or not self.target:
             self.patrol(dt)
         if self.target_is_detecte:
-            self.move('left' if self.x > self.target.x else 'right', dt)
-            if self.target.y < self.y and hasattr(self, 'is_jumping'):
+            self.move("left" if self.x > self.target.x else "right", dt)
+            if self.target.y < self.y and hasattr(self, "is_jumping"):
                 self.jump()
 
         return super().update_before_render(dt)

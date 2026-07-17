@@ -1,12 +1,14 @@
 from typing import Literal, Tuple
-from pygame import Rect
+
 from game.core.components.base.base_mixin import BaseMixin
 from game.core.components.render.render_system import RenderSystem
 from game.core.components.render.render_types import RenderComand, RenderType
+from pygame import Rect
 
 
 class RenderMixin(BaseMixin):
-    ''' Простой рендер фигуры на экран '''
+    """Простой рендер фигуры на экран"""
+
     def __init__(
         self,
         color: Tuple[int, int, int] = (0, 0, 0),
@@ -23,7 +25,7 @@ class RenderMixin(BaseMixin):
         flip_x: bool = False,
         flip_y: bool = False,
         rotation: float = 0.0,
-        **kwargs
+        **kwargs,
     ):
         super().__init__(**kwargs)
 
@@ -50,7 +52,12 @@ class RenderMixin(BaseMixin):
                     self._padding_bottom = padding[0]
                     self._padding_left = padding[1]
                 elif len(padding) == 4:
-                    self._padding_top, self._padding_right, self._padding_bottom, self._padding_left = padding
+                    (
+                        self._padding_top,
+                        self._padding_right,
+                        self._padding_bottom,
+                        self._padding_left,
+                    ) = padding
         else:
             self._padding_top = padding_top
             self._padding_right = padding_right
@@ -145,7 +152,7 @@ class RenderMixin(BaseMixin):
     @property
     def ignore_render_check(self):
         return self._ignore_render_check
-    
+
     @property
     def z_index(self):
         return self._z_index
@@ -160,19 +167,19 @@ class RenderMixin(BaseMixin):
         return super().destroy()
 
     def update_before_render(self, dt) -> None:
-        ''' Вызывается перед рендером '''
+        """Вызывается перед рендером"""
         pass
 
     def update_after_render(self, dt) -> None:
-        ''' Вызывается после рендера '''
+        """Вызывается после рендера"""
         pass
 
     def on_exit_render_zone(self) -> None:
-        ''' Обработичк, если объект вышел из зоны рендера '''
+        """Обработичк, если объект вышел из зоны рендера"""
         pass
 
     def on_render_size_changed(self):
-        ''' Вызывается при изменении размера '''
+        """Вызывается при изменении размера"""
         pass
 
     def _on_transform_changed(self):
@@ -181,21 +188,17 @@ class RenderMixin(BaseMixin):
         self.invalidate_scaled_cache()
 
     def prepare_to_render(self, camera):
-        ''' Подготовка данных к рендерингу '''
-        if self.position == 'window':
+        """Подготовка данных к рендерингу"""
+        if self.position == "window":
             screen_pos = (self.x, self.y)
-        elif self.position == 'world':
-            screen_pos = camera.apply((self.x - self._padding_left,
-                                    self.y - self._padding_top))
-        rect = Rect(*screen_pos,
-                          self.width + self._padding_left + self._padding_right,
-                          self.height + self._padding_top + self._padding_bottom)
-        return [
-            RenderComand(
-                type=RenderType.RECT,
-                data={ 'color': self.color, 'rect': rect }
-            )
-        ]
-    
+        elif self.position == "world":
+            screen_pos = camera.apply((self.x - self._padding_left, self.y - self._padding_top))
+        rect = Rect(
+            *screen_pos,
+            self.width + self._padding_left + self._padding_right,
+            self.height + self._padding_top + self._padding_bottom,
+        )
+        return [RenderComand(type=RenderType.RECT, data={"color": self.color, "rect": rect})]
+
     def invalidate_scaled_cache(self):
         pass

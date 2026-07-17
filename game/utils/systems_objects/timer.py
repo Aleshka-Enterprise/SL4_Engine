@@ -1,11 +1,16 @@
 from pyclbr import Function
 from typing import List
 
-from game.settings import FPS
-
 
 class Timer:
-    def __init__(self, time: int, callbacks: List[Function], loop: bool = False, is_active: bool = True, **kwargs):
+    def __init__(
+        self,
+        time: int,
+        callbacks: List[Function],
+        loop: bool = False,
+        is_active: bool = True,
+        **kwargs,
+    ):
         super().__init__(**kwargs)
 
         self.time = time
@@ -24,7 +29,7 @@ class Timer:
         return self.__is_frozen
 
     def update(self, dt=1.0) -> bool:
-        ''' Обновление таймера. Возвращает bool - жив ли таймер '''
+        """Обновление таймера. Возвращает bool - жив ли таймер"""
         if self.is_frozen:
             return True
 

@@ -4,13 +4,14 @@ from game.core.components.phisics.collision.collision_types import CollisionResp
 
 
 class CollisionMixin(BaseMixin):
-    ''' Миксин отвечающий за добавление и обработку коллизии '''
+    """Миксин отвечающий за добавление и обработку коллизии"""
+
     def __init__(
         self,
         used_colision: bool = True,
         collision_response: CollisionResponseTypes = CollisionResponseTypes.STATIC,
         collision_ignore_list: list[CollisionMixin] | None = None,
-        **kwargs
+        **kwargs,
     ):
         super().__init__(**kwargs)
 
@@ -18,7 +19,7 @@ class CollisionMixin(BaseMixin):
         self.collision_response = collision_response
         self.collision_ignore_list = collision_ignore_list or []
 
-        CollisionSystem.register(self)        
+        CollisionSystem.register(self)
 
     @property
     def used_colision(self):
@@ -29,7 +30,7 @@ class CollisionMixin(BaseMixin):
         self._used_colision = value
 
     def check_collision(self, rect, ignore_list=None) -> CollisionMixin | None:
-        ''' Проверка столкновения '''
+        """Проверка столкновения"""
         if ignore_list is None:
             ignore_list = []
         return CollisionSystem.check_collision(rect, ignore_list)
@@ -37,15 +38,15 @@ class CollisionMixin(BaseMixin):
     def destroy(self) -> None:
         super().destroy()
         CollisionSystem.destroy(self)
-        
+
     def on_collision(self, obj: CollisionMixin) -> None:
-        ''' Обработчик события: объект столкнулся '''
+        """Обработчик события: объект столкнулся"""
         self.on_touched(obj)
 
     def on_landed(self, obj: CollisionMixin) -> None:
-        ''' Обработчик события: объект приземлился '''
+        """Обработчик события: объект приземлился"""
         self.on_touched(obj)
 
     def on_touched(self, obj: CollisionMixin) -> None:
-        ''' Обработчик события: объект был тронут '''
+        """Обработчик события: объект был тронут"""
         pass

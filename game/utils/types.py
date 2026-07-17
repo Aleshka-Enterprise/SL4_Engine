@@ -12,23 +12,23 @@ class ObservableList:
     def append(self, item):
         self._items.append(item)
         if self.on_change:
-            self.on_change('append', item)
+            self.on_change("append", item)
 
     def remove(self, item):
         if item in self._items:
             self._items.remove(item)
             if self.on_change:
-                self.on_change('remove', item)
+                self.on_change("remove", item)
 
     def extend(self, items):
         self._items.extend(items)
         if self.on_change:
-            self.on_change('extens', items)
+            self.on_change("extens", items)
 
     def clear(self):
         self._items.clear()
         if self.on_change:
-            self.on_change('clear', None)
+            self.on_change("clear", None)
 
     def __len__(self):
         return len(self._items)
@@ -44,10 +44,10 @@ class ObservableList:
 
 
 class EventState(Enum):
-    KEY_PRESSED = "key_pressed"    # Клавиша нажата
-    KEY_DOWN = "key_down"          # Клавиша зажата
-    KEY_UP = "key_up"              # Клавиша отпущена
-    QUIT = "quit"                  # Закрытие окна
+    KEY_PRESSED = "key_pressed"  # Клавиша нажата
+    KEY_DOWN = "key_down"  # Клавиша зажата
+    KEY_UP = "key_up"  # Клавиша отпущена
+    QUIT = "quit"  # Закрытие окна
 
 
 @dataclass
@@ -57,7 +57,13 @@ class Event:
     callback: Function
     is_freezable: bool
 
-    def __init__(self, keys: Tuple[int], event_type: EventState, callback: Function, is_freezable: bool = True):
+    def __init__(
+        self,
+        keys: Tuple[int],
+        event_type: EventState,
+        callback: Function,
+        is_freezable: bool = True,
+    ):
         self.keys = keys
         self.event_type = event_type
         self.callback = callback

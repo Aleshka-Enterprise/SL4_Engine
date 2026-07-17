@@ -1,11 +1,12 @@
+import cProfile
+
+import pygame
+
 from game.core.components.system_manager import SystemManager
 from game.core.saveload.saveload import load_level
-from game.models.system_objects.camera import Camera
-from game.scenes.flappy_bird import FlappyBird
-from game.settings import DEBUG, DISPLAY, FPS
 from game.core.storage import GAME_STATE, storage
-import pygame
-import cProfile
+from game.models.system_objects.camera import Camera
+from game.settings import DEBUG, DISPLAY, FPS
 
 
 def run() -> None:
@@ -30,12 +31,12 @@ def run() -> None:
         SystemManager.update(dt)
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     if DEBUG:
         profiler = cProfile.Profile()
         profiler.enable()
         run()
         profiler.disable()
-        profiler.dump_stats('game/game_profile.prof')
+        profiler.dump_stats("game/game_profile.prof")
     else:
         run()

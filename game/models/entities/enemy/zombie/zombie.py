@@ -7,13 +7,13 @@ class Zombie(Enemy, JumpMixin):
         super().__init__(**kwargs)
 
         self.fraction = "zombie"
-        
+
     def on_died(self):
         res = super().on_died()
-        self.play_sound('died')
+        self.play_sound("died")
         return res
 
     def on_move(self):
         res = super().on_move()
-        self.play_sound('move')
+        self.play_sound("move")
         return res

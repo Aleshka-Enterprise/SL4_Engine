@@ -1,18 +1,20 @@
 from pyclbr import Function
-from game.core.components.base.base_mixin import BaseMixin
-from game.utils.systems_objects.timer import Timer
 from typing import List, Tuple
+
+from game.core.components.base.base_mixin import BaseMixin
 from game.core.components.utils.timer.timer_system import TimerSystem
+from game.utils.systems_objects.timer import Timer
 
 
 class TimerMixin(BaseMixin):
-    ''' Миксин отвечающий за добавлеине и работу с таймерами '''
+    """Миксин отвечающий за добавлеине и работу с таймерами"""
+
     def add_timer(
         self,
         callbacks: List[Function] | Tuple[Function],
         seconds: int = 0,
         loop: bool = False,
-        use_on_start: bool = False
+        use_on_start: bool = False,
     ) -> Timer:
         time = seconds
 

@@ -6,19 +6,19 @@ class GravitySystem(BaseSystem):
 
     @classmethod
     def apply_gravity(cls, dt: float) -> None:
-        '''Применение гравитации с правильным dt'''
+        """Применение гравитации с правильным dt"""
         for obj in cls.objects:
             obj.vel_y += obj.gravity * dt
             obj.y += obj.vel_y * dt
-            
+
             landing_platform = None
-            min_penetration = float('inf')
-            
+            min_penetration = float("inf")
+
             collision_object = CollisionSystem.check_collision(obj.rect, [obj])
 
             if collision_object:
                 if obj.y > collision_object.y:
-                    if hasattr(collision_object, 'vel_y'):
+                    if hasattr(collision_object, "vel_y"):
                         obj.vel_y = collision_object.vel_y
                     else:
                         obj.vel_y = 0

@@ -1,8 +1,10 @@
 import pygame
 
+
 class DISPLAY:
     WIDTH = 1500
     HEIGHT = 800
+
 
 class KEYS:
     RIGHT = (pygame.K_RIGHT, pygame.K_d)
@@ -16,6 +18,7 @@ class KEYS:
     MENU = (pygame.K_ESCAPE,)
     USE_DEBUG_RENDER = (pygame.K_F3,)
 
+
 DEBUG = True
 FPS = 144
-WINDOW_CAPTION = 'Flappy Fly'
+WINDOW_CAPTION = "Flappy Fly"

@@ -1,31 +1,31 @@
-import random
 from typing import Literal
 
+from game.core.components.audio import AudioMixin
 from game.core.components.phisics.collision import CollisionMixin
 from game.core.components.phisics.collision.collision_types import CollisionResponseTypes
 from game.core.components.phisics.gravity import GravityMixin
 from game.core.components.utils.timer import TimerMixin
 from game.core.storage import storage
-from game.core.components.audio import AudioMixin
 from game.models.items.item import Item
 
 
 class Weapon(Item, AudioMixin, CollisionMixin, TimerMixin, GravityMixin):
-    def __init__(self,
-                 offset_x: int,
-                 offset_y: int,
-                 entity=None,
-                 cooling_down: int = 0.5,
-                 maximum_number_of_bullets: int = 10,
-                 delete_after_death: bool = False,
-                 gravity: float = 1000,
-                 damage: float = 1,
-                 **kwargs
-                 ):
+    def __init__(
+        self,
+        offset_x: int,
+        offset_y: int,
+        entity=None,
+        cooling_down: int = 0.5,
+        maximum_number_of_bullets: int = 10,
+        delete_after_death: bool = False,
+        gravity: float = 1000,
+        damage: float = 1,
+        **kwargs,
+    ):
         super().__init__(**kwargs)
 
         self._init_audio_mixin()
-        
+
         self._entity = entity
 
         self.offset_x = offset_x
@@ -38,25 +38,25 @@ class Weapon(Item, AudioMixin, CollisionMixin, TimerMixin, GravityMixin):
         self.weapon_is_ready = True
         self.damage = damage
         self.collision_response = CollisionResponseTypes.PUSH
-        self._direction = 'left'
+        self._direction = "left"
         self.is_pickable = True
 
     @property
     def item_type(self):
-        return 'weapon'
+        return "weapon"
 
     @property
     def entity(self):
         return self._entity
-    
+
     @property
     def direction(self):
         if self.entity:
             return self.entity.direction
         return self._direction
-    
+
     @direction.setter
-    def direction(self, value: Literal['left', 'right']):
+    def direction(self, value: Literal["left", "right"]):
         self._direction = value
 
     @entity.setter
@@ -69,11 +69,9 @@ class Weapon(Item, AudioMixin, CollisionMixin, TimerMixin, GravityMixin):
 
     def can_atack(self) -> bool:
         if self.weapon_is_ready:
-            self.play_sound('shoot')
+            self.play_sound("shoot")
             self.add_timer(
-                [lambda: self.chenge_weapon_status(True)],
-                seconds=self.cooling_down,
-                loop=False
+                [lambda: self.chenge_weapon_status(True)], seconds=self.cooling_down, loop=False
             )
             self.chenge_weapon_status(False)
             return True
@@ -88,7 +86,7 @@ class Weapon(Item, AudioMixin, CollisionMixin, TimerMixin, GravityMixin):
             direction = self.entity.direction
             self.y = self.entity.y + self.offset_y
             self.x = self.entity.x + self.offset_x
-            if direction == 'right':
+            if direction == "right":
                 self.x += self.entity.width
 
     def destroy(self) -> None:

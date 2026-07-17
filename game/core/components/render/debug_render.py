@@ -1,10 +1,9 @@
 import pygame
-
 from game.core.components.gameplay.event.event_mixin import EventMixin
+from game.core.components.phisics.collision import CollisionSystem
 from game.core.components.phisics.collision.collision_types import CollisionResponseTypes
 from game.core.storage import storage
-from game.core.components.phisics.collision import CollisionSystem
-from game.settings import KEYS, FPS
+from game.settings import FPS, KEYS
 from game.utils.types import Event, EventState
 
 
@@ -32,7 +31,7 @@ class DebugRender(EventMixin):
         self.event_listener = [
             Event(KEYS.USE_DEBUG_RENDER, EventState.KEY_DOWN, self.__toggle_debug_render),
         ]
-    
+
     def __toggle_debug_render(self, dt):
         self.render_debug = not self.render_debug
 
@@ -42,7 +41,11 @@ class DebugRender(EventMixin):
         if not camera:
             return
 
-        deadzone_color = self.CAMERA_DEADZONE_ACTIVE_COLOR if camera.target else self.CAMERA_DEADZONE_DISABLED_COLOR
+        deadzone_color = (
+            self.CAMERA_DEADZONE_ACTIVE_COLOR
+            if camera.target
+            else self.CAMERA_DEADZONE_DISABLED_COLOR
+        )
 
         cx = camera.deadzone.x + camera.deadzone.width // 2
         cy = camera.deadzone.y + camera.deadzone.height // 2
@@ -56,14 +59,14 @@ class DebugRender(EventMixin):
             pygame.draw.circle(self.window, (255, 0, 0), (px, py), 4)
             pygame.draw.line(self.window, (255, 255, 0), (cx, cy), (px, py), 1)
 
-            if hasattr(camera, 'current_offset_x'):
+            if hasattr(camera, "current_offset_x"):
                 end_x = px + camera.current_offset_x
                 end_y = py + camera.current_offset_y
                 pygame.draw.line(self.window, (0, 255, 255), (px, py), (end_x, end_y), 2)
                 pygame.draw.circle(self.window, (0, 255, 255), (int(end_x), int(end_y)), 3)
 
     def render_camera_info(self):
-        ''' Отображаем инофрмацию из камеры текстом '''
+        """Отображаем инофрмацию из камеры текстом"""
         camera = storage.camera
         if not camera:
             return
@@ -74,7 +77,7 @@ class DebugRender(EventMixin):
             f"Offset Y: {camera.current_offset_y:.1f}",
             f"Displayed objects: {len(storage.render_objects_list)}",
             f"Min FPS: {self.min_fps}",
-            f"Avg FPS: {self.avg_fps:.1f}"
+            f"Avg FPS: {self.avg_fps:.1f}",
         ]
 
         if camera.target:
@@ -90,7 +93,7 @@ class DebugRender(EventMixin):
             y_offset += 25
 
     def render_fps(self):
-        ''' Отображает текущий FPS '''
+        """Отображает текущий FPS"""
         fps = storage.clock.get_fps()
         text_surface = self.debug_font.render(str(int(fps)), False, self.FPS_COLOR)
         self.window.blit(text_surface, (0, 0))
@@ -104,7 +107,7 @@ class DebugRender(EventMixin):
             self.min_fps = int(fps)
 
     def render_collision_rects(self):
-        ''' Отображает рамки коллизий всех объектов (или выбранных) для отладки '''
+        """Отображает рамки коллизий всех объектов (или выбранных) для отладки"""
         visible_collision_object_list = CollisionSystem.visible_collision_object_list
         for obj in visible_collision_object_list:
             position = storage.camera.apply((obj.x, obj.y))
@@ -112,10 +115,9 @@ class DebugRender(EventMixin):
 
             pygame.draw.rect(self.window, color, [*position, obj.width, obj.height], 2)
 
-
     def render(self, window):
         self.window = window
-        
+
         if self.render_debug:
             self.render_collision_rects()
             self.render_camera_debug()

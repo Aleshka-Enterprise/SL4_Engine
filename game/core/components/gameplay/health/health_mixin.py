@@ -8,7 +8,7 @@ class HealthMixin(BaseMixin):
         maximum: int = None,
         invulnerable: bool = False,
         destroy_after_dead: bool = True,
-        **kwargs
+        **kwargs,
     ):
         super().__init__(**kwargs)
         self._hp = hp
@@ -35,18 +35,18 @@ class HealthMixin(BaseMixin):
         return self._max_hp
 
     def on_take_damage(self):
-        ''' Слушатель события: получение урона '''
+        """Слушатель события: получение урона"""
         pass
 
     def on_died(self):
-        ''' Слушатель события: объект умер '''
+        """Слушатель события: объект умер"""
         pass
 
     def died(self):
-        ''' Смерть объекта. Вызывается если hp <= 0 '''
+        """Смерть объекта. Вызывается если hp <= 0"""
         self.on_died()
 
     def take_damage(self, damage) -> None:
-        ''' Получить урон '''
+        """Получить урон"""
         self.hp -= damage
         self.on_take_damage()

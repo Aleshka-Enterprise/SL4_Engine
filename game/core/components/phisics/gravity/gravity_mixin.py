@@ -1,4 +1,3 @@
-
 from game.core.components.base.base_mixin import BaseMixin
 from game.core.components.phisics.gravity.gravity_system import GravitySystem
 
@@ -10,7 +9,7 @@ class GravityMixin(BaseMixin):
         self._vel_y = vel_y
         self._gravity = gravity
         self.on_the_ground = False
-        
+
         if self.auto_register:
             GravitySystem.register(self)
 
@@ -31,5 +30,5 @@ class GravityMixin(BaseMixin):
         self._gravity = value
 
     def on_lend(self, platform: BaseMixin) -> None:
-        ''' Слушатель события: объект приземлился '''
+        """Слушатель события: объект приземлился"""
         pass

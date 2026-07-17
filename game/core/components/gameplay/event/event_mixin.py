@@ -1,21 +1,23 @@
 from typing import List
+
 from game.core.components.base.base_mixin import BaseMixin
 from game.core.components.gameplay.event.events_system import EventsSystem
 from game.utils.types import Event
 
 
 class EventMixin(BaseMixin):
-    ''' Миксин отвечающий за обработку событий, по типу нажатия клавиш, событие мышки и т.п. '''
-    def __init__(self, event_listener: List[Event] = [], **kwargs):
-        self.__event_listener = event_listener
+    """Миксин отвечающий за обработку событий, по типу нажатия клавиш, событие мышки и т.п."""
+
+    def __init__(self, event_listener: List[Event] = None, **kwargs):
+        self.__event_listener = [] if event_listener is None else event_listener
         super().__init__(**kwargs)
 
     @property
     def event_listener(self):
         return self.__event_listener
-    
+
     def toggle_stop_game(self, dt=None) -> None:
-        ''' Переключатель статуса игры (Пауза/Плей) '''
+        """Переключатель статуса игры (Пауза/Плей)"""
         EventsSystem.toggle_freez()
 
     @event_listener.setter

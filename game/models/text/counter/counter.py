@@ -10,7 +10,7 @@ class Counter(Text):
     @property
     def score(self):
         return self._score
-    
+
     @score.setter
     def score(self, value):
         self._score = value

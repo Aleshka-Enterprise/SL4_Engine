@@ -1,5 +1,3 @@
 from .particle_mixin import ParticleMixin
 
-__all__ = [
-    'ParticleMixin'
-]
+__all__ = ["ParticleMixin"]

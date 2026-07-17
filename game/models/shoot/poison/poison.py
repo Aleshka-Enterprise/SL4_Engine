@@ -33,18 +33,19 @@ class Poison(Shoot, ParticleMixin, TimerMixin):
                 [
                     lambda: self.add_explosion_particles(value.x, value.y, self.color, 5),
                     lambda: self.hit_entity.take_damage(self.damage),
-                    lambda: self.poison_entity_timer.delete_timer() if self.hit_entity and self.hit_entity.hp <= 0 else None
+                    lambda: (
+                        self.poison_entity_timer.delete_timer()
+                        if self.hit_entity and self.hit_entity.hp <= 0
+                        else None
+                    ),
                 ],
                 seconds=0,
-                loop=True
+                loop=True,
             )
             self.add_timer(
-                [
-                    lambda: self.poison_entity_timer.delete_timer(),
-                    lambda: self.destroy()
-                ],
+                [lambda: self.poison_entity_timer.delete_timer(), lambda: self.destroy()],
                 seconds=self.experation_time,
-                loop=False
+                loop=False,
             )
             self.particle_timer.delete_timer()
         super(Poison, Poison).hit_entity.__set__(self, value)

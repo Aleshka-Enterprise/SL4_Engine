@@ -1,43 +1,49 @@
-from enum import Enum
 import math
-from typing import Literal, Tuple, Optional, Union
+from enum import Enum
+from typing import Literal, Optional, Tuple, Union
+
 from game.core.components.base.base_mixin import BaseMixin
 from game.settings import DEBUG
 
-Direction = Literal['left', 'right', 'up', 'down', 'up-left', 'up-right', 'down-left', 'down-right']
+Direction = Literal["left", "right", "up", "down", "up-left", "up-right", "down-left", "down-right"]
 
 
 class MoveModeType(Enum):
-    HORIZONTAL = 'horizontal'
-    VERTICAL = 'vertical'
-    FREE = 'free'
-    COMPASS = 'compass'
+    HORIZONTAL = "horizontal"
+    VERTICAL = "vertical"
+    FREE = "free"
+    COMPASS = "compass"
 
 
 class CompassDirection(Enum):
-    N = 'n'
-    NE = 'ne'
-    E = 'e'
-    SE = 'se'
-    S = 's'
-    SW = 'sw'
-    W = 'w'
-    NW = 'nw'
+    N = "n"
+    NE = "ne"
+    E = "e"
+    SE = "se"
+    S = "s"
+    SW = "sw"
+    W = "w"
+    NW = "nw"
 
     @classmethod
     def from_string(cls, value: str):
-        '''Преобразует строку в элемент Enum'''
+        """Преобразует строку в элемент Enum"""
         for member in cls:
             if member.value == value.lower():
                 return member
         return cls.N
 
     def to_vector(self) -> Tuple[float, float]:
-        '''Возвращает нормализованный вектор направления.'''
+        """Возвращает нормализованный вектор направления."""
         mapping = {
-            'n': (0, -1), 'ne': (0.707, -0.707), 'e': (1, 0),
-            'se': (0.707, 0.707), 's': (0, 1), 'sw': (-0.707, 0.707),
-            'w': (-1, 0), 'nw': (-0.707, -0.707)
+            "n": (0, -1),
+            "ne": (0.707, -0.707),
+            "e": (1, 0),
+            "se": (0.707, 0.707),
+            "s": (0, 1),
+            "sw": (-0.707, 0.707),
+            "w": (-1, 0),
+            "nw": (-0.707, -0.707),
         }
         return mapping[self.value]
 
@@ -46,16 +52,16 @@ class MoveMixin(BaseMixin):
     def __init__(
         self,
         speed: float = 0.0,
-        direction: Union[Direction, CompassDirection, str] = 'left',
+        direction: Union[Direction, CompassDirection, str] = "left",
         boost: float = 300.0,
         move_freez: bool = False,
         move_mode: MoveModeType = MoveModeType.HORIZONTAL,
-        **kwargs
+        **kwargs,
     ):
         super().__init__(**kwargs)
 
         self._compass_direction = None
-        self._direction_str = 'left'
+        self._direction_str = "left"
         self._direction_vector = (1.0, 0.0)
         self.speed = speed
         self._base_speed = speed
@@ -83,7 +89,7 @@ class MoveMixin(BaseMixin):
         if self.move_mode == MoveModeType.COMPASS:
             return self._compass_direction.value
         return self._direction_str
-    
+
     @direction.setter
     def direction(self, value):
         if self.move_mode == MoveModeType.COMPASS:
@@ -110,7 +116,7 @@ class MoveMixin(BaseMixin):
             self._is_running = False
 
     def can_run(self) -> bool:
-        '''Переопределить для дополнительных условий бега.'''
+        """Переопределить для дополнительных условий бега."""
         return True
 
     def can_move(self, new_x: float, new_y: float) -> bool:
@@ -118,11 +124,11 @@ class MoveMixin(BaseMixin):
         return True
 
     def on_move(self) -> None:
-        '''Вызывается при обычном движении.'''
+        """Вызывается при обычном движении."""
         pass
 
     def on_run(self) -> None:
-        '''Вызывается при беге.'''
+        """Вызывается при беге."""
         pass
 
     def set_direction(self, direction: str) -> None:
@@ -130,10 +136,7 @@ class MoveMixin(BaseMixin):
         if self.move_mode in (MoveModeType.HORIZONTAL, MoveModeType.VERTICAL):
             self.direction = direction
         else:
-            mapping = {
-                'left': (-1, 0), 'right': (1, 0),
-                'up': (0, -1), 'down': (0, 1)
-            }
+            mapping = {"left": (-1, 0), "right": (1, 0), "up": (0, -1), "down": (0, 1)}
             if direction in mapping:
                 dx, dy = mapping[direction]
                 self._direction_vector = (dx, dy)
@@ -149,12 +152,12 @@ class MoveMixin(BaseMixin):
             self._direction_vector = (dx / length, dy / length)
         vx, vy = self._direction_vector
         if abs(vx) > abs(vy):
-            self.direction = 'right' if vx > 0 else 'left'
+            self.direction = "right" if vx > 0 else "left"
         else:
-            self.direction = 'down' if vy > 0 else 'up'
+            self.direction = "down" if vy > 0 else "up"
 
     def set_compass_direction(self, direction: Union[CompassDirection, str]) -> None:
-        '''Устанавливает направление для режима COMPASS'''
+        """Устанавливает направление для режима COMPASS"""
         if self.move_mode != MoveModeType.COMPASS:
             raise ValueError("set_compass_direction() can only be used in COMPASS mode")
         if isinstance(direction, CompassDirection):
@@ -162,8 +165,10 @@ class MoveMixin(BaseMixin):
         else:
             self._compass_direction = CompassDirection.from_string(str(direction))
 
-    def move(self, direction: Optional[str] = None, dt: Optional[float] = None) -> Tuple[float, float]:
-        '''
+    def move(
+        self, direction: Optional[str] = None, dt: Optional[float] = None
+    ) -> Tuple[float, float]:
+        """
         Перемещает объект в заданном направлении с учётом dt.
 
         Для режимов HORIZONTAL и VERTICAL:
@@ -180,7 +185,7 @@ class MoveMixin(BaseMixin):
 
         Raises:
             ValueError: если dt не передан или направление недопустимо.
-        '''
+        """
         if dt is None:
             raise ValueError("MoveMixin.move() requires dt argument")
         if self.move_freez:
@@ -191,9 +196,9 @@ class MoveMixin(BaseMixin):
 
         if self.move_mode == MoveModeType.HORIZONTAL:
             dir_str = direction or self.direction
-            if dir_str == 'left':
+            if dir_str == "left":
                 dx = -displacement
-            elif dir_str == 'right':
+            elif dir_str == "right":
                 dx = displacement
             else:
                 if DEBUG:
@@ -204,9 +209,9 @@ class MoveMixin(BaseMixin):
 
         elif self.move_mode == MoveModeType.VERTICAL:
             dir_str = direction or self.direction
-            if dir_str == 'up':
+            if dir_str == "up":
                 dy = -displacement
-            elif dir_str == 'down':
+            elif dir_str == "down":
                 dy = displacement
             else:
                 if DEBUG:
@@ -227,10 +232,10 @@ class MoveMixin(BaseMixin):
             dx = vx * displacement
             dy = vy * displacement
             if abs(vx) > abs(vy):
-                self.direction = 'right' if vx > 0 else 'left'
+                self.direction = "right" if vx > 0 else "left"
             else:
-                self.direction = 'down' if vy > 0 else 'up'
-        
+                self.direction = "down" if vy > 0 else "up"
+
         else:
             raise ValueError(f"Invalid direction: {dir_str}")
 
@@ -276,9 +281,8 @@ class MoveMixin(BaseMixin):
         """Выключает бег."""
         self.is_running = False
 
-    def resolve_collision(self,  new_x: int, new_y: int) -> tuple[int, int]:
-        '''
+    def resolve_collision(self, new_x: int, new_y: int) -> tuple[int, int]:
+        """
         Возвращает скорректированную позицию при столкновении (скользит по стенам).
         Пытается двигаться по X и Y по отдельности.
-        '''
-
+        """
