@@ -5,7 +5,6 @@ from game.core.components.phisics.collision.collision_types import CollisionResp
 from game.core.components.phisics.gravity import GravityMixin
 from game.core.components.render import AnimationMixin
 from game.models.items.weapons.weapon import Weapon
-from pygame import Rect
 
 
 class Entity(
@@ -32,11 +31,6 @@ class Entity(
 
         self.z_index = z_index
 
-    def can_move(self, new_x: int, new_y: int) -> bool:
-        """Проверяет возможность движения (без коллизий)"""
-        entity_new_rect = Rect(new_x, new_y, self.width, self.height)
-        return self.check_collision(entity_new_rect, [self]) is None
-
     def on_died(self) -> None:
         """Срабатывает при смерти сущности"""
         res = super().on_died()
@@ -58,19 +52,3 @@ class Entity(
         if self.weapon:
             self.weapon.entity = None
             self.weapon = None
-
-    # TODO объект сейчас не подходит к колизии вплотную
-    def resolve_collision(self, new_x: int, new_y: int) -> tuple[int, int]:
-        test_rect_x = Rect(new_x, self.y, self.width, self.height)
-        if self.check_collision(test_rect_x, [self]) is None:
-            test_rect_y = Rect(self.x, new_y, self.width, self.height)
-            if self.check_collision(test_rect_y, [self]) is None:
-                return (new_x, new_y)
-            else:
-                return (new_x, self.y)
-        else:
-            test_rect_y = Rect(self.x, new_y, self.width, self.height)
-            if self.check_collision(test_rect_y, [self]) is None:
-                return (self.x, new_y)
-            else:
-                return (self.x, self.y)

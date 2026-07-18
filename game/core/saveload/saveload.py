@@ -215,7 +215,7 @@ def generate_ai_documentation(registry):
                     elif "width" in param_name or "height" in param_name:
                         minimal_params[param_name] = 50
                     elif "color" in param_name:
-                        minimal_params[param_name] = [0, 0, 0]
+                        minimal_params[param_name] = "#000000"
                     else:
                         minimal_params[param_name] = None
 

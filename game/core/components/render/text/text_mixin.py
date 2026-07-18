@@ -14,7 +14,7 @@ class TextMixin(RenderMixin):
         text: str = "",
         font_name: Optional[str] = None,
         font_size: int = 24,
-        text_color: Optional[Tuple[int, int, int]] = None,
+        text_color: Optional[str] = None,
         antialias: bool = True,
         fonts_root: Optional[str] = None,
         **kwargs,

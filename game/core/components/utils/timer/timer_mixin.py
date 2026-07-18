@@ -1,5 +1,4 @@
 from pyclbr import Function
-from typing import List, Tuple
 
 from game.core.components.base.base_mixin import BaseMixin
 from game.core.components.utils.timer.timer_system import TimerSystem

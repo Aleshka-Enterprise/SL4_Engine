@@ -7,19 +7,19 @@ class BaseMixin:
     def __init__(
         self,
         id: str | int | None = None,
-        x: int = 0,
-        y: int = 0,
-        width: int = 0,
-        height: int = 0,
+        x: float = 0,
+        y: float = 0,
+        width: float = 0,
+        height: float = 0,
         auto_register: bool = True,
         *args,
         **kwargs,
     ):
         self._id = id or uuid4()
-        self._x = int(x)
-        self._y = int(y)
-        self._width = int(width)
-        self._height = int(height)
+        self._x = float(x)
+        self._y = float(y)
+        self._width = float(width)
+        self._height = float(height)
         self._rect = Rect(self.x, self.y, self.width, self.height)
         self.__rect_is_dirty = False
 

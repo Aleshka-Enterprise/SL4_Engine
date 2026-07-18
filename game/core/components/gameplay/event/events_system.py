@@ -25,13 +25,6 @@ class EventsSystem(BaseSystem):
         GAME_STATE.IS_RUNNING = False
 
     @classmethod
-    def key_pressed_listener(cls):
-        """Слушатель события нажатия клавиши"""
-        for event in cls._key_pressed_events:
-            if cls.check_key(event.keys):
-                event.callback()
-
-    @classmethod
     def _get_events(cls, event_type: EventState) -> list[Event]:
         """Получение списка событий по типу события"""
         return [
@@ -41,31 +34,20 @@ class EventsSystem(BaseSystem):
         ]
 
     @classmethod
-    def toggle_freez(cls) -> None:
-        """Переключатель статуса игры (Пауза/Плей)"""
-        cls.is_frozen = not cls.is_frozen
-
+    def _refresh_event_lists(cls) -> None:
         cls._key_pressed_events = cls._get_events(EventState.KEY_PRESSED)
         cls._key_down_events = cls._get_events(EventState.KEY_DOWN)
         cls._key_up_events = cls._get_events(EventState.KEY_UP)
 
     @classmethod
-    def on_change_objects_list(cls, *args, **kwargs) -> None:
-        cls._key_pressed_events = [
-            event for event in cls.objects if event.event_type == EventState.KEY_PRESSED
-        ]
-        cls._key_down_events = [
-            event for event in cls.objects if event.event_type == EventState.KEY_DOWN
-        ]
-        cls._key_up_events = [
-            event for event in cls.objects if event.event_type == EventState.KEY_UP
-        ]
+    def toggle_freez(cls) -> None:
+        """Переключатель статуса игры (Пауза/Плей)"""
+        cls.is_frozen = not cls.is_frozen
+        cls._refresh_event_lists()
 
     @classmethod
-    def player_events(cls):
-        for event in pygame.event.get():
-            if event.type == pygame.QUIT:
-                GAME_STATE.IS_RUNNING = False
+    def on_change_objects_list(cls, *args, **kwargs) -> None:
+        cls._refresh_event_lists()
 
     @classmethod
     def check_pressed_keys(cls, pressed_keys, keys):

@@ -11,7 +11,7 @@ class RenderMixin(BaseMixin):
 
     def __init__(
         self,
-        color: Tuple[int, int, int] = (0, 0, 0),
+        color: str = "#000000",
         ignore_render_check: bool = False,
         display: bool = True,
         z_index: int = 1,
@@ -41,17 +41,28 @@ class RenderMixin(BaseMixin):
 
         if padding is not None:
             if isinstance(padding, int):
-                self._padding_top = self._padding_right = self._padding_bottom = self._padding_left = padding
+                self._padding_top = self._padding_right = self._padding_bottom = (
+                    self._padding_left
+                ) = padding
             elif isinstance(padding, (tuple, list)):
                 if len(padding) == 2:
                     self._padding_top = self._padding_bottom = padding[0]
                     self._padding_right = self._padding_left = padding[1]
                 elif len(padding) == 4:
-                    self._padding_top, self._padding_right, self._padding_bottom, self._padding_left = padding
+                    (
+                        self._padding_top,
+                        self._padding_right,
+                        self._padding_bottom,
+                        self._padding_left,
+                    ) = padding
                 else:
-                    self._padding_top = self._padding_right = self._padding_bottom = self._padding_left = 0
+                    self._padding_top = self._padding_right = self._padding_bottom = (
+                        self._padding_left
+                    ) = 0
             else:
-                self._padding_top = self._padding_right = self._padding_bottom = self._padding_left = 0
+                self._padding_top = self._padding_right = self._padding_bottom = (
+                    self._padding_left
+                ) = 0
         else:
             self._padding_top = padding_top
             self._padding_right = padding_right

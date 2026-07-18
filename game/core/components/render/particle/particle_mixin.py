@@ -27,7 +27,7 @@ class ParticleMixin(TimerMixin):
         self,
         x=None,
         y=None,
-        color=(255, 100, 50),
+        color="#FF6432",
         count=20,
         lifetime_range=(0.5, 1),
         speed_range=(-40, 40),

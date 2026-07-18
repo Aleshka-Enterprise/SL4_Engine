@@ -3,7 +3,6 @@ from enum import Enum
 from typing import Literal, Optional, Tuple, Union
 
 from game.core.components.base.base_mixin import BaseMixin
-from game.settings import DEBUG
 
 Direction = Literal["left", "right", "up", "down", "up-left", "up-right", "down-left", "down-right"]
 
@@ -69,6 +68,8 @@ class MoveMixin(BaseMixin):
         self.move_freez = move_freez
         self.move_mode = move_mode
         self._is_running = False
+        self.last_x = self.x
+        self.last_y = self.y
 
         if move_mode == MoveModeType.COMPASS:
             if isinstance(direction, CompassDirection):
@@ -93,27 +94,17 @@ class MoveMixin(BaseMixin):
     @direction.setter
     def direction(self, value):
         if self.move_mode == MoveModeType.COMPASS:
-            if isinstance(value, CompassDirection):
-                self._compass_direction = value
-            else:
-                self._compass_direction = CompassDirection.from_string(str(value))
+            self._compass_direction = (
+                value
+                if isinstance(value, CompassDirection)
+                else CompassDirection.from_string(str(value))
+            )
         else:
             self._direction_str = value
 
     @property
     def is_running(self) -> bool:
         return self._is_running
-
-    @is_running.setter
-    def is_running(self, value: bool):
-        if self.can_run():
-            if value and not self._is_running:
-                self.speed = self.base_speed + self.boost
-            elif not value and self._is_running:
-                self.speed = self.base_speed
-            self._is_running = value
-        else:
-            self._is_running = False
 
     def can_run(self) -> bool:
         """Переопределить для дополнительных условий бега."""
@@ -165,19 +156,19 @@ class MoveMixin(BaseMixin):
         if self.move_freez:
             return (self.x, self.y)
 
+        self.last_x = self.x
+        self.last_y = self.y
+
         displacement = math.floor(self.speed * dt)
         dx = dy = 0.0
 
-        if self.move_mode == MoveModeType.HORIZONTAL:
+        if self.move_mode == MoveModeType.HORIZONTAL or self.move_mode == MoveModeType.VERTICAL:
             dir_str = direction or self.direction
-            dx = -displacement if dir_str == "left" else displacement
 
-            if dir_str != self.direction:
-                self.direction = dir_str
-
-        elif self.move_mode == MoveModeType.VERTICAL:
-            dir_str = direction or self.direction
-            dy = -displacement if dir_str == "up" else displacement
+            if self.move_mode == MoveModeType.HORIZONTAL:
+                dx = -displacement if dir_str == "left" else displacement
+            else:
+                dy = -displacement if dir_str == "up" else displacement
 
             if dir_str != self.direction:
                 self.direction = dir_str
@@ -203,8 +194,6 @@ class MoveMixin(BaseMixin):
         if self.can_move(new_x, new_y):
             self.on_move()
             self.x, self.y = new_x, new_y
-        else:
-            self.x, self.y = self.resolve_collision(new_x, new_y)
 
         return (self.x, self.y)
 
@@ -215,7 +204,7 @@ class MoveMixin(BaseMixin):
 
     def speed_boost(self, dt=None) -> None:
         """Включает бег."""
-        if not self.can_run():
+        if not self.can_run() or self.is_running:
             return
 
         self.speed = self.base_speed + self.boost
@@ -224,8 +213,8 @@ class MoveMixin(BaseMixin):
 
     def stop_speed_boost(self, dt=None) -> None:
         """Выключает бег."""
+        if not self.is_running:
+            return
+
         self._is_running = False
         self.speed = self.base_speed
-
-    def resolve_collision(self, new_x: int, new_y: int) -> tuple[int, int]:
-        """Возвращает скорректированную позицию при столкновении (скользит по стенам)"""

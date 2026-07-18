@@ -32,3 +32,7 @@ class GravityMixin(BaseMixin):
     def on_lend(self, platform: BaseMixin) -> None:
         """Слушатель события: объект приземлился"""
         pass
+
+    def destroy(self) -> None:
+        GravitySystem.destroy(self)
+        return super().destroy()

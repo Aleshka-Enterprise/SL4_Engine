@@ -27,7 +27,7 @@ class Particle(RenderMixin):
         y: float,
         count: int,
         particle_type: ParticleFadeType = ParticleFadeType.LINER,
-        color: Tuple[int, int, int] = (255, 100, 50),
+        color: str = "#ff6432",
         lifetime_range: Tuple[float, float] = (0.5, 1.5),
         speed_range: Tuple[float, float] = (10, 30),
         size_range: Tuple[float, float] = (2, 6),
@@ -73,7 +73,7 @@ class Particle(RenderMixin):
                 vy = random.uniform(-100, 0)
                 lifetime = random.uniform(*lifetime_range)
                 size = random.uniform(*size_range)
-                color = (random.randint(120, 200), 0, 0)
+                color = f"#{random.randint(120, 200):02x}00 00"
             else:
                 vx = random.uniform(-50, 50)
                 vy = random.uniform(-50, 50)
@@ -96,12 +96,6 @@ class Particle(RenderMixin):
                         existing["size"] = max(existing["size"], size)
                         existing["lifetime"] = max(existing["lifetime"], lifetime)
                         existing["max_lifetime"] = max(existing["max_lifetime"], lifetime)
-                        # Можно смешать цвета (среднее арифметическое)
-                        existing["color"] = (
-                            (existing["color"][0] + color[0]) // 2,
-                            (existing["color"][1] + color[1]) // 2,
-                            (existing["color"][2] + color[2]) // 2,
-                        )
                         merged = True
                         break
 
@@ -129,7 +123,7 @@ class Particle(RenderMixin):
             "vy": 0,
             "lifetime": 0,
             "max_lifetime": 0,
-            "color": (0, 0, 0),
+            "color": "#000000",
             "size": 0,
             "active": False,
         }
@@ -178,7 +172,8 @@ class Particle(RenderMixin):
                 factor = t
 
             alpha = int(255 * factor)
-            color = (*p["color"][:3], min(max(alpha, 0), 255))
+            alpha_hex = f"{alpha:02x}" 
+            color = p["color"].replace(" ", "") + alpha_hex
             radius = int(p["size"] * factor)
 
             screen_pos = camera.apply((p["x"], p["y"]))

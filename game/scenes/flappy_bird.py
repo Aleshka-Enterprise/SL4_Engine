@@ -26,7 +26,7 @@ class FlappyBird(TimerMixin, AudioMixin, EventMixin):
     def run(self) -> None:
         self.player = Plane(width=190, height=100, y=200, x=200, on_died=self.on_plane_dead)
         self.player.jump()
-        self.ground = Ground(width=2000, height=500, y=640, z_index=10, color=[0, 155, 0])
+        self.ground = Ground(width=2000, height=500, y=640, z_index=10, color="#009600")
         self.counter = Counter(
             font_name="flappy-font.ttf",
             text="asdsad",
@@ -34,7 +34,7 @@ class FlappyBird(TimerMixin, AudioMixin, EventMixin):
             y=40,
             width=100,
             height=100,
-            color=(255, 255, 255),
+            color="#FFFFFF",
             font_size=50,
         )
         BackgroundLayer(x=0, y=0, height=DISPLAY.HEIGHT - 150, width=DISPLAY.WIDTH, z_index=1)

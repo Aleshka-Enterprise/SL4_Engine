@@ -9,15 +9,15 @@ from game.utils.types import Event, EventState
 
 class DebugRender(EventMixin):
     COLLISION_COLORS = {
-        CollisionResponseTypes.PUSH: (0, 255, 0),
-        CollisionResponseTypes.IGNORE: (255, 255, 0),
-        CollisionResponseTypes.STATIC: (255, 0, 0),
+        CollisionResponseTypes.PUSH: "#00FF00",
+        CollisionResponseTypes.IGNORE: "#FFFF00",
+        CollisionResponseTypes.STATIC: "#FF0000",
     }
 
-    CAMERA_DEADZONE_ACTIVE_COLOR = (0, 255, 0)
-    CAMERA_DEADZONE_DISABLED_COLOR = (200, 0, 0)
-    FPS_COLOR = (155, 0, 0)
-    INFO_COLOR = (200, 200, 200)
+    CAMERA_DEADZONE_ACTIVE_COLOR = "#00FF00"
+    CAMERA_DEADZONE_DISABLED_COLOR = "#C80000"
+    FPS_COLOR = "#9B0000"
+    INFO_COLOR = "#C8C8C8"
 
     def __init__(self):
         self.window = None
@@ -56,8 +56,8 @@ class DebugRender(EventMixin):
         if camera.target:
             player_screen = camera.apply((camera.target.x, camera.target.y))
             px, py = int(player_screen[0]), int(player_screen[1])
-            pygame.draw.circle(self.window, (255, 0, 0), (px, py), 4)
-            pygame.draw.line(self.window, (255, 255, 0), (cx, cy), (px, py), 1)
+            pygame.draw.circle(self.window, "#FF0000", (px, py), 4)
+            pygame.draw.line(self.window, "#FFFF00", (cx, cy), (px, py), 1)
 
             if hasattr(camera, "current_offset_x"):
                 end_x = px + camera.current_offset_x
@@ -111,7 +111,7 @@ class DebugRender(EventMixin):
         visible_collision_object_list = CollisionSystem.visible_collision_object_list
         for obj in visible_collision_object_list:
             position = storage.camera.apply((obj.x, obj.y))
-            color = self.COLLISION_COLORS.get(obj.collision_response, (0, 0, 0))
+            color = self.COLLISION_COLORS.get(obj.collision_response, "#000000")
 
             pygame.draw.rect(self.window, color, [*position, obj.width, obj.height], 2)
 

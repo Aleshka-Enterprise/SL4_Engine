@@ -8,7 +8,7 @@ class PoisonGun(Weapon):
     def __init__(self, experation_time=1000, **kwargs):
         super().__init__(**kwargs)
         self.experation_time = experation_time
-        self.no_ready_color = (0, 200, 0)
+        self.no_ready_color = "#00c800"
 
     def attack(self) -> bool:
         if self.can_atack():
@@ -22,7 +22,7 @@ class PoisonGun(Weapon):
                 damage=self.damage,
                 initializer=self.entity,
                 experation_time=3,
-                color=(0, 100, 0),
+                color="#006400",
                 speed=1500,
             )
 

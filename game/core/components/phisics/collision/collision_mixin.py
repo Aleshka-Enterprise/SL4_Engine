@@ -36,8 +36,8 @@ class CollisionMixin(BaseMixin):
         return CollisionSystem.check_collision(rect, ignore_list)
 
     def destroy(self) -> None:
-        super().destroy()
         CollisionSystem.destroy(self)
+        return super().destroy()
 
     def on_collision(self, obj: "CollisionMixin") -> None:
         """Обработчик события: объект столкнулся"""

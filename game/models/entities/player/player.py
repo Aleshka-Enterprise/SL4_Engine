@@ -9,15 +9,16 @@ from game.core.storage import GAME_STATE, storage
 from game.models.entities.entity import Entity
 from game.settings import KEYS
 from game.utils.types import Event, EventState
+from reaktiv import Computed, Signal
 
 
 class Player(Entity, JumpMixin, EventMixin, MoveMixin, TimerMixin, InteractiveMixin):
     def __init__(self, energy: int = 350, **kwargs):
         super().__init__(**kwargs)
 
-        self.energy = energy
+        self.energy = Signal(energy)
+        self._is_sitting = Signal(False)
         self.max_energy = energy
-        self._is_sitting = False
         self.default_height = self.height
         self.max_jump_count = 2
 
@@ -39,31 +40,31 @@ class Player(Entity, JumpMixin, EventMixin, MoveMixin, TimerMixin, InteractiveMi
         self.add_timer(self.regenerate_energy, loop=True, seconds=0.1)
 
     def regenerate_energy(self):
-        if self.energy < self.max_energy:
-            self.energy = min(self.max_energy, self.energy + 10)
+        if self.energy() < self.max_energy:
+            self.energy.set(min(self.max_energy, self.energy() + 10))
 
     def can_jump(self):
-        if self.energy < 100 and not self.is_sitting:
+        if self.energy() < 100 and not self.is_sitting:
             return False
         return super().can_jump()
 
     def on_start_jump(self):
-        self.energy -= 100
+        self.energy.set(self.energy() - 100)
         return super().on_start_jump()
 
     @property
     def is_sitting(self):
-        return self._is_sitting
+        return self._is_sitting()
 
     @is_sitting.setter
     def is_sitting(self, value):
-        if value and not self._is_sitting:
+        if value and not self._is_sitting():
             self.height = self.height // 2
             self.speed = self.base_speed // 2
-        elif not value and self._is_sitting:
+        elif not value and self._is_sitting():
             self.height = self.default_height
             self.speed = self.base_speed
-        self._is_sitting = value
+        self._is_sitting.set(value)
 
     def sit(self, dt=None):
         self.is_sitting = True
@@ -85,18 +86,19 @@ class Player(Entity, JumpMixin, EventMixin, MoveMixin, TimerMixin, InteractiveMi
         if self.is_on_ground and not self.is_sitting and not self.is_running:
             self.play_sound("move")
         if self.is_running:
-            self.energy -= 3
+            self.energy.set(self.energy() - 3)
         return res
 
     def move(self, direction: Literal["left", "right"], dt):
         """Движение Игрока"""
         res = super().move(direction, dt)
-        if self.energy < 10 or self.is_sitting:
+        if self.is_running and (self.energy() < 10 or self.is_sitting):
             self.stop_speed_boost()
         return res
-    
+
+    @Computed
     def can_run(self):
-        return self.energy > 50 and not self.is_sitting
+        return self.energy() > 50 and not self._is_sitting()
 
     def attack(self, dt=None):
         if self.weapon and self.weapon.attack:

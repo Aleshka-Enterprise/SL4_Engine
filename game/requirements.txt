@@ -12,3 +12,4 @@ pygame-ce[examples]  # если хочешь примеры из pygame
 
 # Для профилирования (если нужно)
 snakeviz>=2.2.0
+reaktiv>=0.24.2
